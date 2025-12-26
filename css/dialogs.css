@@ -1,0 +1,362 @@
+/* MattPaint - Dialog Styles (Windows 10 Paint Clone) */
+
+/* Dialog Overlay */
+#dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+#dialog-overlay.hidden {
+    display: none;
+}
+
+/* Dialog Base */
+.dialog {
+    background: var(--win-ribbon-bg);
+    border: 1px solid var(--win-border-dark);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    min-width: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog.hidden {
+    display: none;
+}
+
+/* Dialog Titlebar */
+.dialog-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--win-white);
+    border-bottom: 1px solid var(--win-border);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dialog-close {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    color: var(--win-text-secondary);
+}
+
+.dialog-close:hover {
+    background: #E81123;
+    color: white;
+}
+
+/* Dialog Content */
+.dialog-content {
+    padding: 16px;
+    overflow-y: auto;
+}
+
+.dialog-content fieldset {
+    border: 1px solid var(--win-border);
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.dialog-content legend {
+    padding: 0 4px;
+    font-size: 11px;
+    color: var(--win-text-secondary);
+}
+
+.dialog-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.dialog-row:last-child {
+    margin-bottom: 0;
+}
+
+.dialog-row label {
+    min-width: 80px;
+    font-size: 12px;
+}
+
+.dialog-row input[type="number"] {
+    width: 80px;
+    padding: 4px 8px;
+    border: 1px solid var(--win-border-dark);
+    font-size: 12px;
+}
+
+.dialog-row input[type="checkbox"],
+.dialog-row input[type="radio"] {
+    margin-right: 4px;
+}
+
+/* Dialog Buttons */
+.dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--win-ribbon-bg);
+    border-top: 1px solid var(--win-border);
+}
+
+.dialog-btn {
+    padding: 6px 20px;
+    font-size: 12px;
+    border: 1px solid var(--win-border-dark);
+    background: var(--win-white);
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.dialog-btn:hover {
+    background: var(--win-hover);
+}
+
+.dialog-btn.primary {
+    background: var(--win-accent);
+    color: white;
+    border-color: var(--win-accent);
+}
+
+.dialog-btn.primary:hover {
+    background: var(--win-accent-hover);
+}
+
+/* Color Picker Dialog */
+.color-picker-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.basic-colors,
+.custom-colors {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.color-label {
+    font-size: 11px;
+    color: var(--win-text-secondary);
+}
+
+.basic-colors-grid,
+.custom-colors-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+}
+
+.basic-colors-grid .color-swatch,
+.custom-colors-grid .color-swatch {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--win-border-dark);
+    cursor: pointer;
+}
+
+.basic-colors-grid .color-swatch:hover,
+.custom-colors-grid .color-swatch:hover {
+    outline: 2px solid var(--win-accent);
+    outline-offset: 0;
+}
+
+.custom-colors-grid .color-swatch.empty {
+    background: var(--win-white);
+    background-image: linear-gradient(45deg, #ccc 25%, transparent 25%),
+                      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, #ccc 75%),
+                      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+}
+
+#add-custom-color {
+    font-size: 11px;
+    padding: 4px 8px;
+    background: var(--win-white);
+    border: 1px solid var(--win-border-dark);
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+#add-custom-color:hover {
+    background: var(--win-hover);
+}
+
+.color-picker-main {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.color-gradient-container,
+.color-hue-container {
+    position: relative;
+}
+
+#color-gradient {
+    border: 1px solid var(--win-border-dark);
+    cursor: crosshair;
+}
+
+#color-hue {
+    border: 1px solid var(--win-border-dark);
+    cursor: pointer;
+}
+
+.color-cursor {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.hue-cursor {
+    position: absolute;
+    left: -2px;
+    right: -2px;
+    height: 4px;
+    background: transparent;
+    border: 2px solid white;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.color-values {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.color-preview-box {
+    width: 60px;
+    height: 50px;
+    border: 1px solid var(--win-border-dark);
+    display: flex;
+    flex-direction: column;
+}
+
+.color-preview-half {
+    flex: 1;
+}
+
+#color-new {
+    background: #000;
+}
+
+#color-current {
+    background: #000;
+}
+
+.color-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.color-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-input-row label {
+    width: 40px;
+    font-size: 11px;
+}
+
+.color-input-row input {
+    width: 50px;
+    padding: 2px 4px;
+    border: 1px solid var(--win-border-dark);
+    font-size: 11px;
+}
+
+/* About Dialog */
+.about-content {
+    text-align: center;
+    padding: 24px;
+}
+
+.about-logo {
+    margin-bottom: 16px;
+}
+
+.about-content h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.about-content p {
+    font-size: 12px;
+    color: var(--win-text-secondary);
+    margin-bottom: 4px;
+}
+
+.about-content .version {
+    margin-top: 12px;
+}
+
+.about-content .copyright {
+    margin-top: 8px;
+    font-size: 11px;
+}
+
+/* Camera Dialog */
+.camera-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#camera-video {
+    max-width: 100%;
+    max-height: 400px;
+    background: #000;
+}
+
+/* Properties Dialog */
+#properties-dialog .dialog-row span {
+    font-family: monospace;
+}
+
+/* Save Dialog */
+#save-dialog .dialog-content {
+    padding: 24px;
+}
+
+#save-dialog .dialog-content p {
+    font-size: 14px;
+}

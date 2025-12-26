@@ -1,0 +1,583 @@
+/* MattPaint - Main Styles (Windows 10 Paint Clone) */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --win-bg: #F0F0F0;
+    --win-ribbon-bg: #F5F6F7;
+    --win-border: #D6D6D6;
+    --win-border-dark: #ADADAD;
+    --win-accent: #0078D4;
+    --win-accent-hover: #106EBE;
+    --win-text: #1A1A1A;
+    --win-text-secondary: #666666;
+    --win-hover: #E5E5E5;
+    --win-selected: #CCE8FF;
+    --win-selected-border: #99D1FF;
+    --win-canvas-bg: #808080;
+    --win-white: #FFFFFF;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--win-text);
+    background: var(--win-bg);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: var(--win-bg);
+}
+
+/* Title Bar */
+#title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    background: var(--win-ribbon-bg);
+    border-bottom: 1px solid var(--win-border);
+    padding: 0 8px;
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.title-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: var(--win-text);
+}
+
+.title-right {
+    display: flex;
+    align-items: center;
+}
+
+.file-btn {
+    background: var(--win-accent);
+    color: white;
+    border: none;
+    padding: 4px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.file-btn:hover {
+    background: var(--win-accent-hover);
+}
+
+.title-btn {
+    background: transparent;
+    border: none;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 14px;
+    color: var(--win-text-secondary);
+}
+
+.title-btn:hover {
+    background: var(--win-hover);
+}
+
+/* Quick Access Toolbar */
+#quick-access {
+    position: absolute;
+    left: 80px;
+    top: 4px;
+    display: flex;
+    gap: 2px;
+}
+
+.qat-btn {
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+}
+
+.qat-btn:hover {
+    background: var(--win-hover);
+}
+
+.qat-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.qat-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--win-text-secondary);
+}
+
+/* Main Content */
+#main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--win-canvas-bg);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Rulers */
+.ruler {
+    background: var(--win-white);
+    position: absolute;
+    z-index: 10;
+}
+
+#ruler-horizontal {
+    left: 25px;
+    top: 0;
+    right: 0;
+    height: 25px;
+    border-bottom: 1px solid var(--win-border);
+}
+
+#ruler-vertical {
+    left: 0;
+    top: 25px;
+    width: 25px;
+    bottom: 0;
+    border-right: 1px solid var(--win-border);
+}
+
+#ruler-h-canvas {
+    width: 100%;
+    height: 24px;
+}
+
+#ruler-v-canvas {
+    width: 24px;
+    height: 100%;
+}
+
+/* Canvas Container */
+#canvas-container {
+    flex: 1;
+    overflow: auto;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+}
+
+#canvas-wrapper {
+    position: relative;
+    background: var(--win-white);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    cursor: inherit;
+}
+
+#main-canvas {
+    display: block;
+    background: white;
+}
+
+/* Tool cursors - with contrasting outline for visibility on any background */
+#main-canvas.cursor-pencil { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="%23FFF" stroke="%23000" stroke-width="1"/></svg>') 0 24, crosshair; }
+#main-canvas.cursor-brush { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="9" fill="none" stroke="%23FFF" stroke-width="2"/><circle cx="12" cy="12" r="8" fill="none" stroke="%23000" stroke-width="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-eraser { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect x="5" y="5" width="14" height="14" fill="%23FFF" stroke="%23000" stroke-width="2"/><line x1="5" y1="12" x2="19" y2="12" stroke="%23F88" stroke-width="2"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-fill { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M19 11s-2 2.5-2 4a2 2 0 004 0c0-1.5-2-4-2-4z" fill="%2300F" stroke="%23FFF" stroke-width="1"/><path d="M5 14L3 16v5h4l2-2-4-5zm11-9l-1-1a1 1 0 00-1.5 0L3 14l5 5 10-10a1 1 0 000-1.5L16 5z" fill="%23FFC107" stroke="%23000" stroke-width="1"/></svg>') 2 22, crosshair; }
+#main-canvas.cursor-picker { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M20 4l-2-2-3 3-1-1-2 2 1 1-10 10v4h4l10-10 1 1 2-2-1-1 3-3-2-2zM10 19H7v-3l10-10 3 3-10 10z" fill="%23FFF" stroke="%23000" stroke-width="1"/></svg>') 0 24, crosshair; }
+#main-canvas.cursor-text { cursor: text; }
+#main-canvas.cursor-move { cursor: move; }
+#main-canvas.cursor-crosshair { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><line x1="12" y1="0" x2="12" y2="24" stroke="%23FFF" stroke-width="3"/><line x1="0" y1="12" x2="24" y2="12" stroke="%23FFF" stroke-width="3"/><line x1="12" y1="0" x2="12" y2="24" stroke="%23000" stroke-width="1"/><line x1="0" y1="12" x2="24" y2="12" stroke="%23000" stroke-width="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-zoom-in { cursor: zoom-in; }
+#main-canvas.cursor-zoom-out { cursor: zoom-out; }
+
+/* Brush type specific cursors - with contrasting outline */
+#main-canvas.cursor-brush-brush { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="9" fill="none" stroke="%23FFF" stroke-width="2"/><circle cx="12" cy="12" r="8" fill="none" stroke="%23000" stroke-width="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-calligraphy1 { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><ellipse cx="12" cy="12" rx="3" ry="10" fill="none" stroke="%23FFF" stroke-width="2" transform="rotate(-45 12 12)"/><ellipse cx="12" cy="12" rx="2" ry="9" fill="none" stroke="%23000" stroke-width="1" transform="rotate(-45 12 12)"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-calligraphy2 { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><ellipse cx="12" cy="12" rx="3" ry="10" fill="none" stroke="%23FFF" stroke-width="2" transform="rotate(45 12 12)"/><ellipse cx="12" cy="12" rx="2" ry="9" fill="none" stroke="%23000" stroke-width="1" transform="rotate(45 12 12)"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-airbrush { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="%23FFF" stroke-width="2" stroke-dasharray="2 2"/><circle cx="12" cy="12" r="5" fill="none" stroke="%23000" stroke-width="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-oil { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect x="3" y="8" width="18" height="8" fill="none" stroke="%23FFF" stroke-width="2" rx="1"/><rect x="4" y="9" width="16" height="6" fill="none" stroke="%23000" stroke-width="1" rx="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-crayon { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M6 5 L18 5 L15 19 L9 19 Z" fill="none" stroke="%23FFF" stroke-width="2"/><path d="M7 6 L17 6 L14 18 L10 18 Z" fill="none" stroke="%23000" stroke-width="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-marker { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect x="7" y="3" width="10" height="18" fill="none" stroke="%23FFF" stroke-width="2"/><rect x="8" y="4" width="8" height="16" fill="none" stroke="%23000" stroke-width="1"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-pencil { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><line x1="5" y1="19" x2="19" y2="5" stroke="%23FFF" stroke-width="4" stroke-linecap="round"/><line x1="5" y1="19" x2="19" y2="5" stroke="%23000" stroke-width="2" stroke-linecap="round"/></svg>') 12 12, crosshair; }
+#main-canvas.cursor-brush-watercolor { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10" fill="none" stroke="%23FFF" stroke-width="2" opacity="0.8"/><circle cx="12" cy="12" r="8" fill="none" stroke="%23000" stroke-width="1" stroke-dasharray="3 2"/></svg>') 12 12, crosshair; }
+
+#preview-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+#selection-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* Canvas Resize Handles */
+.resize-handle {
+    position: absolute;
+    background: var(--win-white);
+    border: 1px solid var(--win-border-dark);
+}
+
+.resize-handle.right {
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 16px;
+    cursor: e-resize;
+}
+
+.resize-handle.bottom {
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 6px;
+    cursor: s-resize;
+}
+
+.resize-handle.corner {
+    right: -8px;
+    bottom: -8px;
+    width: 8px;
+    height: 8px;
+    cursor: se-resize;
+}
+
+/* Status Bar */
+#status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 24px;
+    background: var(--win-ribbon-bg);
+    border-top: 1px solid var(--win-border);
+    padding: 0 8px;
+    font-size: 11px;
+    color: var(--win-text-secondary);
+}
+
+.status-left, .status-center, .status-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.status-right {
+    gap: 4px;
+}
+
+.status-zoom-btn {
+    width: 20px;
+    height: 18px;
+    background: transparent;
+    border: 1px solid var(--win-border);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 2px;
+}
+
+.status-zoom-btn:hover {
+    background: var(--win-hover);
+}
+
+#status-zoom-slider {
+    width: 100px;
+    cursor: pointer;
+}
+
+#status-zoom-level {
+    min-width: 40px;
+    text-align: right;
+}
+
+/* Dropdown Menus */
+.dropdown-menu {
+    position: absolute;
+    background: var(--win-white);
+    border: 1px solid var(--win-border-dark);
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 200px;
+}
+
+.dropdown-menu.hidden {
+    display: none;
+}
+
+.menu-section {
+    padding: 4px 0;
+}
+
+.menu-separator {
+    height: 1px;
+    background: var(--win-border);
+    margin: 4px 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 6px 12px 6px 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 12px;
+    color: var(--win-text);
+    gap: 8px;
+    position: relative;
+}
+
+.menu-item:hover {
+    background: var(--win-selected);
+}
+
+.menu-item.active {
+    background: var(--win-selected);
+    font-weight: 600;
+}
+
+.menu-item.active::before {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    font-size: 12px;
+}
+
+.menu-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--win-text-secondary);
+}
+
+.menu-text {
+    flex: 1;
+}
+
+.menu-shortcut {
+    color: var(--win-text-secondary);
+    font-size: 11px;
+}
+
+.menu-item.checkbox {
+    gap: 4px;
+}
+
+.menu-item.checkbox input {
+    margin-right: 4px;
+}
+
+/* Brushes Dropdown */
+.brushes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    gap: 4px;
+    padding: 8px;
+}
+
+.brush-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--win-white);
+    border: 1px solid var(--win-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brush-btn:hover {
+    background: var(--win-selected);
+    border-color: var(--win-selected-border);
+}
+
+.brush-btn.active {
+    background: var(--win-selected);
+    border-color: var(--win-accent);
+}
+
+.brush-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Size Dropdown */
+.size-options {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 4px;
+}
+
+.size-option {
+    width: 70px;
+    height: 24px;
+    background: var(--win-white);
+    border: 1px solid var(--win-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.size-option:hover {
+    background: var(--win-selected);
+    border-color: var(--win-selected-border);
+}
+
+.size-option.active {
+    background: var(--win-selected);
+    border-color: var(--win-accent);
+}
+
+.size-option svg {
+    width: 60px;
+    height: 20px;
+}
+
+/* Text Options in Ribbon */
+.text-options-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+}
+
+.text-font-select {
+    width: 130px;
+    height: 24px;
+    font-size: 12px;
+    border: 1px solid var(--win-border);
+    border-radius: 2px;
+}
+
+.text-size-select {
+    width: 50px;
+    height: 24px;
+    font-size: 12px;
+    border: 1px solid var(--win-border);
+    border-radius: 2px;
+}
+
+.text-style-buttons {
+    display: flex;
+    gap: 2px;
+}
+
+.text-style-btn {
+    width: 26px;
+    height: 26px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-style-btn:hover {
+    background: var(--win-hover);
+    border-color: var(--win-border);
+}
+
+.text-style-btn.active {
+    background: var(--win-selected);
+    border-color: var(--win-selected-border);
+}
+
+/* Text Input - appears directly on canvas */
+#text-input {
+    position: fixed;
+    background: transparent;
+    border: 1px dashed #666;
+    outline: none;
+    resize: none;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    padding: 2px;
+    min-width: 20px;
+    min-height: 20px;
+    z-index: 100;
+    overflow: hidden;
+    color: #000;
+    caret-color: #000;
+}
+
+#text-input.hidden {
+    display: none;
+}
+
+#text-input:focus {
+    border: 1px dashed #0078d7;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
+}
+
+/* Drag and drop overlay */
+#canvas-container.drag-over {
+    background: rgba(0, 120, 212, 0.1);
+    outline: 3px dashed var(--win-accent);
+    outline-offset: -3px;
+}
+
+#canvas-container.drag-over::after {
+    content: 'Drop image here';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: var(--win-accent);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 40px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+

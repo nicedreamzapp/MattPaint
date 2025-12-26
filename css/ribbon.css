@@ -1,0 +1,350 @@
+/* MattPaint - Ribbon Styles (Windows 10 Paint Clone) */
+
+/* Ribbon Tabs */
+#ribbon-tabs {
+    display: flex;
+    gap: 0;
+    background: var(--win-ribbon-bg);
+    padding: 0 8px;
+    border-bottom: 1px solid var(--win-border);
+}
+
+.ribbon-tab {
+    padding: 6px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--win-text);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+.ribbon-tab:hover {
+    background: var(--win-hover);
+}
+
+.ribbon-tab.active {
+    background: var(--win-white);
+    border-bottom-color: var(--win-accent);
+}
+
+/* Ribbon */
+#ribbon {
+    background: var(--win-white);
+    border-bottom: 1px solid var(--win-border);
+    min-height: 96px;
+}
+
+.ribbon-content {
+    display: none;
+    padding: 4px 8px;
+}
+
+.ribbon-content.active {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+/* Ribbon Groups */
+.ribbon-group {
+    display: flex;
+    flex-direction: column;
+    padding: 2px 8px;
+    min-width: 60px;
+}
+
+.ribbon-group-content {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    min-height: 66px;
+}
+
+.ribbon-group-label {
+    text-align: center;
+    font-size: 11px;
+    color: var(--win-text-secondary);
+    padding-top: 4px;
+    border-top: 1px solid var(--win-border);
+    margin-top: 4px;
+}
+
+.ribbon-separator {
+    width: 1px;
+    background: var(--win-border);
+    margin: 0 4px;
+    align-self: stretch;
+}
+
+/* Ribbon Buttons */
+.ribbon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 2px;
+    gap: 2px;
+}
+
+.ribbon-btn:hover {
+    background: var(--win-hover);
+    border-color: var(--win-border);
+}
+
+.ribbon-btn:active {
+    background: var(--win-selected);
+}
+
+.ribbon-btn.active {
+    background: var(--win-selected);
+    border-color: var(--win-selected-border);
+}
+
+.ribbon-btn.large {
+    min-width: 48px;
+}
+
+.ribbon-btn.small {
+    flex-direction: row;
+    padding: 2px 6px;
+    font-size: 11px;
+    gap: 4px;
+}
+
+.ribbon-btn.small svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--win-text-secondary);
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon svg {
+    fill: var(--win-text-secondary);
+}
+
+.btn-icon.large {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-icon.large svg {
+    width: 28px;
+    height: 28px;
+}
+
+.btn-label {
+    font-size: 11px;
+    color: var(--win-text);
+    white-space: nowrap;
+}
+
+.btn-dropdown {
+    font-size: 8px;
+    color: var(--win-text-secondary);
+    margin-left: 2px;
+}
+
+.ribbon-buttons-row {
+    display: flex;
+    gap: 2px;
+}
+
+.ribbon-buttons-small {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Tool Buttons */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+}
+
+.tool-btn {
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    padding: 4px;
+}
+
+.tool-btn:hover {
+    background: var(--win-hover);
+    border-color: var(--win-border);
+}
+
+.tool-btn.active {
+    background: var(--win-selected) !important;
+    border-color: var(--win-accent) !important;
+    box-shadow: inset 0 0 0 1px var(--win-accent);
+}
+
+.tool-btn svg {
+    width: 20px;
+    height: 20px;
+    /* Don't override fill - allow colored icons */
+}
+
+/* Shapes */
+.shapes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shapes-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+    max-width: 180px;
+    max-height: 52px;
+    overflow: hidden;
+}
+
+.shape-btn {
+    width: 28px;
+    height: 24px;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+.shape-btn:hover {
+    background: var(--win-hover);
+    border-color: var(--win-border);
+}
+
+.shape-btn.active {
+    background: var(--win-selected);
+    border-color: var(--win-accent);
+}
+
+.shape-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.shape-options {
+    display: flex;
+    gap: 4px;
+}
+
+/* Colors Group */
+.colors-group .ribbon-group-content {
+    gap: 8px;
+}
+
+.color-selectors {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.color-selector {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.color-box {
+    width: 24px;
+    height: 20px;
+    border: 1px solid var(--win-border-dark);
+    background: #000;
+}
+
+#color1 {
+    background: #000000;
+}
+
+#color2 {
+    background: #FFFFFF;
+}
+
+.color-palette {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--win-border);
+    border: 1px solid var(--win-border-dark);
+    padding: 1px;
+}
+
+.color-swatch {
+    width: 16px;
+    height: 14px;
+    cursor: pointer;
+    border: none;
+}
+
+.color-swatch:hover {
+    outline: 1px solid var(--win-text);
+    outline-offset: -1px;
+    z-index: 1;
+    position: relative;
+}
+
+.edit-colors-btn {
+    background: transparent;
+    border: none;
+    color: var(--win-accent);
+    cursor: pointer;
+    font-size: 11px;
+    text-decoration: underline;
+    margin-top: 4px;
+}
+
+.edit-colors-btn:hover {
+    color: var(--win-accent-hover);
+}
+
+/* View Tab Specific */
+.ribbon-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+}
+
+.ribbon-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.ribbon-checkbox input {
+    cursor: pointer;
+}
+
+/* Dropdown triggers with arrow */
+.ribbon-btn.has-dropdown::after {
+    content: '';
+}

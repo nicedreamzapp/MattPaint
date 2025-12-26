@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MattPaint</title>
+    <link rel="stylesheet" href="css/paint.css">
+    <link rel="stylesheet" href="css/ribbon.css">
+    <link rel="stylesheet" href="css/dialogs.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Title Bar -->
+        <div id="title-bar">
+            <div class="title-left">
+                <button id="file-menu-btn" class="file-btn">File</button>
+            </div>
+            <div class="title-center">
+                <span id="document-title">Untitled - MattPaint</span>
+            </div>
+            <div class="title-right">
+                <button class="title-btn" id="help-btn">?</button>
+            </div>
+        </div>
+
+        <!-- Quick Access Toolbar -->
+        <div id="quick-access">
+            <button class="qat-btn" id="qat-save" title="Save (Cmd+S)">
+                <svg viewBox="0 0 16 16"><path d="M2 2v12h12V4l-2-2H2zm2 1h6v3H4V3zm6 9H6V9h4v3z"/></svg>
+            </button>
+            <button class="qat-btn" id="qat-undo" title="Undo (Cmd+Z)">
+                <svg viewBox="0 0 16 16"><path d="M4 8l4-4v3h4a3 3 0 0 1 0 6H8v-2h4a1 1 0 0 0 0-2H8v3L4 8z"/></svg>
+            </button>
+            <button class="qat-btn" id="qat-redo" title="Redo (Cmd+Y)">
+                <svg viewBox="0 0 16 16"><path d="M12 8l-4-4v3H4a3 3 0 0 0 0 6h4v-2H4a1 1 0 0 1 0-2h4v3l4-4z"/></svg>
+            </button>
+        </div>
+
+        <!-- File Menu Dropdown -->
+        <div id="file-menu" class="dropdown-menu hidden">
+            <div class="menu-section">
+                <button class="menu-item" id="menu-new">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M3 1v14h10V5l-4-4H3zm1 1h5v4h4v8H4V2zm6 .5L12.5 5H10V2.5z"/></svg>
+                    </span>
+                    <span class="menu-text">New</span>
+                    <span class="menu-shortcut">Cmd+N</span>
+                </button>
+                <button class="menu-item" id="menu-open">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M1 3v10h14V5H7L5 3H1zm1 1h2.5l2 2H14v6H2V4z"/></svg>
+                    </span>
+                    <span class="menu-text">Open</span>
+                    <span class="menu-shortcut">Cmd+O</span>
+                </button>
+                <button class="menu-item" id="menu-save">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M2 2v12h12V4l-2-2H2zm2 1h6v3H4V3zm6 9H6V9h4v3z"/></svg>
+                    </span>
+                    <span class="menu-text">Save</span>
+                    <span class="menu-shortcut">Cmd+S</span>
+                </button>
+                <button class="menu-item" id="menu-save-as">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M2 2v12h12V4l-2-2H2zm2 1h6v3H4V3zm6 9H6V9h4v3z"/></svg>
+                    </span>
+                    <span class="menu-text">Save as</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-section">
+                <button class="menu-item" id="menu-print">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M4 1v4H1v7h3v3h8v-3h3V5h-3V1H4zm1 1h6v3H5V2zm-3 4h12v5h-2V9H4v2H2V6zm3 4h6v4H5v-4z"/></svg>
+                    </span>
+                    <span class="menu-text">Print</span>
+                    <span class="menu-shortcut">Cmd+P</span>
+                </button>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-section">
+                <button class="menu-item" id="menu-camera">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M5 2l-1 2H1v10h14V4h-3l-1-2H5zm3 3a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 1.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z"/></svg>
+                    </span>
+                    <span class="menu-text">From scanner or camera</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-section">
+                <button class="menu-item" id="menu-email">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M1 3v10h14V3H1zm1.5 1h11l-5.5 4-5.5-4zm-.5 1.5l5 3.5 5-3.5V12H2V5.5z"/></svg>
+                    </span>
+                    <span class="menu-text">Send in email</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+                <button class="menu-item" id="menu-wallpaper">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M2 2v12h12V2H2zm1 1h10v7l-2-2-3 3-2-2-3 3V3zm2 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+                    </span>
+                    <span class="menu-text">Set as desktop background</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-section">
+                <button class="menu-item" id="menu-properties">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm-.5 3h1v1h-1V4zm0 2h1v6h-1V6z"/></svg>
+                    </span>
+                    <span class="menu-text">Properties</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+            </div>
+            <div class="menu-separator"></div>
+            <div class="menu-section">
+                <button class="menu-item" id="menu-about">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm-.5 3h1v1h-1V4zm0 2h1v6h-1V6z"/></svg>
+                    </span>
+                    <span class="menu-text">About MattPaint</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+                <button class="menu-item" id="menu-exit">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                    </span>
+                    <span class="menu-text">Exit</span>
+                    <span class="menu-shortcut"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Ribbon Tabs -->
+        <div id="ribbon-tabs">
+            <button class="ribbon-tab active" data-tab="home">Home</button>
+            <button class="ribbon-tab" data-tab="view">View</button>
+        </div>
+
+        <!-- Ribbon Content -->
+        <div id="ribbon">
+            <!-- Home Tab -->
+            <div id="ribbon-home" class="ribbon-content active">
+                <!-- Clipboard Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="ribbon-buttons-row">
+                            <button class="ribbon-btn large" id="btn-paste" title="Paste (Cmd+V)">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 32 32"><path d="M10 2v4H6v24h16V22h4V6h-4V2H10zm2 2h8v2h-8V4zM8 8h12v12h-4v6H8V8zm14 0h2v12h-6V20h4V8z"/></svg>
+                                </div>
+                                <span class="btn-label">Paste</span>
+                                <span class="btn-dropdown">&#9662;</span>
+                            </button>
+                        </div>
+                        <div class="ribbon-buttons-small">
+                            <button class="ribbon-btn small" id="btn-cut" title="Cut (Cmd+X)">
+                                <svg viewBox="0 0 16 16"><path d="M3 1a2 2 0 1 0 1.5 3.25L6 6l-1.5 1.75a2 2 0 1 0 1.1.75L8 6l4 4.5V9L7 4l5-3v1.5L8 6 5.6 3.25A2 2 0 0 0 3 1z"/></svg>
+                                <span>Cut</span>
+                            </button>
+                            <button class="ribbon-btn small" id="btn-copy" title="Copy (Cmd+C)">
+                                <svg viewBox="0 0 16 16"><path d="M4 1v2H2v12h10v-2h2V5l-4-4H4zm1 1h4v3h3v6h-1V6H5V2zm-2 2h1v8h6v1H3V4z"/></svg>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Clipboard</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Image Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="ribbon-buttons-row">
+                            <button class="ribbon-btn large has-dropdown" id="btn-select" title="Select">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 32 32"><path d="M4 4v8h2V6h6V4H4zm16 0v2h6v6h2V4h-8zM4 20v8h8v-2H6v-6H4zm22 0v6h-6v2h8v-8h-2z" fill="currentColor"/><path d="M8 8h16v16H8z" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4,2"/></svg>
+                                </div>
+                                <span class="btn-label">Select</span>
+                                <span class="btn-dropdown">&#9662;</span>
+                            </button>
+                        </div>
+                        <div class="ribbon-buttons-small">
+                            <button class="ribbon-btn small" id="btn-crop" title="Crop">
+                                <svg viewBox="0 0 16 16"><path d="M0 4h4V0h2v4h8v2h-4v8h-2V6H2v8H0V4zm12 2h2v10h-2V6z"/></svg>
+                                <span>Crop</span>
+                            </button>
+                            <button class="ribbon-btn small has-dropdown" id="btn-resize" title="Resize">
+                                <svg viewBox="0 0 16 16"><path d="M1 1v14h14V1H1zm1 1h12v12H2V2zm4 4v4h4V6H6z"/></svg>
+                                <span>Resize</span>
+                            </button>
+                            <button class="ribbon-btn small has-dropdown" id="btn-rotate" title="Rotate">
+                                <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 0 0-7 7h2a5 5 0 0 1 9-3V7h2V1h-2v2.5A6.98 6.98 0 0 0 8 1zm5 7a5 5 0 0 1-9 3V9H2v6h2v-2.5A6.98 6.98 0 0 0 8 15a7 7 0 0 0 7-7h-2z"/></svg>
+                                <span>Rotate</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Image</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Tools Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content tools-grid">
+                        <button class="tool-btn active" id="tool-pencil" title="Pencil (P)">
+                            <svg viewBox="0 0 24 24"><path fill="#FFC107" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/><path fill="#795548" d="M20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path fill="#424242" d="M3 21l2.12-.71L3.71 18.88z"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-brush" title="Brush (B)">
+                            <svg viewBox="0 0 24 24"><path fill="#4CAF50" d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3z"/><path fill="#8BC34A" d="M20.71 4.63l-1.34-1.34a1 1 0 00-1.41 0L9 12.25 11.75 15l8.96-8.96a1 1 0 000-1.41z"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-fill" title="Fill with color (G)">
+                            <svg viewBox="0 0 24 24"><path fill="#2196F3" d="M19 11.5s-3 3.5-3 5.5a3 3 0 006 0c0-2-3-5.5-3-5.5z"/><path fill="#795548" d="M5.2 14.3L3 16.5V21h4.5l2.2-2.2-4.5-4.5z"/><path fill="#FFC107" d="M16.6 5.2l-1.4-1.4a1 1 0 00-1.4 0L4 13.6l5 5 9.8-9.8c.4-.4.4-1 0-1.4l-2.2-2.2z"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-text" title="Text (T)">
+                            <svg viewBox="0 0 24 24"><path fill="#1976D2" d="M5 4v3h5.5v12h3V7H19V4H5z"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-eraser" title="Eraser (E)">
+                            <svg viewBox="0 0 24 24"><path fill="#E91E63" d="M16.24 3.56l4.95 4.94a1.5 1.5 0 010 2.12l-9.9 9.9a1.5 1.5 0 01-2.12 0l-5.66-5.66a1.5 1.5 0 010-2.12l9.9-9.9a1.5 1.5 0 012.12 0z"/><path fill="#F8BBD9" d="M9.18 16.59l-2.83-2.83 6.37-6.36 2.83 2.83z"/><path fill="#424242" d="M3 21h18v-2H3z"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-picker" title="Color picker (I)">
+                            <svg viewBox="0 0 24 24"><path fill="#9C27B0" d="M20.71 5.63l-2.34-2.34a1 1 0 00-1.41 0l-3.12 3.12-1.23-1.21a1 1 0 00-1.42 0L2 14.41V21h6.59l9.19-9.19a1 1 0 000-1.41l-1.21-1.23 3.14-3.12a1 1 0 000-1.42zM7.76 19H5v-2.76l8.12-8.12 2.76 2.76L7.76 19z"/><circle fill="#E1BEE7" cx="18" cy="5" r="2"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-magnifier" title="Magnifier (Z)">
+                            <svg viewBox="0 0 24 24"><circle fill="none" stroke="#1976D2" stroke-width="2" cx="10" cy="10" r="6"/><path fill="#1976D2" d="M14.5 14.5l5 5 1.5-1.5-5-5z"/><path fill="#90CAF9" d="M10 6a4 4 0 00-4 4h1a3 3 0 013-3V6z"/></svg>
+                        </button>
+                        <button class="tool-btn" id="tool-select" title="Select (S)">
+                            <svg viewBox="0 0 24 24"><path fill="none" stroke="#333" stroke-width="2" stroke-dasharray="3,2" d="M4 4h16v16H4z"/><path fill="#2196F3" d="M8 8h8v8H8z" opacity="0.3"/></svg>
+                        </button>
+                    </div>
+                    <div class="ribbon-group-label">Tools</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Brushes Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="ribbon-buttons-row">
+                            <button class="ribbon-btn large has-dropdown" id="btn-brushes" title="Brushes">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 32 32"><path d="M22 2c-2 0-4 2-6 6-2 3-4 5-8 6-3 1-4 3-4 5v9h6c3 0 5-2 6-5 1-4 3-6 6-8 4-2 6-4 6-6s-2-7-6-7zm-10 22H8v-3c0-1 .5-2 2-2.5 1 2 2 4 2 5.5z"/></svg>
+                                </div>
+                                <span class="btn-label">Brushes</span>
+                                <span class="btn-dropdown">&#9662;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Brushes</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Shapes Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="shapes-container">
+                            <div class="shapes-grid" id="shapes-grid">
+                                <button class="shape-btn" data-shape="line" title="Line">
+                                    <svg viewBox="0 0 16 16"><line x1="2" y1="14" x2="14" y2="2" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="curve" title="Curve">
+                                    <svg viewBox="0 0 16 16"><path d="M2 14 Q 8 2, 14 14" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="oval" title="Oval">
+                                    <svg viewBox="0 0 16 16"><ellipse cx="8" cy="8" rx="6" ry="4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="rect" title="Rectangle">
+                                    <svg viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="roundrect" title="Rounded rectangle">
+                                    <svg viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="polygon" title="Polygon">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,2 14,6 12,14 4,14 2,6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="triangle" title="Triangle">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,2 14,14 2,14" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="rtriangle" title="Right triangle">
+                                    <svg viewBox="0 0 16 16"><polygon points="2,14 14,14 2,2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="diamond" title="Diamond">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,2 14,8 8,14 2,8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="star5" title="5-point star">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,1 9.5,6 15,6 10.5,9 12,15 8,11 4,15 5.5,9 1,6 6.5,6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="star6" title="6-point star">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,1 9.5,5 14,3 11,8 14,13 9.5,11 8,15 6.5,11 2,13 5,8 2,3 6.5,5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="arrow-right" title="Arrow right">
+                                    <svg viewBox="0 0 16 16"><polygon points="10,2 14,8 10,14 10,10 2,10 2,6 10,6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="arrow-left" title="Arrow left">
+                                    <svg viewBox="0 0 16 16"><polygon points="6,2 2,8 6,14 6,10 14,10 14,6 6,6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="arrow-up" title="Arrow up">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,2 14,8 10,8 10,14 6,14 6,8 2,8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="arrow-down" title="Arrow down">
+                                    <svg viewBox="0 0 16 16"><polygon points="8,14 14,8 10,8 10,2 6,2 6,8 2,8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="heart" title="Heart">
+                                    <svg viewBox="0 0 16 16"><path d="M8 14s-6-4-6-8c0-2 2-4 4-4 1 0 2 1 2 1s1-1 2-1c2 0 4 2 4 4 0 4-6 8-6 8z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                                <button class="shape-btn" data-shape="lightning" title="Lightning bolt">
+                                    <svg viewBox="0 0 16 16"><polygon points="10,1 4,9 7,9 5,15 12,7 9,7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="shape-options">
+                            <button class="ribbon-btn small has-dropdown" id="btn-outline" title="Outline">
+                                <svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                                <span>Outline</span>
+                            </button>
+                            <button class="ribbon-btn small has-dropdown" id="btn-fill" title="Fill">
+                                <svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="currentColor"/></svg>
+                                <span>Fill</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Shapes</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Size Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <button class="ribbon-btn large has-dropdown" id="btn-size" title="Size">
+                            <div class="btn-icon large">
+                                <svg viewBox="0 0 32 32">
+                                    <line x1="4" y1="28" x2="28" y2="4" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="btn-label">Size</span>
+                            <span class="btn-dropdown">&#9662;</span>
+                        </button>
+                    </div>
+                    <div class="ribbon-group-label">Size</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Text Options Group (visible when text tool selected) -->
+                <div class="ribbon-group" id="text-options-group" style="display: none;">
+                    <div class="ribbon-group-content text-options-content">
+                        <select id="text-font" class="text-font-select" title="Font">
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Trebuchet MS">Trebuchet MS</option>
+                        </select>
+                        <select id="text-size" class="text-size-select" title="Font Size">
+                            <option value="8">8</option>
+                            <option value="10">10</option>
+                            <option value="12">12</option>
+                            <option value="14" selected>14</option>
+                            <option value="16">16</option>
+                            <option value="18">18</option>
+                            <option value="20">20</option>
+                            <option value="24">24</option>
+                            <option value="28">28</option>
+                            <option value="36">36</option>
+                            <option value="48">48</option>
+                            <option value="72">72</option>
+                        </select>
+                        <div class="text-style-buttons">
+                            <button class="text-style-btn" id="text-bold" title="Bold (Ctrl+B)"><b>B</b></button>
+                            <button class="text-style-btn" id="text-italic" title="Italic (Ctrl+I)"><i>I</i></button>
+                            <button class="text-style-btn" id="text-underline" title="Underline (Ctrl+U)"><u>U</u></button>
+                            <button class="text-style-btn" id="text-strikethrough" title="Strikethrough"><s>S</s></button>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Font</div>
+                </div>
+
+                <div class="ribbon-separator" id="text-separator" style="display: none;"></div>
+
+                <!-- Colors Group -->
+                <div class="ribbon-group colors-group">
+                    <div class="ribbon-group-content">
+                        <div class="color-selectors">
+                            <div class="color-selector">
+                                <div class="color-box" id="color1" title="Color 1 (Foreground)"></div>
+                                <span>Color 1</span>
+                            </div>
+                            <div class="color-selector">
+                                <div class="color-box" id="color2" title="Color 2 (Background)"></div>
+                                <span>Color 2</span>
+                            </div>
+                        </div>
+                        <div class="color-palette" id="color-palette">
+                            <!-- Colors added by JS -->
+                        </div>
+                        <button class="edit-colors-btn" id="btn-edit-colors">Edit colors</button>
+                    </div>
+                    <div class="ribbon-group-label">Colors</div>
+                </div>
+            </div>
+
+            <!-- View Tab -->
+            <div id="ribbon-view" class="ribbon-content">
+                <!-- Zoom Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="ribbon-buttons-row">
+                            <button class="ribbon-btn" id="btn-zoom-in" title="Zoom in">
+                                <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.5 10.9l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-1 2v1H7v2h2v1h2v-1h2V9h-2V8H9z"/></svg>
+                                <span>Zoom in</span>
+                            </button>
+                            <button class="ribbon-btn" id="btn-zoom-out" title="Zoom out">
+                                <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.5 10.9l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM7 9v2h6V9H7z"/></svg>
+                                <span>Zoom out</span>
+                            </button>
+                            <button class="ribbon-btn" id="btn-zoom-100" title="100%">
+                                <svg viewBox="0 0 24 24"><text x="4" y="17" font-size="12" font-weight="bold">100%</text></svg>
+                                <span>100%</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Zoom</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Show or hide Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="ribbon-checkboxes">
+                            <label class="ribbon-checkbox">
+                                <input type="checkbox" id="chk-rulers">
+                                <span>Rulers</span>
+                            </label>
+                            <label class="ribbon-checkbox">
+                                <input type="checkbox" id="chk-gridlines">
+                                <span>Gridlines</span>
+                            </label>
+                            <label class="ribbon-checkbox" checked>
+                                <input type="checkbox" id="chk-statusbar" checked>
+                                <span>Status bar</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Show or hide</div>
+                </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Display Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <button class="ribbon-btn" id="btn-fullscreen" title="Full screen">
+                            <svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14v6h6v-2H6v-4H4zm16 0v6h-6v-2h4v-4h2z"/></svg>
+                            <span>Full screen</span>
+                        </button>
+                    </div>
+                    <div class="ribbon-group-label">Display</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div id="main-content">
+            <!-- Rulers -->
+            <div id="ruler-horizontal" class="ruler hidden">
+                <canvas id="ruler-h-canvas"></canvas>
+            </div>
+            <div id="ruler-vertical" class="ruler hidden">
+                <canvas id="ruler-v-canvas"></canvas>
+            </div>
+
+            <!-- Canvas Container -->
+            <div id="canvas-container">
+                <div id="canvas-wrapper">
+                    <canvas id="main-canvas"></canvas>
+                    <canvas id="preview-canvas"></canvas>
+                    <canvas id="selection-canvas"></canvas>
+                    <!-- Resize handles -->
+                    <div class="resize-handle right" data-handle="e"></div>
+                    <div class="resize-handle bottom" data-handle="s"></div>
+                    <div class="resize-handle corner" data-handle="se"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div id="status-bar">
+            <div class="status-left">
+                <span id="status-pos"></span>
+                <span id="status-selection" class="hidden"></span>
+            </div>
+            <div class="status-center">
+                <span id="status-dimensions"></span>
+            </div>
+            <div class="status-right">
+                <button class="status-zoom-btn" id="status-zoom-out">-</button>
+                <input type="range" id="status-zoom-slider" min="12.5" max="800" value="100" step="12.5">
+                <button class="status-zoom-btn" id="status-zoom-in">+</button>
+                <span id="status-zoom-level">100%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dropdowns -->
+    <div id="select-dropdown" class="dropdown-menu hidden">
+        <button class="menu-item" data-action="rect-select">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3,2"/></svg></span>
+            <span>Rectangular selection</span>
+        </button>
+        <button class="menu-item" data-action="free-select">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M4 4 Q 8 2, 12 4 Q 14 8, 12 12 Q 8 14, 4 12 Q 2 8, 4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3,2"/></svg></span>
+            <span>Free-form selection</span>
+        </button>
+        <div class="menu-separator"></div>
+        <button class="menu-item" data-action="select-all">
+            <span class="menu-icon"></span>
+            <span>Select all</span>
+            <span class="menu-shortcut">Cmd+A</span>
+        </button>
+        <button class="menu-item" data-action="invert-select">
+            <span class="menu-icon"></span>
+            <span>Invert selection</span>
+        </button>
+        <button class="menu-item" data-action="delete-select">
+            <span class="menu-icon"></span>
+            <span>Delete</span>
+            <span class="menu-shortcut">Del</span>
+        </button>
+        <div class="menu-separator"></div>
+        <label class="menu-item checkbox">
+            <input type="checkbox" id="transparent-select">
+            <span>Transparent selection</span>
+        </label>
+    </div>
+
+    <div id="paste-dropdown" class="dropdown-menu hidden">
+        <button class="menu-item" data-action="paste">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M5 1v2H3v12h8v-2h2V5l-4-4H5zm1 1h3v3h3v6h-1V6H6V2zM4 4h1v8h5v1H4V4z"/></svg></span>
+            <span>Paste</span>
+            <span class="menu-shortcut">Cmd+V</span>
+        </button>
+        <button class="menu-item" data-action="paste-from">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M1 3v10h14V5H7L5 3H1zm1 1h2.5l2 2H14v6H2V4z"/></svg></span>
+            <span>Paste from</span>
+        </button>
+    </div>
+
+    <div id="rotate-dropdown" class="dropdown-menu hidden">
+        <button class="menu-item" data-action="rotate-right">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M8 2v2a4 4 0 1 0 4 4h2a6 6 0 1 1-6-6zm0-2l4 3-4 3V0z"/></svg></span>
+            <span>Rotate right 90&deg;</span>
+        </button>
+        <button class="menu-item" data-action="rotate-left">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M8 2V0L4 3l4 3V4a4 4 0 1 1-4 4H2a6 6 0 1 0 6-6z"/></svg></span>
+            <span>Rotate left 90&deg;</span>
+        </button>
+        <button class="menu-item" data-action="rotate-180">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M2 8a6 6 0 1 1 12 0H2zm5-5V1L3 4l4 3V5a3 3 0 0 0 0 6v2a5 5 0 0 1 0-10z"/></svg></span>
+            <span>Rotate 180&deg;</span>
+        </button>
+        <div class="menu-separator"></div>
+        <button class="menu-item" data-action="flip-h">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M7 2v12H3l4-6-4-6h4zm2 0h4l-4 6 4 6H9V2z"/></svg></span>
+            <span>Flip horizontal</span>
+        </button>
+        <button class="menu-item" data-action="flip-v">
+            <span class="menu-icon"><svg viewBox="0 0 16 16"><path d="M2 7h12V3L8 7 2 3v4zm0 2v4l6-4 6 4V9H2z"/></svg></span>
+            <span>Flip vertical</span>
+        </button>
+    </div>
+
+    <div id="brushes-dropdown" class="dropdown-menu hidden">
+        <div class="brushes-grid">
+            <button class="brush-btn" data-brush="brush" title="Brush">
+                <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="8" fill="currentColor"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="calligraphy1" title="Calligraphy 1">
+                <svg viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="3" ry="10" fill="currentColor" transform="rotate(-45 16 16)"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="calligraphy2" title="Calligraphy 2">
+                <svg viewBox="0 0 32 32"><ellipse cx="16" cy="16" rx="3" ry="10" fill="currentColor" transform="rotate(45 16 16)"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="airbrush" title="Airbrush">
+                <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="currentColor" opacity="0.3"/><circle cx="16" cy="16" r="6" fill="currentColor" opacity="0.5"/><circle cx="16" cy="16" r="3" fill="currentColor"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="oil" title="Oil brush">
+                <svg viewBox="0 0 32 32"><rect x="6" y="12" width="20" height="8" fill="currentColor" rx="2"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="crayon" title="Crayon">
+                <svg viewBox="0 0 32 32"><path d="M8 8 L24 8 L20 24 L12 24 Z" fill="currentColor"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="marker" title="Marker">
+                <svg viewBox="0 0 32 32"><rect x="10" y="8" width="12" height="16" fill="currentColor"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="pencil" title="Natural pencil">
+                <svg viewBox="0 0 32 32"><line x1="8" y1="24" x2="24" y2="8" stroke="currentColor" stroke-width="3"/></svg>
+            </button>
+            <button class="brush-btn" data-brush="watercolor" title="Watercolor">
+                <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="currentColor" opacity="0.4"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="size-dropdown" class="dropdown-menu hidden">
+        <div class="size-options">
+            <button class="size-option" data-size="1">
+                <svg viewBox="0 0 60 20"><line x1="5" y1="10" x2="55" y2="10" stroke="currentColor" stroke-width="1"/></svg>
+            </button>
+            <button class="size-option" data-size="3">
+                <svg viewBox="0 0 60 20"><line x1="5" y1="10" x2="55" y2="10" stroke="currentColor" stroke-width="3"/></svg>
+            </button>
+            <button class="size-option" data-size="5">
+                <svg viewBox="0 0 60 20"><line x1="5" y1="10" x2="55" y2="10" stroke="currentColor" stroke-width="5"/></svg>
+            </button>
+            <button class="size-option" data-size="8">
+                <svg viewBox="0 0 60 20"><line x1="5" y1="10" x2="55" y2="10" stroke="currentColor" stroke-width="8"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="outline-dropdown" class="dropdown-menu hidden">
+        <button class="menu-item" data-outline="none">No outline</button>
+        <button class="menu-item" data-outline="solid">Solid color</button>
+        <button class="menu-item" data-outline="crayon">Crayon</button>
+        <button class="menu-item" data-outline="marker">Marker</button>
+        <button class="menu-item" data-outline="oil">Oil</button>
+        <button class="menu-item" data-outline="pencil">Natural pencil</button>
+        <button class="menu-item" data-outline="watercolor">Watercolor</button>
+    </div>
+
+    <div id="fill-dropdown" class="dropdown-menu hidden">
+        <button class="menu-item" data-fill="none">No fill</button>
+        <button class="menu-item" data-fill="solid">Solid color</button>
+        <button class="menu-item" data-fill="crayon">Crayon</button>
+        <button class="menu-item" data-fill="marker">Marker</button>
+        <button class="menu-item" data-fill="oil">Oil</button>
+        <button class="menu-item" data-fill="pencil">Natural pencil</button>
+        <button class="menu-item" data-fill="watercolor">Watercolor</button>
+    </div>
+
+    <!-- Dialogs -->
+    <div id="dialog-overlay" class="hidden">
+        <!-- Resize Dialog -->
+        <div id="resize-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>Resize and Skew</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content">
+                <fieldset>
+                    <legend>Resize</legend>
+                    <div class="dialog-row">
+                        <label>
+                            <input type="radio" name="resize-unit" value="percent" checked>
+                            By percentage
+                        </label>
+                        <label>
+                            <input type="radio" name="resize-unit" value="pixels">
+                            By pixels
+                        </label>
+                    </div>
+                    <div class="dialog-row">
+                        <label>Horizontal:</label>
+                        <input type="number" id="resize-h" value="100" min="1">
+                        <span class="resize-unit">%</span>
+                    </div>
+                    <div class="dialog-row">
+                        <label>Vertical:</label>
+                        <input type="number" id="resize-v" value="100" min="1">
+                        <span class="resize-unit">%</span>
+                    </div>
+                    <div class="dialog-row">
+                        <label>
+                            <input type="checkbox" id="resize-aspect" checked>
+                            Maintain aspect ratio
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Skew (Degrees)</legend>
+                    <div class="dialog-row">
+                        <label>Horizontal:</label>
+                        <input type="number" id="skew-h" value="0" min="-89" max="89">
+                        <span>&deg;</span>
+                    </div>
+                    <div class="dialog-row">
+                        <label>Vertical:</label>
+                        <input type="number" id="skew-v" value="0" min="-89" max="89">
+                        <span>&deg;</span>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="resize-ok">OK</button>
+                <button class="dialog-btn" id="resize-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Properties Dialog -->
+        <div id="properties-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>Image Properties</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content">
+                <div class="dialog-row">
+                    <label>Width:</label>
+                    <span id="prop-width">800</span>
+                    <span>pixels</span>
+                </div>
+                <div class="dialog-row">
+                    <label>Height:</label>
+                    <span id="prop-height">600</span>
+                    <span>pixels</span>
+                </div>
+                <div class="dialog-row">
+                    <label>Resolution:</label>
+                    <span id="prop-resolution">96</span>
+                    <span>dpi</span>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="props-ok">OK</button>
+            </div>
+        </div>
+
+        <!-- Color Picker Dialog -->
+        <div id="color-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>Edit Colors</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content color-picker-content">
+                <div class="basic-colors">
+                    <span class="color-label">Basic colors:</span>
+                    <div class="basic-colors-grid" id="basic-colors-grid"></div>
+                </div>
+                <div class="custom-colors">
+                    <span class="color-label">Custom colors:</span>
+                    <div class="custom-colors-grid" id="custom-colors-grid"></div>
+                    <button id="add-custom-color">Add to Custom Colors</button>
+                </div>
+                <div class="color-picker-main">
+                    <div class="color-gradient-container">
+                        <canvas id="color-gradient" width="256" height="256"></canvas>
+                        <div id="gradient-cursor" class="color-cursor"></div>
+                    </div>
+                    <div class="color-hue-container">
+                        <canvas id="color-hue" width="20" height="256"></canvas>
+                        <div id="hue-cursor" class="hue-cursor"></div>
+                    </div>
+                </div>
+                <div class="color-values">
+                    <div class="color-preview-box">
+                        <div id="color-new" class="color-preview-half"></div>
+                        <div id="color-current" class="color-preview-half"></div>
+                    </div>
+                    <div class="color-inputs">
+                        <div class="color-input-row">
+                            <label>Red:</label>
+                            <input type="number" id="color-r" min="0" max="255" value="0">
+                        </div>
+                        <div class="color-input-row">
+                            <label>Green:</label>
+                            <input type="number" id="color-g" min="0" max="255" value="0">
+                        </div>
+                        <div class="color-input-row">
+                            <label>Blue:</label>
+                            <input type="number" id="color-b" min="0" max="255" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="color-ok">OK</button>
+                <button class="dialog-btn" id="color-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <!-- About Dialog -->
+        <div id="about-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>About MattPaint</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content about-content">
+                <div class="about-logo">
+                    <svg viewBox="0 0 64 64" width="64" height="64">
+                        <rect x="4" y="4" width="56" height="56" fill="#fff" stroke="#333" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="8" fill="#FF6B6B"/>
+                        <rect x="35" y="15" width="20" height="10" fill="#4ECDC4"/>
+                        <polygon points="15,50 32,30 50,50" fill="#45B7D1"/>
+                    </svg>
+                </div>
+                <h2>MattPaint</h2>
+                <p>A faithful recreation of MS Paint for Mac</p>
+                <p class="version">Version 1.0</p>
+                <p class="copyright">&copy; 2025 MattPaint</p>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="about-ok">OK</button>
+            </div>
+        </div>
+
+        <!-- Camera Dialog -->
+        <div id="camera-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>Camera Capture</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content camera-content">
+                <video id="camera-video" autoplay playsinline></video>
+                <canvas id="camera-canvas" class="hidden"></canvas>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="camera-capture">Capture</button>
+                <button class="dialog-btn" id="camera-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Save Confirm Dialog -->
+        <div id="save-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>MattPaint</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content">
+                <p>Do you want to save changes to Untitled?</p>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="save-yes">Save</button>
+                <button class="dialog-btn" id="save-no">Don't Save</button>
+                <button class="dialog-btn" id="save-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Text Input (transparent, appears on canvas) -->
+    <textarea id="text-input" class="hidden"></textarea>
+
+    <!-- Hidden file input -->
+    <input type="file" id="file-input" accept="image/*" class="hidden">
+    <input type="file" id="paste-file-input" accept="image/*" class="hidden">
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="test-in-app.js"></script>
+</body>
+</html>
