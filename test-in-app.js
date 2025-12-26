@@ -37,11 +37,15 @@
             test(`Tool button: ${tool}`, document.getElementById('tool-' + tool));
         });
 
-        // Shape buttons
+        // Shape buttons (now with emojis)
         const shapes = ['line', 'curve', 'oval', 'rect', 'roundrect', 'polygon', 'triangle'];
         shapes.forEach(shape => {
             test(`Shape: ${shape}`, document.querySelector(`[data-shape="${shape}"]`));
         });
+
+        // Verify emoji icons are present
+        test('Tool icons use emojis', document.querySelector('.tool-emoji'));
+        test('Shape icons use emojis', document.querySelector('.shape-emoji'));
 
         // Dialogs
         test('Resize dialog exists', document.getElementById('resize-dialog'));
@@ -104,6 +108,9 @@
         brushes.forEach(brush => {
             test(`Brush: ${brush}`, document.querySelector(`[data-brush="${brush}"]`));
         });
+
+        // Verify brush emoji icons
+        test('Brush icons use emojis', document.querySelector('.brush-emoji'));
 
         // ============ COPYRIGHT TEST ============
         console.log('%c--- Misc ---', 'color: #9C27B0; font-weight: bold;');
