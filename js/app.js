@@ -72,7 +72,11 @@
         // UI
         showRulers: false,
         showGridlines: false,
-        showStatusBar: true
+        showStatusBar: true,
+
+        // Mirror drawing mode
+        mirrorHorizontal: false,
+        mirrorVertical: false
     };
 
     // ==================== DOM ELEMENTS ====================
@@ -125,9 +129,12 @@
         initColorPalette();
         initColorPicker();
         setupEventListeners();
+        setupWindowControls();
+        setupSaveAsDialog();
         saveHistory();
         updateStatus();
         updateTitle();
+        updateToolStatus();
 
         // Initialize tool state
         updateToolButtons();
@@ -135,6 +142,77 @@
         updateSizeButtons();
         updateOutlineFillButtons();
 
+    }
+
+    // Window control buttons (decorative in web, functional in Electron)
+    function setupWindowControls() {
+        const minimizeBtn = document.querySelector('.window-btn.minimize');
+        const maximizeBtn = document.querySelector('.window-btn.maximize');
+        const closeBtn = document.querySelector('.window-btn.close');
+
+        if (minimizeBtn) {
+            minimizeBtn.addEventListener('click', () => {
+                // In a web app, we can't truly minimize, but we could toggle visibility
+                // In Electron, this would call: window.minimize()
+            });
+        }
+
+        if (maximizeBtn) {
+            maximizeBtn.addEventListener('click', () => {
+                toggleFullscreen();
+            });
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                exitApp();
+            });
+        }
+    }
+
+    // Save As Dialog functionality
+    function setupSaveAsDialog() {
+        const saveAsOk = document.getElementById('save-as-ok');
+        const saveAsCancel = document.getElementById('save-as-cancel');
+        const formatOptions = document.querySelectorAll('.save-format-option');
+
+        if (saveAsOk) {
+            saveAsOk.addEventListener('click', executeSaveAs);
+        }
+
+        if (saveAsCancel) {
+            saveAsCancel.addEventListener('click', closeAllDialogs);
+        }
+
+        // Handle format option selection styling
+        formatOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                formatOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+    }
+
+    function updateToolStatus() {
+        const toolNames = {
+            'pencil': 'Pencil',
+            'brush': 'Brush',
+            'eraser': 'Eraser',
+            'fill': 'Fill',
+            'text': 'Text',
+            'picker': 'Color Picker',
+            'magnifier': 'Magnifier',
+            'select': 'Select'
+        };
+
+        const statusTool = document.getElementById('status-tool');
+        if (statusTool) {
+            let toolName = toolNames[state.currentTool] || state.currentTool;
+            if (state.currentShape) {
+                toolName = 'Shape: ' + state.currentShape;
+            }
+            statusTool.textContent = toolName;
+        }
     }
 
     function initCanvas() {
@@ -371,6 +449,17 @@
             drawGridlines();
         });
 
+        // Mirror mode checkboxes
+        document.getElementById('chk-mirror-h').addEventListener('change', (e) => {
+            state.mirrorHorizontal = e.target.checked;
+            drawMirrorGuide();
+        });
+
+        document.getElementById('chk-mirror-v').addEventListener('change', (e) => {
+            state.mirrorVertical = e.target.checked;
+            drawMirrorGuide();
+        });
+
         // Status bar zoom
         document.getElementById('status-zoom-in').addEventListener('click', () => setZoom(state.zoom * 1.25));
         document.getElementById('status-zoom-out').addEventListener('click', () => setZoom(state.zoom / 1.25));
@@ -586,14 +675,18 @@
 
         switch (state.currentTool) {
             case 'pencil':
-                mainCtx.beginPath();
-                mainCtx.moveTo(x, y);
-                mainCtx.strokeStyle = color;
-                mainCtx.lineWidth = state.lineWidth;
-                mainCtx.lineCap = 'round';
-                mainCtx.lineJoin = 'round';
-                mainCtx.lineTo(x + 0.1, y + 0.1);
-                mainCtx.stroke();
+                if (state.mirrorHorizontal || state.mirrorVertical) {
+                    drawMirroredPoint(x, y, color, state.lineWidth, 'round');
+                } else {
+                    mainCtx.beginPath();
+                    mainCtx.moveTo(x, y);
+                    mainCtx.strokeStyle = color;
+                    mainCtx.lineWidth = state.lineWidth;
+                    mainCtx.lineCap = 'round';
+                    mainCtx.lineJoin = 'round';
+                    mainCtx.lineTo(x + 0.1, y + 0.1);
+                    mainCtx.stroke();
+                }
                 break;
 
             case 'brush':
@@ -601,14 +694,18 @@
                 break;
 
             case 'eraser':
-                mainCtx.beginPath();
-                mainCtx.moveTo(x, y);
-                mainCtx.strokeStyle = state.color2;
-                mainCtx.lineWidth = state.lineWidth * 3;
-                mainCtx.lineCap = 'square';
-                mainCtx.lineJoin = 'miter';
-                mainCtx.lineTo(x + 0.1, y + 0.1);
-                mainCtx.stroke();
+                if (state.mirrorHorizontal || state.mirrorVertical) {
+                    drawMirroredPoint(x, y, state.color2, state.lineWidth * 3, 'square');
+                } else {
+                    mainCtx.beginPath();
+                    mainCtx.moveTo(x, y);
+                    mainCtx.strokeStyle = state.color2;
+                    mainCtx.lineWidth = state.lineWidth * 3;
+                    mainCtx.lineCap = 'square';
+                    mainCtx.lineJoin = 'miter';
+                    mainCtx.lineTo(x + 0.1, y + 0.1);
+                    mainCtx.stroke();
+                }
                 break;
 
             case 'fill':
@@ -676,12 +773,16 @@
 
         switch (state.currentTool) {
             case 'pencil':
-                mainCtx.strokeStyle = color;
-                mainCtx.lineWidth = state.lineWidth;
-                mainCtx.lineTo(x, y);
-                mainCtx.stroke();
-                mainCtx.beginPath();
-                mainCtx.moveTo(x, y);
+                if (state.mirrorHorizontal || state.mirrorVertical) {
+                    drawMirroredStroke(state.lastX, state.lastY, x, y, color, state.lineWidth, 'round', 'round');
+                } else {
+                    mainCtx.strokeStyle = color;
+                    mainCtx.lineWidth = state.lineWidth;
+                    mainCtx.lineTo(x, y);
+                    mainCtx.stroke();
+                    mainCtx.beginPath();
+                    mainCtx.moveTo(x, y);
+                }
                 break;
 
             case 'brush':
@@ -689,12 +790,16 @@
                 break;
 
             case 'eraser':
-                mainCtx.strokeStyle = state.color2;
-                mainCtx.lineWidth = state.lineWidth * 3;
-                mainCtx.lineTo(x, y);
-                mainCtx.stroke();
-                mainCtx.beginPath();
-                mainCtx.moveTo(x, y);
+                if (state.mirrorHorizontal || state.mirrorVertical) {
+                    drawMirroredStroke(state.lastX, state.lastY, x, y, state.color2, state.lineWidth * 3, 'square', 'miter');
+                } else {
+                    mainCtx.strokeStyle = state.color2;
+                    mainCtx.lineWidth = state.lineWidth * 3;
+                    mainCtx.lineTo(x, y);
+                    mainCtx.stroke();
+                    mainCtx.beginPath();
+                    mainCtx.moveTo(x, y);
+                }
                 break;
 
             case 'select':
@@ -1261,43 +1366,58 @@
     }
 
     function pasteImage(img) {
-        const imgW = img.naturalWidth || img.width;
-        const imgH = img.naturalHeight || img.height;
+        try {
+            const imgW = img.naturalWidth || img.width;
+            const imgH = img.naturalHeight || img.height;
 
-        // Expand canvas if needed
-        if (imgW > state.canvasWidth || imgH > state.canvasHeight) {
-            resizeAllCanvases(
-                Math.max(state.canvasWidth, imgW),
-                Math.max(state.canvasHeight, imgH),
-                true
-            );
+            // Validate image dimensions
+            if (!imgW || !imgH || imgW < 1 || imgH < 1) {
+                console.error('Invalid image dimensions');
+                return;
+            }
+
+            // Limit maximum paste size
+            const maxPasteSize = MAX_CANVAS_SIZE;
+            const pasteW = Math.min(imgW, maxPasteSize);
+            const pasteH = Math.min(imgH, maxPasteSize);
+
+            // Expand canvas if needed
+            if (pasteW > state.canvasWidth || pasteH > state.canvasHeight) {
+                resizeAllCanvases(
+                    Math.max(state.canvasWidth, pasteW),
+                    Math.max(state.canvasHeight, pasteH),
+                    true
+                );
+            }
+
+            // Create temp canvas for the image
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = pasteW;
+            tempCanvas.height = pasteH;
+            tempCanvas.getContext('2d').drawImage(img, 0, 0, pasteW, pasteH);
+
+            // Create floating selection
+            state.floatingSelection = {
+                x: 0,
+                y: 0,
+                width: pasteW,
+                height: pasteH,
+                canvas: tempCanvas
+            };
+
+            state.selection = {
+                x: 0,
+                y: 0,
+                width: pasteW,
+                height: pasteH
+            };
+
+            drawFloatingSelection();
+            drawSelectionRect();
+            startSelectionAnimation();
+        } catch (error) {
+            console.error('Error pasting image:', error);
         }
-
-        // Create temp canvas for the image
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = imgW;
-        tempCanvas.height = imgH;
-        tempCanvas.getContext('2d').drawImage(img, 0, 0);
-
-        // Create floating selection
-        state.floatingSelection = {
-            x: 0,
-            y: 0,
-            width: imgW,
-            height: imgH,
-            canvas: tempCanvas
-        };
-
-        state.selection = {
-            x: 0,
-            y: 0,
-            width: imgW,
-            height: imgH
-        };
-
-        drawFloatingSelection();
-        drawSelectionRect();
-        startSelectionAnimation();
     }
 
     function pasteFromFile() {
@@ -1308,9 +1428,21 @@
         const file = e.target.files[0];
         if (!file) return;
 
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            e.target.value = '';
+            return;
+        }
+
         const img = new Image();
         img.onload = () => {
             pasteImage(img);
+            URL.revokeObjectURL(img.src);
+        };
+        img.onerror = () => {
+            console.error('Failed to load image for paste');
+            alert('Failed to load image. The file may be corrupted or unsupported.');
             URL.revokeObjectURL(img.src);
         };
         img.src = URL.createObjectURL(file);
@@ -1444,6 +1576,12 @@
 
     // ==================== SHAPES ====================
     function selectShape(shape) {
+        // Stop selection animation when switching to shape tool
+        if (state.currentTool === 'select') {
+            stopSelectionAnimation();
+            clearSelection();
+        }
+
         state.currentShape = shape;
         state.currentTool = 'shape';
 
@@ -1453,6 +1591,8 @@
         document.querySelectorAll('.tool-btn').forEach(btn => {
             btn.classList.remove('active');
         });
+        updateCursor();
+        updateToolStatus();
     }
 
     function drawShapePreview(x, y, color) {
@@ -1700,6 +1840,12 @@
             commitText();
         }
 
+        // Stop selection animation when switching away from select tool
+        if (state.currentTool === 'select' && tool !== 'select') {
+            stopSelectionAnimation();
+            clearSelection();
+        }
+
         state.currentTool = tool;
         state.currentShape = null;
         if (tool === 'select') {
@@ -1708,16 +1854,11 @@
         updateToolButtons();
         updateCursor();
         updateTextOptionsVisibility();
+        updateToolStatus();
     }
 
     function updateTextOptionsVisibility() {
-        const textGroup = document.getElementById('text-options-group');
-        const textSeparator = document.getElementById('text-separator');
-        if (textGroup && textSeparator) {
-            const show = state.currentTool === 'text';
-            textGroup.style.display = show ? '' : 'none';
-            textSeparator.style.display = show ? '' : 'none';
-        }
+        // Font tools are now always visible - no hiding needed
     }
 
     function updateToolButtons() {
@@ -1980,6 +2121,15 @@
     }
 
     function drawBrushPoint(x, y, color, size) {
+        // Get all points (original + mirrored)
+        const points = getMirroredPoints(x, y);
+
+        for (const pt of points) {
+            drawSingleBrushPoint(pt.x, pt.y, color, size);
+        }
+    }
+
+    function drawSingleBrushPoint(x, y, color, size) {
         switch (state.currentBrush) {
             case 'brush':
                 // Standard round brush - draw filled circle
@@ -2336,28 +2486,102 @@
         const file = e.target.files[0];
         if (!file) return;
 
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select a valid image file.');
+            e.target.value = '';
+            return;
+        }
+
         const img = new Image();
         img.onload = () => {
-            commitFloatingSelection();
+            try {
+                // Validate image dimensions
+                if (img.width < MIN_CANVAS_SIZE || img.height < MIN_CANVAS_SIZE) {
+                    alert('Image is too small. Minimum size is ' + MIN_CANVAS_SIZE + 'x' + MIN_CANVAS_SIZE + ' pixels.');
+                    URL.revokeObjectURL(img.src);
+                    return;
+                }
+                if (img.width > MAX_CANVAS_SIZE || img.height > MAX_CANVAS_SIZE) {
+                    alert('Image is too large. Maximum size is ' + MAX_CANVAS_SIZE + 'x' + MAX_CANVAS_SIZE + ' pixels.');
+                    URL.revokeObjectURL(img.src);
+                    return;
+                }
 
-            resizeAllCanvases(img.width, img.height, false);
-            mainCtx.drawImage(img, 0, 0);
+                commitFloatingSelection();
+                resizeAllCanvases(img.width, img.height, false);
+                mainCtx.drawImage(img, 0, 0);
 
-            state.fileName = file.name.replace(/\.[^/.]+$/, '');
-            state.isModified = false;
-            state.history = [];
-            state.historyIndex = -1;
-            saveHistory();
-            updateTitle();
+                state.fileName = file.name.replace(/\.[^/.]+$/, '');
+                state.isModified = false;
+                state.history = [];
+                state.historyIndex = -1;
+                saveHistory();
+                updateTitle();
+            } catch (error) {
+                console.error('Error loading image:', error);
+                alert('Failed to load image. The file may be corrupted.');
+            } finally {
+                URL.revokeObjectURL(img.src);
+            }
+        };
+
+        img.onerror = () => {
+            console.error('Failed to load image');
+            alert('Failed to load image. The file may be corrupted or unsupported.');
             URL.revokeObjectURL(img.src);
         };
+
         img.src = URL.createObjectURL(file);
         e.target.value = '';
     }
 
-    function saveFile() { saveFileAs(); }
+    function saveFile() { quickSave(); }
 
     function saveFileAs() {
+        commitFloatingSelection();
+        // Show save as dialog
+        document.getElementById('save-filename').value = state.fileName;
+        showDialog('save-as-dialog');
+    }
+
+    function executeSaveAs() {
+        const filename = document.getElementById('save-filename').value || 'Untitled';
+        const format = document.querySelector('input[name="save-format"]:checked').value;
+
+        const formatInfo = {
+            'png': { mime: 'image/png', ext: '.png', quality: undefined },
+            'jpeg': { mime: 'image/jpeg', ext: '.jpg', quality: 0.92 },
+            'webp': { mime: 'image/webp', ext: '.webp', quality: 0.92 },
+            'bmp': { mime: 'image/bmp', ext: '.bmp', quality: undefined }
+        };
+
+        const info = formatInfo[format] || formatInfo['png'];
+
+        try {
+            mainCanvas.toBlob(blob => {
+                if (!blob) {
+                    alert('Failed to save image. Try a different format.');
+                    return;
+                }
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = filename + info.ext;
+                a.click();
+                URL.revokeObjectURL(a.href);
+                state.fileName = filename;
+                state.isModified = false;
+                updateTitle();
+                closeAllDialogs();
+            }, info.mime, info.quality);
+        } catch (error) {
+            console.error('Error saving file:', error);
+            alert('Failed to save image. Please try again.');
+        }
+    }
+
+    function quickSave() {
+        // Quick save as PNG
         commitFloatingSelection();
         mainCanvas.toBlob(blob => {
             const a = document.createElement('a');
@@ -2627,6 +2851,10 @@
         e.preventDefault();
     }
 
+    // Minimum canvas size constants
+    const MIN_CANVAS_SIZE = 10;
+    const MAX_CANVAS_SIZE = 10000;
+
     function doCanvasResize(e) {
         if (!isResizingCanvas) return;
 
@@ -2636,8 +2864,12 @@
         let newWidth = originalWidth;
         let newHeight = originalHeight;
 
-        if (resizeHandle.includes('e')) newWidth = Math.max(1, Math.round(originalWidth + dx));
-        if (resizeHandle.includes('s')) newHeight = Math.max(1, Math.round(originalHeight + dy));
+        if (resizeHandle.includes('e')) {
+            newWidth = Math.max(MIN_CANVAS_SIZE, Math.min(MAX_CANVAS_SIZE, Math.round(originalWidth + dx)));
+        }
+        if (resizeHandle.includes('s')) {
+            newHeight = Math.max(MIN_CANVAS_SIZE, Math.min(MAX_CANVAS_SIZE, Math.round(originalHeight + dy)));
+        }
 
         canvasWrapper.style.width = (newWidth * state.zoom) + 'px';
         canvasWrapper.style.height = (newHeight * state.zoom) + 'px';
@@ -2652,8 +2884,12 @@
         let newWidth = originalWidth;
         let newHeight = originalHeight;
 
-        if (resizeHandle.includes('e')) newWidth = Math.max(1, Math.round(originalWidth + dx));
-        if (resizeHandle.includes('s')) newHeight = Math.max(1, Math.round(originalHeight + dy));
+        if (resizeHandle.includes('e')) {
+            newWidth = Math.max(MIN_CANVAS_SIZE, Math.min(MAX_CANVAS_SIZE, Math.round(originalWidth + dx)));
+        }
+        if (resizeHandle.includes('s')) {
+            newHeight = Math.max(MIN_CANVAS_SIZE, Math.min(MAX_CANVAS_SIZE, Math.round(originalHeight + dy)));
+        }
 
         resizeAllCanvases(newWidth, newHeight, true);
         saveHistory();
@@ -2719,6 +2955,106 @@
             ctx.moveTo(0, y + 0.5);
             ctx.lineTo(state.canvasWidth, y + 0.5);
             ctx.stroke();
+        }
+    }
+
+    // ==================== MIRROR DRAWING ====================
+    function drawMirrorGuide() {
+        // Create or get mirror guide overlay
+        let mirrorOverlay = document.getElementById('mirror-overlay');
+        if (!mirrorOverlay) {
+            mirrorOverlay = document.createElement('canvas');
+            mirrorOverlay.id = 'mirror-overlay';
+            mirrorOverlay.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:5;';
+            canvasWrapper.appendChild(mirrorOverlay);
+        }
+
+        mirrorOverlay.width = state.canvasWidth;
+        mirrorOverlay.height = state.canvasHeight;
+        mirrorOverlay.style.width = (state.canvasWidth * state.zoom) + 'px';
+        mirrorOverlay.style.height = (state.canvasHeight * state.zoom) + 'px';
+
+        const ctx = mirrorOverlay.getContext('2d');
+        ctx.clearRect(0, 0, state.canvasWidth, state.canvasHeight);
+
+        // Draw mirror guide lines
+        ctx.setLineDash([5, 5]);
+        ctx.lineWidth = 1;
+
+        // Horizontal mirror line (vertical center line)
+        if (state.mirrorHorizontal) {
+            const centerX = state.canvasWidth / 2;
+            ctx.strokeStyle = 'rgba(0, 120, 212, 0.6)';
+            ctx.beginPath();
+            ctx.moveTo(centerX, 0);
+            ctx.lineTo(centerX, state.canvasHeight);
+            ctx.stroke();
+        }
+
+        // Vertical mirror line (horizontal center line)
+        if (state.mirrorVertical) {
+            const centerY = state.canvasHeight / 2;
+            ctx.strokeStyle = 'rgba(212, 0, 120, 0.6)';
+            ctx.beginPath();
+            ctx.moveTo(0, centerY);
+            ctx.lineTo(state.canvasWidth, centerY);
+            ctx.stroke();
+        }
+
+        ctx.setLineDash([]);
+    }
+
+    // Get mirrored coordinates
+    function getMirroredPoints(x, y) {
+        const points = [{ x, y }];
+        const centerX = state.canvasWidth / 2;
+        const centerY = state.canvasHeight / 2;
+
+        if (state.mirrorHorizontal && state.mirrorVertical) {
+            // 4-way symmetry
+            points.push({ x: state.canvasWidth - x, y: y }); // Horizontal flip
+            points.push({ x: x, y: state.canvasHeight - y }); // Vertical flip
+            points.push({ x: state.canvasWidth - x, y: state.canvasHeight - y }); // Both
+        } else if (state.mirrorHorizontal) {
+            // Left-right mirror
+            points.push({ x: state.canvasWidth - x, y: y });
+        } else if (state.mirrorVertical) {
+            // Top-bottom mirror
+            points.push({ x: x, y: state.canvasHeight - y });
+        }
+
+        return points;
+    }
+
+    // Draw a stroke at all mirrored positions
+    function drawMirroredStroke(fromX, fromY, toX, toY, color, lineWidth, lineCap, lineJoin) {
+        const fromPoints = getMirroredPoints(fromX, fromY);
+        const toPoints = getMirroredPoints(toX, toY);
+
+        for (let i = 0; i < fromPoints.length; i++) {
+            mainCtx.beginPath();
+            mainCtx.strokeStyle = color;
+            mainCtx.lineWidth = lineWidth;
+            mainCtx.lineCap = lineCap || 'round';
+            mainCtx.lineJoin = lineJoin || 'round';
+            mainCtx.moveTo(fromPoints[i].x, fromPoints[i].y);
+            mainCtx.lineTo(toPoints[i].x, toPoints[i].y);
+            mainCtx.stroke();
+        }
+    }
+
+    // Draw a point at all mirrored positions (for initial click)
+    function drawMirroredPoint(x, y, color, lineWidth, lineCap) {
+        const points = getMirroredPoints(x, y);
+
+        for (const pt of points) {
+            mainCtx.beginPath();
+            mainCtx.strokeStyle = color;
+            mainCtx.lineWidth = lineWidth;
+            mainCtx.lineCap = lineCap || 'round';
+            mainCtx.moveTo(pt.x, pt.y);
+            mainCtx.lineTo(pt.x + 0.1, pt.y + 0.1);
+            mainCtx.stroke();
         }
     }
 
@@ -2884,9 +3220,23 @@
         hideAllDropdowns();
         const dropdown = document.getElementById(id);
         const rect = e.currentTarget.getBoundingClientRect();
-        dropdown.style.top = rect.bottom + 'px';
+
+        // Position dropdown below the button
+        dropdown.style.top = rect.bottom + 2 + 'px';
         dropdown.style.left = rect.left + 'px';
         dropdown.classList.remove('hidden');
+
+        // Make sure dropdown doesn't go off the right edge of the screen
+        const dropdownRect = dropdown.getBoundingClientRect();
+        if (dropdownRect.right > window.innerWidth) {
+            dropdown.style.left = (window.innerWidth - dropdownRect.width - 10) + 'px';
+        }
+
+        // Make sure dropdown doesn't go off the bottom of the screen
+        if (dropdownRect.bottom > window.innerHeight) {
+            dropdown.style.top = (rect.top - dropdownRect.height - 2) + 'px';
+        }
+
         e.stopPropagation();
     }
 

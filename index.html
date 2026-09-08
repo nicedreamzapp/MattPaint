@@ -19,7 +19,18 @@
                 <span id="document-title">Untitled - MattPaint</span>
             </div>
             <div class="title-right">
-                <button class="title-btn" id="help-btn">?</button>
+                <button class="title-btn" id="help-btn" title="Help">?</button>
+                <div class="window-controls">
+                    <button class="window-btn minimize" title="Minimize">
+                        <svg viewBox="0 0 10 10"><line x1="0" y1="5" x2="10" y2="5"/></svg>
+                    </button>
+                    <button class="window-btn maximize" title="Maximize">
+                        <svg viewBox="0 0 10 10"><rect x="0" y="0" width="10" height="10" fill="none"/></svg>
+                    </button>
+                    <button class="window-btn close" title="Close">
+                        <svg viewBox="0 0 10 10"><line x1="0" y1="0" x2="10" y2="10"/><line x1="10" y1="0" x2="0" y2="10"/></svg>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -347,44 +358,45 @@
 
                 <div class="ribbon-separator"></div>
 
-                <!-- Text Options Group (visible when text tool selected) -->
-                <div class="ribbon-group" id="text-options-group" style="display: none;">
+                <!-- Text Options Group -->
+                <div class="ribbon-group" id="text-options-group">
                     <div class="ribbon-group-content text-options-content">
-                        <select id="text-font" class="text-font-select" title="Font">
-                            <option value="Arial">Arial</option>
-                            <option value="Times New Roman">Times New Roman</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Georgia">Georgia</option>
-                            <option value="Verdana">Verdana</option>
-                            <option value="Comic Sans MS">Comic Sans MS</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Trebuchet MS">Trebuchet MS</option>
-                        </select>
-                        <select id="text-size" class="text-size-select" title="Font Size">
-                            <option value="8">8</option>
-                            <option value="10">10</option>
-                            <option value="12">12</option>
-                            <option value="14" selected>14</option>
-                            <option value="16">16</option>
-                            <option value="18">18</option>
-                            <option value="20">20</option>
-                            <option value="24">24</option>
-                            <option value="28">28</option>
-                            <option value="36">36</option>
-                            <option value="48">48</option>
-                            <option value="72">72</option>
-                        </select>
-                        <div class="text-style-buttons">
-                            <button class="text-style-btn" id="text-bold" title="Bold (Ctrl+B)"><b>B</b></button>
-                            <button class="text-style-btn" id="text-italic" title="Italic (Ctrl+I)"><i>I</i></button>
-                            <button class="text-style-btn" id="text-underline" title="Underline (Ctrl+U)"><u>U</u></button>
-                            <button class="text-style-btn" id="text-strikethrough" title="Strikethrough"><s>S</s></button>
+                        <div class="text-options-stack">
+                            <select id="text-font" class="text-font-select" title="Font">
+                                <option value="Arial">Arial</option>
+                                <option value="Times New Roman">Times</option>
+                                <option value="Courier New">Courier</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Verdana">Verdana</option>
+                                <option value="Comic Sans MS">Comic Sans</option>
+                                <option value="Impact">Impact</option>
+                                <option value="Trebuchet MS">Trebuchet</option>
+                            </select>
+                            <div class="text-size-row">
+                                <select id="text-size" class="text-size-select" title="Font Size">
+                                    <option value="8">8</option>
+                                    <option value="10">10</option>
+                                    <option value="12">12</option>
+                                    <option value="14" selected>14</option>
+                                    <option value="18">18</option>
+                                    <option value="24">24</option>
+                                    <option value="36">36</option>
+                                    <option value="48">48</option>
+                                    <option value="72">72</option>
+                                </select>
+                                <div class="text-style-buttons">
+                                    <button class="text-style-btn" id="text-bold" title="Bold"><b>B</b></button>
+                                    <button class="text-style-btn" id="text-italic" title="Italic"><i>I</i></button>
+                                    <button class="text-style-btn" id="text-underline" title="Underline"><u>U</u></button>
+                                    <button class="text-style-btn" id="text-strikethrough" title="Strikethrough"><s>S</s></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="ribbon-group-label">Font</div>
                 </div>
 
-                <div class="ribbon-separator" id="text-separator" style="display: none;"></div>
+                <div class="ribbon-separator"></div>
 
                 <!-- Colors Group -->
                 <div class="ribbon-group colors-group">
@@ -466,6 +478,25 @@
                     </div>
                     <div class="ribbon-group-label">Display</div>
                 </div>
+
+                <div class="ribbon-separator"></div>
+
+                <!-- Mirror Drawing Group -->
+                <div class="ribbon-group">
+                    <div class="ribbon-group-content">
+                        <div class="ribbon-checkboxes">
+                            <label class="ribbon-checkbox">
+                                <input type="checkbox" id="chk-mirror-h">
+                                <span>Mirror Horizontal</span>
+                            </label>
+                            <label class="ribbon-checkbox">
+                                <input type="checkbox" id="chk-mirror-v">
+                                <span>Mirror Vertical</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="ribbon-group-label">Mirror</div>
+                </div>
             </div>
         </div>
 
@@ -496,16 +527,18 @@
         <!-- Status Bar -->
         <div id="status-bar">
             <div class="status-left">
-                <span id="status-pos"></span>
-                <span id="status-selection" class="hidden"></span>
+                <span id="status-pos">0, 0px</span>
+                <span class="status-separator"></span>
+                <span id="status-selection" class="hidden">Selection: 0 x 0</span>
+                <span id="status-tool">Pencil</span>
             </div>
             <div class="status-center">
-                <span id="status-dimensions"></span>
+                <span id="status-dimensions">800 x 600px</span>
             </div>
             <div class="status-right">
-                <button class="status-zoom-btn" id="status-zoom-out">-</button>
+                <button class="status-zoom-btn" id="status-zoom-out" title="Zoom Out">-</button>
                 <input type="range" id="status-zoom-slider" min="12.5" max="800" value="100" step="12.5">
-                <button class="status-zoom-btn" id="status-zoom-in">+</button>
+                <button class="status-zoom-btn" id="status-zoom-in" title="Zoom In">+</button>
                 <span id="status-zoom-level">100%</span>
             </div>
         </div>
@@ -841,6 +874,54 @@
                 <button class="dialog-btn primary" id="save-yes">Save</button>
                 <button class="dialog-btn" id="save-no">Don't Save</button>
                 <button class="dialog-btn" id="save-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Save As Dialog - Format Selection -->
+        <div id="save-as-dialog" class="dialog hidden">
+            <div class="dialog-titlebar">
+                <span>Save as</span>
+                <button class="dialog-close">&times;</button>
+            </div>
+            <div class="dialog-content">
+                <div class="dialog-row">
+                    <label>File name:</label>
+                    <input type="text" id="save-filename" value="Untitled" style="width: 200px;">
+                </div>
+                <div class="save-format-options">
+                    <label class="save-format-option selected">
+                        <input type="radio" name="save-format" value="png" checked>
+                        <div class="save-format-info">
+                            <div class="save-format-name">PNG (*.png)</div>
+                            <div class="save-format-desc">Lossless compression, supports transparency</div>
+                        </div>
+                    </label>
+                    <label class="save-format-option">
+                        <input type="radio" name="save-format" value="jpeg">
+                        <div class="save-format-info">
+                            <div class="save-format-name">JPEG (*.jpg)</div>
+                            <div class="save-format-desc">Lossy compression, smaller file size</div>
+                        </div>
+                    </label>
+                    <label class="save-format-option">
+                        <input type="radio" name="save-format" value="webp">
+                        <div class="save-format-info">
+                            <div class="save-format-name">WebP (*.webp)</div>
+                            <div class="save-format-desc">Modern format, best compression</div>
+                        </div>
+                    </label>
+                    <label class="save-format-option">
+                        <input type="radio" name="save-format" value="bmp">
+                        <div class="save-format-info">
+                            <div class="save-format-name">BMP (*.bmp)</div>
+                            <div class="save-format-desc">Uncompressed, large file size</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button class="dialog-btn primary" id="save-as-ok">Save</button>
+                <button class="dialog-btn" id="save-as-cancel">Cancel</button>
             </div>
         </div>
     </div>

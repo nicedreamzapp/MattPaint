@@ -13,13 +13,17 @@
     --win-border-dark: #ADADAD;
     --win-accent: #0078D4;
     --win-accent-hover: #106EBE;
+    --win-accent-light: #E5F1FB;
     --win-text: #1A1A1A;
     --win-text-secondary: #666666;
+    --win-text-disabled: #A0A0A0;
     --win-hover: #E5E5E5;
     --win-selected: #CCE8FF;
     --win-selected-border: #99D1FF;
     --win-canvas-bg: #808080;
     --win-white: #FFFFFF;
+    --win-titlebar: #FFFFFF;
+    --win-shadow: rgba(0, 0, 0, 0.15);
 }
 
 html, body {
@@ -43,21 +47,24 @@ body {
     background: var(--win-bg);
 }
 
-/* Title Bar */
+/* Title Bar - Windows 10 Style */
 #title-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 30px;
-    background: var(--win-ribbon-bg);
+    height: 32px;
+    background: var(--win-titlebar);
     border-bottom: 1px solid var(--win-border);
-    padding: 0 8px;
+    padding: 0;
+    -webkit-app-region: drag;
 }
 
 .title-left {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 0;
+    height: 100%;
+    padding-left: 4px;
 }
 
 .title-center {
@@ -66,36 +73,90 @@ body {
     transform: translateX(-50%);
     font-size: 12px;
     color: var(--win-text);
+    pointer-events: none;
 }
 
 .title-right {
     display: flex;
     align-items: center;
+    height: 100%;
 }
 
+/* Window Control Buttons */
+.window-controls {
+    display: flex;
+    height: 100%;
+}
+
+.window-btn {
+    width: 46px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-app-region: no-drag;
+    transition: background-color 0.1s;
+}
+
+.window-btn svg {
+    width: 10px;
+    height: 10px;
+    fill: none;
+    stroke: #333;
+    stroke-width: 1;
+}
+
+.window-btn:hover {
+    background: var(--win-hover);
+}
+
+.window-btn.close:hover {
+    background: #E81123;
+}
+
+.window-btn.close:hover svg {
+    stroke: white;
+}
+
+/* File Button - Blue Tab Style */
 .file-btn {
     background: var(--win-accent);
     color: white;
     border: none;
-    padding: 4px 16px;
-    font-size: 12px;
+    padding: 6px 20px;
+    font-size: 13px;
+    font-weight: 400;
     cursor: pointer;
-    border-radius: 2px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    -webkit-app-region: no-drag;
+    transition: background-color 0.1s;
 }
 
 .file-btn:hover {
     background: var(--win-accent-hover);
 }
 
+.file-btn:active {
+    background: #005A9E;
+}
+
 .title-btn {
     background: transparent;
     border: none;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 100%;
     cursor: pointer;
-    border-radius: 2px;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--win-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-app-region: no-drag;
 }
 
 .title-btn:hover {
@@ -105,32 +166,44 @@ body {
 /* Quick Access Toolbar */
 #quick-access {
     position: absolute;
-    left: 80px;
-    top: 4px;
+    left: 90px;
+    top: 0;
+    height: 32px;
     display: flex;
-    gap: 2px;
+    align-items: center;
+    gap: 1px;
+    padding: 0 4px;
 }
 
 .qat-btn {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     background: transparent;
     border: none;
     cursor: pointer;
-    border-radius: 2px;
+    border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px;
+    padding: 4px;
+    transition: background-color 0.1s;
 }
 
 .qat-btn:hover {
     background: var(--win-hover);
 }
 
+.qat-btn:active {
+    background: var(--win-selected);
+}
+
 .qat-btn:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: default;
+}
+
+.qat-btn:disabled:hover {
+    background: transparent;
 }
 
 .qat-btn svg {
@@ -186,7 +259,7 @@ body {
 #canvas-container {
     flex: 1;
     overflow: auto;
-    padding: 20px;
+    padding: 16px;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
@@ -196,13 +269,16 @@ body {
 #canvas-wrapper {
     position: relative;
     background: var(--win-white);
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    box-shadow: 1px 1px 4px var(--win-shadow),
+                2px 2px 8px var(--win-shadow);
     cursor: inherit;
 }
 
 #main-canvas {
     display: block;
     background: white;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
 /* Tool cursors - with contrasting outline for visibility on any background */
@@ -275,15 +351,20 @@ body {
     cursor: se-resize;
 }
 
-/* Status Bar */
+.resize-handle:hover {
+    background: var(--win-selected);
+    border-color: var(--win-accent);
+}
+
+/* Status Bar - Windows 10 Style */
 #status-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 24px;
+    height: 26px;
     background: var(--win-ribbon-bg);
     border-top: 1px solid var(--win-border);
-    padding: 0 8px;
+    padding: 0 12px;
     font-size: 11px;
     color: var(--win-text-secondary);
 }
@@ -291,50 +372,75 @@ body {
 .status-left, .status-center, .status-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
+}
+
+.status-left {
+    min-width: 200px;
+}
+
+.status-center {
+    flex: 1;
+    justify-content: center;
 }
 
 .status-right {
-    gap: 4px;
+    gap: 6px;
+    min-width: 200px;
+    justify-content: flex-end;
+}
+
+.status-separator {
+    width: 1px;
+    height: 16px;
+    background: var(--win-border);
+    margin: 0 8px;
 }
 
 .status-zoom-btn {
-    width: 20px;
-    height: 18px;
+    width: 22px;
+    height: 20px;
     background: transparent;
-    border: 1px solid var(--win-border);
+    border: 1px solid transparent;
     cursor: pointer;
     font-size: 14px;
+    font-weight: 500;
     line-height: 1;
     border-radius: 2px;
+    color: var(--win-text-secondary);
 }
 
 .status-zoom-btn:hover {
     background: var(--win-hover);
+    border-color: var(--win-border);
 }
 
 #status-zoom-slider {
-    width: 100px;
+    width: 120px;
     cursor: pointer;
+    accent-color: var(--win-accent);
 }
 
 #status-zoom-level {
-    min-width: 40px;
+    min-width: 45px;
     text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
-/* Dropdown Menus */
+/* Dropdown Menus - positioned below ribbon */
 .dropdown-menu {
-    position: absolute;
+    position: fixed;
     background: var(--win-white);
     border: 1px solid var(--win-border-dark);
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-    z-index: 1000;
-    min-width: 200px;
+    box-shadow: 0 4px 12px var(--win-shadow);
+    z-index: 9999;
+    min-width: 180px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .dropdown-menu.hidden {
-    display: none;
+    display: none !important;
 }
 
 .menu-section {
@@ -351,15 +457,16 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 6px 12px 6px 20px;
+    padding: 6px 16px 6px 24px;
     background: transparent;
     border: none;
     cursor: pointer;
     text-align: left;
     font-size: 12px;
     color: var(--win-text);
-    gap: 8px;
+    gap: 10px;
     position: relative;
+    transition: background-color 0.1s;
 }
 
 .menu-item:hover {
@@ -367,15 +474,25 @@ body {
 }
 
 .menu-item.active {
-    background: var(--win-selected);
-    font-weight: 600;
+    background: var(--win-accent-light);
 }
 
 .menu-item.active::before {
     content: '✓';
     position: absolute;
-    left: 4px;
-    font-size: 12px;
+    left: 6px;
+    font-size: 11px;
+    color: var(--win-accent);
+    font-weight: bold;
+}
+
+.menu-item:disabled {
+    color: var(--win-text-disabled);
+    cursor: default;
+}
+
+.menu-item:disabled:hover {
+    background: transparent;
 }
 
 .menu-icon {
@@ -384,6 +501,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .menu-icon svg {
@@ -399,33 +517,37 @@ body {
 .menu-shortcut {
     color: var(--win-text-secondary);
     font-size: 11px;
+    margin-left: auto;
 }
 
 .menu-item.checkbox {
-    gap: 4px;
+    gap: 6px;
 }
 
 .menu-item.checkbox input {
     margin-right: 4px;
+    accent-color: var(--win-accent);
 }
 
 /* Brushes Dropdown */
 .brushes-grid {
     display: grid;
-    grid-template-columns: repeat(3, 40px);
+    grid-template-columns: repeat(3, 44px);
     gap: 4px;
     padding: 8px;
 }
 
 .brush-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     background: var(--win-white);
     border: 1px solid var(--win-border);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 3px;
+    transition: all 0.1s;
 }
 
 .brush-btn:hover {
@@ -436,11 +558,12 @@ body {
 .brush-btn.active {
     background: var(--win-selected);
     border-color: var(--win-accent);
+    box-shadow: inset 0 0 0 1px var(--win-accent);
 }
 
 .brush-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
 }
 
 /* Size Dropdown */
@@ -452,14 +575,16 @@ body {
 }
 
 .size-option {
-    width: 70px;
-    height: 24px;
+    width: 80px;
+    height: 28px;
     background: var(--win-white);
     border: 1px solid var(--win-border);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 3px;
+    transition: all 0.1s;
 }
 
 .size-option:hover {
@@ -473,8 +598,8 @@ body {
 }
 
 .size-option svg {
-    width: 60px;
-    height: 20px;
+    width: 70px;
+    height: 22px;
 }
 
 /* Text Options in Ribbon */
@@ -486,54 +611,71 @@ body {
 }
 
 .text-font-select {
-    width: 130px;
-    height: 24px;
+    width: 140px;
+    height: 26px;
     font-size: 12px;
     border: 1px solid var(--win-border);
-    border-radius: 2px;
+    border-radius: 3px;
+    padding: 0 8px;
+    background: var(--win-white);
+}
+
+.text-font-select:focus {
+    border-color: var(--win-accent);
+    outline: none;
 }
 
 .text-size-select {
-    width: 50px;
-    height: 24px;
+    width: 55px;
+    height: 26px;
     font-size: 12px;
     border: 1px solid var(--win-border);
-    border-radius: 2px;
+    border-radius: 3px;
+    padding: 0 4px;
+    background: var(--win-white);
+}
+
+.text-size-select:focus {
+    border-color: var(--win-accent);
+    outline: none;
 }
 
 .text-style-buttons {
     display: flex;
     gap: 2px;
+    border: 1px solid var(--win-border);
+    border-radius: 3px;
+    padding: 2px;
+    background: var(--win-white);
 }
 
 .text-style-btn {
-    width: 26px;
+    width: 28px;
     height: 26px;
     background: transparent;
-    border: 1px solid transparent;
-    border-radius: 3px;
+    border: none;
+    border-radius: 2px;
     cursor: pointer;
     font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.1s;
 }
 
 .text-style-btn:hover {
     background: var(--win-hover);
-    border-color: var(--win-border);
 }
 
 .text-style-btn.active {
     background: var(--win-selected);
-    border-color: var(--win-selected-border);
 }
 
 /* Text Input - appears directly on canvas */
 #text-input {
     position: fixed;
     background: transparent;
-    border: 1px dashed #666;
+    border: 1px dashed var(--win-accent);
     outline: none;
     resize: none;
     font-size: 14px;
@@ -552,7 +694,8 @@ body {
 }
 
 #text-input:focus {
-    border: 1px dashed #0078d7;
+    border: 1px dashed var(--win-accent);
+    box-shadow: 0 0 0 1px rgba(0, 120, 212, 0.3);
 }
 
 /* Utilities */
@@ -562,7 +705,7 @@ body {
 
 /* Drag and drop overlay */
 #canvas-container.drag-over {
-    background: rgba(0, 120, 212, 0.1);
+    background: rgba(0, 120, 212, 0.08);
     outline: 3px dashed var(--win-accent);
     outline-offset: -3px;
 }
@@ -573,17 +716,19 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: 500;
     color: var(--win-accent);
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px 40px;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 16px 32px;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px var(--win-shadow);
     pointer-events: none;
 }
 
 /* Emoji Icons Styling */
 .tool-emoji {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1;
     display: flex;
     align-items: center;
@@ -599,7 +744,7 @@ body {
 }
 
 .shape-emoji {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1;
     display: flex;
     align-items: center;
@@ -619,3 +764,34 @@ body {
     font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
 }
 
+/* Focus styles for accessibility */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--win-accent);
+    outline-offset: 1px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--win-ribbon-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #C1C1C1;
+    border: 3px solid var(--win-ribbon-bg);
+    border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #A8A8A8;
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--win-ribbon-bg);
+}

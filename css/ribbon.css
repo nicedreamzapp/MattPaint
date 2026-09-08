@@ -1,16 +1,19 @@
 /* MattPaint - Ribbon Styles (Windows 10 Paint Clone) */
+/* Fixed layout - no overlapping elements */
 
 /* Ribbon Tabs */
 #ribbon-tabs {
     display: flex;
     gap: 0;
     background: var(--win-ribbon-bg);
-    padding: 0 8px;
+    padding: 0 4px;
     border-bottom: 1px solid var(--win-border);
+    height: 28px;
+    flex-shrink: 0;
 }
 
 .ribbon-tab {
-    padding: 6px 16px;
+    padding: 6px 18px;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -18,6 +21,8 @@
     color: var(--win-text);
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
+    transition: all 0.1s;
+    position: relative;
 }
 
 .ribbon-tab:hover {
@@ -27,32 +32,52 @@
 .ribbon-tab.active {
     background: var(--win-white);
     border-bottom-color: var(--win-accent);
+    font-weight: 500;
 }
 
-/* Ribbon */
+.ribbon-tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--win-accent);
+}
+
+/* Ribbon Container */
 #ribbon {
     background: var(--win-white);
     border-bottom: 1px solid var(--win-border);
-    min-height: 96px;
+    height: 100px;
+    min-height: 100px;
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: visible;
+    flex-shrink: 0;
 }
 
 .ribbon-content {
     display: none;
-    padding: 4px 8px;
+    padding: 6px 6px 4px 6px;
+    min-width: max-content;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0;
 }
 
 .ribbon-content.active {
     display: flex;
-    align-items: flex-start;
-    gap: 4px;
 }
 
-/* Ribbon Groups */
+/* Ribbon Groups - Fixed sizing */
 .ribbon-group {
     display: flex;
     flex-direction: column;
-    padding: 2px 8px;
-    min-width: 60px;
+    padding: 0 6px;
+    flex-shrink: 0;
+    height: 100%;
 }
 
 .ribbon-group-content {
@@ -60,23 +85,25 @@
     display: flex;
     align-items: flex-start;
     gap: 4px;
-    min-height: 66px;
+    min-height: 0;
 }
 
 .ribbon-group-label {
     text-align: center;
     font-size: 11px;
     color: var(--win-text-secondary);
-    padding-top: 4px;
+    padding: 4px 0 2px 0;
     border-top: 1px solid var(--win-border);
-    margin-top: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .ribbon-separator {
     width: 1px;
     background: var(--win-border);
-    margin: 0 4px;
+    margin: 4px 4px;
     align-self: stretch;
+    flex-shrink: 0;
 }
 
 /* Ribbon Buttons */
@@ -88,9 +115,11 @@
     background: transparent;
     border: 1px solid transparent;
     cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 2px;
+    padding: 3px 5px;
+    border-radius: 3px;
     gap: 2px;
+    transition: all 0.1s;
+    flex-shrink: 0;
 }
 
 .ribbon-btn:hover {
@@ -108,6 +137,7 @@
 }
 
 .ribbon-btn.large {
+    width: 48px;
     min-width: 48px;
 }
 
@@ -116,18 +146,23 @@
     padding: 2px 6px;
     font-size: 11px;
     gap: 4px;
+    height: 20px;
+    min-height: 20px;
+    max-height: 20px;
 }
 
 .ribbon-btn.small svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     fill: var(--win-text-secondary);
+    flex-shrink: 0;
 }
 
 .btn-icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .btn-icon svg {
@@ -135,48 +170,52 @@
 }
 
 .btn-icon.large {
-    width: 32px;
-    height: 32px;
+    width: 26px;
+    height: 26px;
 }
 
 .btn-icon.large svg {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
 }
 
 .btn-label {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--win-text);
     white-space: nowrap;
 }
 
 .btn-dropdown {
-    font-size: 8px;
+    font-size: 7px;
     color: var(--win-text-secondary);
-    margin-left: 2px;
+    margin-left: 1px;
 }
 
 .ribbon-buttons-row {
     display: flex;
     gap: 2px;
+    flex-shrink: 0;
 }
 
 .ribbon-buttons-small {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 1px;
+    flex-shrink: 0;
 }
 
-/* Tool Buttons */
+/* Tool Buttons - Fixed grid */
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 30px);
+    grid-template-rows: repeat(2, 28px);
     gap: 2px;
+    flex-shrink: 0;
 }
 
 .tool-btn {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 28px;
     background: transparent;
     border: 1px solid transparent;
     cursor: pointer;
@@ -184,7 +223,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 3px;
-    padding: 4px;
+    padding: 2px;
+    transition: all 0.1s;
+    flex-shrink: 0;
 }
 
 .tool-btn:hover {
@@ -199,30 +240,30 @@
 }
 
 .tool-btn svg {
-    width: 20px;
-    height: 20px;
-    /* Don't override fill - allow colored icons */
+    width: 18px;
+    height: 18px;
 }
 
-/* Shapes */
+/* Shapes - Fixed container */
 .shapes-container {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
+    flex-shrink: 0;
 }
 
 .shapes-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 2px;
-    max-width: 180px;
-    max-height: 52px;
+    grid-template-columns: repeat(6, 24px);
+    grid-template-rows: repeat(2, 22px);
+    gap: 1px;
+    flex-shrink: 0;
     overflow: hidden;
 }
 
 .shape-btn {
-    width: 28px;
-    height: 24px;
+    width: 24px;
+    height: 22px;
     background: transparent;
     border: 1px solid transparent;
     cursor: pointer;
@@ -230,6 +271,9 @@
     align-items: center;
     justify-content: center;
     border-radius: 2px;
+    transition: all 0.1s;
+    flex-shrink: 0;
+    padding: 0;
 }
 
 .shape-btn:hover {
@@ -240,42 +284,65 @@
 .shape-btn.active {
     background: var(--win-selected);
     border-color: var(--win-accent);
+    box-shadow: inset 0 0 0 1px var(--win-accent);
 }
 
 .shape-btn svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
 }
 
 .shape-options {
     display: flex;
-    gap: 4px;
+    gap: 2px;
+    flex-shrink: 0;
 }
 
-/* Colors Group */
+/* Colors Group - Fixed width */
+.colors-group {
+    flex-shrink: 0;
+}
+
 .colors-group .ribbon-group-content {
-    gap: 8px;
+    gap: 6px;
 }
 
 .color-selectors {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    padding-top: 2px;
+    flex-shrink: 0;
 }
 
 .color-selector {
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 11px;
+    font-size: 10px;
     cursor: pointer;
+    flex-shrink: 0;
+}
+
+.color-selector span {
+    color: var(--win-text-secondary);
+    white-space: nowrap;
 }
 
 .color-box {
-    width: 24px;
-    height: 20px;
+    width: 22px;
+    height: 18px;
     border: 1px solid var(--win-border-dark);
     background: #000;
+    cursor: pointer;
+    transition: all 0.1s;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+    flex-shrink: 0;
+}
+
+.color-box:hover {
+    border-color: var(--win-accent);
+    box-shadow: 0 0 0 1px var(--win-accent);
 }
 
 #color1 {
@@ -288,26 +355,30 @@
 
 .color-palette {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(10, 14px);
+    grid-template-rows: repeat(3, 14px);
     gap: 1px;
     background: var(--win-border);
     border: 1px solid var(--win-border-dark);
     padding: 1px;
+    flex-shrink: 0;
 }
 
 .color-swatch {
-    width: 16px;
+    width: 14px;
     height: 14px;
     cursor: pointer;
     border: none;
+    transition: transform 0.1s;
+    flex-shrink: 0;
 }
 
 .color-swatch:hover {
-    outline: 1px solid var(--win-text);
-    outline-offset: -1px;
+    outline: 2px solid var(--win-accent);
+    outline-offset: 0;
     z-index: 1;
     position: relative;
+    transform: scale(1.1);
 }
 
 .edit-colors-btn {
@@ -315,21 +386,108 @@
     border: none;
     color: var(--win-accent);
     cursor: pointer;
-    font-size: 11px;
+    font-size: 10px;
     text-decoration: underline;
-    margin-top: 4px;
+    margin-top: 2px;
+    transition: color 0.1s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .edit-colors-btn:hover {
     color: var(--win-accent-hover);
 }
 
-/* View Tab Specific */
+/* Text Options Group - Compact stacked layout */
+#text-options-group {
+    flex-shrink: 0;
+}
+
+.text-options-content {
+    display: flex;
+    align-items: flex-start;
+}
+
+.text-options-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.text-size-row {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+}
+
+.text-font-select {
+    width: 85px;
+    height: 20px;
+    font-size: 10px;
+    border: 1px solid var(--win-border);
+    border-radius: 2px;
+    padding: 0 2px;
+    background: var(--win-white);
+}
+
+.text-font-select:focus {
+    border-color: var(--win-accent);
+    outline: none;
+}
+
+.text-size-select {
+    width: 36px;
+    height: 20px;
+    font-size: 10px;
+    border: 1px solid var(--win-border);
+    border-radius: 2px;
+    padding: 0 2px;
+    background: var(--win-white);
+}
+
+.text-size-select:focus {
+    border-color: var(--win-accent);
+    outline: none;
+}
+
+.text-style-buttons {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--win-border);
+    border-radius: 2px;
+    padding: 1px;
+    background: var(--win-white);
+}
+
+.text-style-btn {
+    width: 18px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.1s;
+}
+
+.text-style-btn:hover {
+    background: var(--win-hover);
+}
+
+.text-style-btn.active {
+    background: var(--win-selected);
+}
+
+/* View Tab - Checkboxes */
 .ribbon-checkboxes {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding: 8px 0;
+    padding: 4px 0;
+    flex-shrink: 0;
 }
 
 .ribbon-checkbox {
@@ -338,13 +496,58 @@
     gap: 4px;
     font-size: 11px;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .ribbon-checkbox input {
     cursor: pointer;
+    accent-color: var(--win-accent);
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
 }
 
 /* Dropdown triggers with arrow */
 .ribbon-btn.has-dropdown::after {
     content: '';
+}
+
+/* Emoji sizing in buttons */
+.tool-emoji {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.brush-emoji {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.shape-emoji {
+    font-size: 11px;
+    line-height: 1;
+}
+
+/* Responsive - prevent ribbon from breaking */
+@media (max-width: 900px) {
+    .ribbon-group {
+        padding: 2px 4px;
+    }
+
+    .ribbon-separator {
+        margin: 4px 2px;
+    }
+
+    .shapes-grid {
+        grid-template-columns: repeat(4, 24px);
+    }
+
+    .color-palette {
+        grid-template-columns: repeat(8, 14px);
+    }
+
+    .text-font-select {
+        width: 80px;
+    }
 }
