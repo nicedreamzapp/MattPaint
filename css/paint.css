@@ -795,3 +795,64 @@ select:focus-visible {
 ::-webkit-scrollbar-corner {
     background: var(--win-ribbon-bg);
 }
+
+
+/* ---------- Phone / narrow screens ---------- */
+@media (max-width: 700px) {
+    #title-bar {
+        position: relative;
+    }
+    .title-center {
+        position: static;
+        transform: none;
+        flex: 1;
+        min-width: 0;
+        text-align: right;
+        padding-right: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .window-controls {
+        display: none;
+    }
+    .title-left {
+        padding-left: 2px;
+    }
+    .title-center {
+        padding-left: 150px;
+    }
+    .status-left {
+        min-width: 0;
+    }
+    #ribbon {
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+    .ribbon-content {
+        padding: 6px 4px 4px 4px;
+    }
+    .ribbon-group {
+        padding: 0 4px;
+    }
+    #canvas-container {
+        padding: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+    #status-bar {
+        font-size: 11px;
+    }
+    #status-pos, #status-selection {
+        display: none;
+    }
+    #status-zoom-slider {
+        width: 70px;
+    }
+    .status-zoom-btn {
+        width: 28px;
+        height: 28px;
+    }
+    .ribbon-tab {
+        padding: 6px 14px;
+    }
+}

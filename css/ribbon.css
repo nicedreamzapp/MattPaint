@@ -529,25 +529,12 @@
     line-height: 1;
 }
 
-/* Responsive - prevent ribbon from breaking */
-@media (max-width: 900px) {
-    .ribbon-group {
-        padding: 2px 4px;
-    }
-
-    .ribbon-separator {
-        margin: 4px 2px;
-    }
-
-    .shapes-grid {
-        grid-template-columns: repeat(4, 24px);
-    }
-
-    .color-palette {
-        grid-template-columns: repeat(8, 14px);
-    }
-
-    .text-font-select {
-        width: 80px;
+/* Narrow screens: the ribbon scrolls sideways (see paint.css), nothing is squeezed. */
+@media (max-width: 1320px) {
+    #ribbon {
+        height: 112px;
+        min-height: 112px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
     }
 }

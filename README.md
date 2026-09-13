@@ -1,10 +1,14 @@
 # MattPaint
 
-A pixel-perfect recreation of **Microsoft Paint (Windows 10)** for the web and Mac. Built with pure vanilla JavaScript, HTML5 Canvas, and CSS - no dependencies required.
+A pixel-perfect recreation of **Microsoft Paint (Windows 10)** for the web. Built with pure vanilla JavaScript, HTML5 Canvas, and CSS - no dependencies, no build step. Works on desktop, tablet and phone.
 
-![MattPaint Screenshot](https://img.shields.io/badge/Platform-Web%20%7C%20Mac-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen)
+**Try it live:** [nicedreamzwholesale.com/paint](https://nicedreamzwholesale.com/paint/) · [nicedreamzapp.github.io/MattPaint](https://nicedreamzapp.github.io/MattPaint/)
 
-![MattPaint Preview](screenshot.png)
+![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen)
+
+![MattPaint on desktop](screenshot.png)
+
+<img src="screenshot-phone.png" alt="MattPaint on a phone" width="260">
 
 ## Features
 
@@ -86,10 +90,13 @@ A pixel-perfect recreation of **Microsoft Paint (Windows 10)** for the web and M
 
 ## Getting Started
 
-### Option 1: Just Open It
-Simply open `index.html` in any modern browser. That's it!
+### Option 1: Use it online
+Open [nicedreamzwholesale.com/paint](https://nicedreamzwholesale.com/paint/) on anything with a browser. On a phone the canvas sizes itself to the screen and the ribbon scrolls sideways.
 
-### Option 2: Local Server
+### Option 2: Just Open It
+Clone the repo and open `index.html` in any modern browser. That's it!
+
+### Option 3: Local Server
 ```bash
 # Using Python
 python3 -m http.server 8000
@@ -106,20 +113,25 @@ Then visit `http://localhost:8000`
 MattPaint/
 ├── index.html          # Main HTML file
 ├── js/
-│   └── app.js          # All application logic (~3200 lines)
+│   └── app.js          # All application logic (~3300 lines)
 ├── css/
-│   ├── paint.css       # Main styles
+│   ├── paint.css       # Main styles + phone layout
 │   ├── ribbon.css      # Ribbon toolbar styles
 │   └── dialogs.css     # Modal dialog styles
-└── README.md
+├── test-in-app.js      # In-browser self-test suite
+└── TESTING-CHECKLIST.md
 ```
+
+## Tests
+
+Add `?test` to the URL (for example `index.html?test`) and the built-in suite runs 65 checks against the live DOM and reports in the corner of the page. It is not loaded otherwise.
 
 ## Browser Support
 
-- Chrome (recommended)
+- Chrome / Edge
 - Firefox
-- Safari
-- Edge
+- Safari, including iPhone and iPad (touch drawing)
+- Android Chrome
 
 ## Why MattPaint?
 

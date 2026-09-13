@@ -125,6 +125,13 @@
         canvasWrapper = document.getElementById('canvas-wrapper');
         canvasContainer = document.getElementById('canvas-container');
 
+        // On a phone, start with a canvas that fits the screen instead of 800x600
+        if (window.innerWidth < 700) {
+            const rect = canvasContainer.getBoundingClientRect();
+            state.canvasWidth = Math.max(200, Math.floor(rect.width) - 24);
+            state.canvasHeight = Math.max(200, Math.floor(rect.height) - 24);
+        }
+
         initCanvas();
         initColorPalette();
         initColorPicker();
