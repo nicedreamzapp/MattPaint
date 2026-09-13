@@ -137,7 +137,7 @@
 }
 
 .ribbon-btn.large {
-    width: 48px;
+    width: auto;
     min-width: 48px;
 }
 

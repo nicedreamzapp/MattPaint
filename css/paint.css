@@ -799,29 +799,6 @@ select:focus-visible {
 
 /* ---------- Phone / narrow screens ---------- */
 @media (max-width: 700px) {
-    #title-bar {
-        position: relative;
-    }
-    .title-center {
-        position: static;
-        transform: none;
-        flex: 1;
-        min-width: 0;
-        text-align: right;
-        padding-right: 8px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .window-controls {
-        display: none;
-    }
-    .title-left {
-        padding-left: 2px;
-    }
-    .title-center {
-        padding-left: 150px;
-    }
     .status-left {
         min-width: 0;
     }
@@ -855,4 +832,69 @@ select:focus-visible {
     .ribbon-tab {
         padding: 6px 14px;
     }
+}
+
+/* Toast */
+#toast {
+    position: fixed;
+    left: 50%;
+    bottom: 48px;
+    transform: translateX(-50%);
+    background: rgba(30, 30, 30, 0.92);
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 14px;
+    border-radius: 4px;
+    z-index: 3000;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ---------- Single top row (File | Home | View | save undo redo | title | ?) ---------- */
+#ribbon-tabs {
+    height: 32px;
+    align-items: stretch;
+    padding: 0;
+}
+#ribbon-tabs .file-btn {
+    height: 100%;
+    padding: 0 20px;
+}
+#ribbon-tabs .ribbon-tab {
+    padding: 0 18px;
+    margin-bottom: -1px;
+}
+#ribbon-tabs #quick-access {
+    position: static;
+    height: 100%;
+    padding: 0 6px;
+    border-left: 1px solid var(--win-border);
+    margin-left: 4px;
+}
+#document-title {
+    flex: 1;
+    min-width: 0;
+    align-self: center;
+    text-align: center;
+    font-size: 12px;
+    color: var(--win-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+}
+#ribbon-tabs .title-btn {
+    height: 100%;
+    width: 36px;
+}
+#file-menu {
+    top: 32px;
+    left: 0;
+}
+@media (max-width: 700px) {
+    #ribbon-tabs .file-btn { padding: 0 12px; }
+    #ribbon-tabs .ribbon-tab { padding: 0 10px; }
+    #ribbon-tabs #quick-access { padding: 0 2px; margin-left: 0; }
+    #document-title { font-size: 11px; padding: 0 4px; }
 }

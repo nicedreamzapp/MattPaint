@@ -17,43 +17,6 @@
 </head>
 <body>
     <div id="app">
-        <!-- Title Bar -->
-        <div id="title-bar">
-            <div class="title-left">
-                <button id="file-menu-btn" class="file-btn">File</button>
-            </div>
-            <div class="title-center">
-                <span id="document-title">Untitled - MattPaint</span>
-            </div>
-            <div class="title-right">
-                <button class="title-btn" id="help-btn" title="Help">?</button>
-                <div class="window-controls">
-                    <button class="window-btn minimize" title="Minimize">
-                        <svg viewBox="0 0 10 10"><line x1="0" y1="5" x2="10" y2="5"/></svg>
-                    </button>
-                    <button class="window-btn maximize" title="Maximize">
-                        <svg viewBox="0 0 10 10"><rect x="0" y="0" width="10" height="10" fill="none"/></svg>
-                    </button>
-                    <button class="window-btn close" title="Close">
-                        <svg viewBox="0 0 10 10"><line x1="0" y1="0" x2="10" y2="10"/><line x1="10" y1="0" x2="0" y2="10"/></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Access Toolbar -->
-        <div id="quick-access">
-            <button class="qat-btn" id="qat-save" title="Save (Cmd+S)">
-                <svg viewBox="0 0 16 16"><path d="M2 2v12h12V4l-2-2H2zm2 1h6v3H4V3zm6 9H6V9h4v3z"/></svg>
-            </button>
-            <button class="qat-btn" id="qat-undo" title="Undo (Cmd+Z)">
-                <svg viewBox="0 0 16 16"><path d="M4 8l4-4v3h4a3 3 0 0 1 0 6H8v-2h4a1 1 0 0 0 0-2H8v3L4 8z"/></svg>
-            </button>
-            <button class="qat-btn" id="qat-redo" title="Redo (Cmd+Y)">
-                <svg viewBox="0 0 16 16"><path d="M12 8l-4-4v3H4a3 3 0 0 0 0 6h4v-2H4a1 1 0 0 1 0-2h4v3l4-4z"/></svg>
-            </button>
-        </div>
-
         <!-- File Menu Dropdown -->
         <div id="file-menu" class="dropdown-menu hidden">
             <div class="menu-section">
@@ -108,6 +71,20 @@
             </div>
             <div class="menu-separator"></div>
             <div class="menu-section">
+                <button class="menu-item" id="menu-copy-image">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M4 1v2H2v12h10v-2h2V5l-4-4H4zm1 1h4v3h3v6h-1V6H5V2zm-2 2h1v8h6v1H3V4z"/></svg>
+                    </span>
+                    <span class="menu-text">Copy image</span>
+                    <span class="menu-shortcut">Cmd+C</span>
+                </button>
+                <button class="menu-item hidden" id="menu-share">
+                    <span class="menu-icon">
+                        <svg viewBox="0 0 16 16"><path d="M8 1L4.5 4.5l.7.7L7.5 3v7h1V3l2.3 2.2.7-.7L8 1zM3 7v7h10V7h-1v6H4V7H3z"/></svg>
+                    </span>
+                    <span class="menu-text">Share...</span>
+                    <span class="menu-shortcut"></span>
+                </button>
                 <button class="menu-item" id="menu-email">
                     <span class="menu-icon">
                         <svg viewBox="0 0 16 16"><path d="M1 3v10h14V3H1zm1.5 1h11l-5.5 4-5.5-4zm-.5 1.5l5 3.5 5-3.5V12H2V5.5z"/></svg>
@@ -152,10 +129,24 @@
             </div>
         </div>
 
-        <!-- Ribbon Tabs -->
+        <!-- Top row: File, tabs, quick access, title, help -->
         <div id="ribbon-tabs">
+            <button id="file-menu-btn" class="file-btn">File</button>
             <button class="ribbon-tab active" data-tab="home">Home</button>
             <button class="ribbon-tab" data-tab="view">View</button>
+            <div id="quick-access">
+                <button class="qat-btn" id="qat-save" title="Save (Cmd+S)">
+                    <svg viewBox="0 0 16 16"><path d="M2 2v12h12V4l-2-2H2zm2 1h6v3H4V3zm6 9H6V9h4v3z"/></svg>
+                </button>
+                <button class="qat-btn" id="qat-undo" title="Undo (Cmd+Z)">
+                    <svg viewBox="0 0 16 16"><path d="M4 8l4-4v3h4a3 3 0 0 1 0 6H8v-2h4a1 1 0 0 0 0-2H8v3L4 8z"/></svg>
+                </button>
+                <button class="qat-btn" id="qat-redo" title="Redo (Cmd+Y)">
+                    <svg viewBox="0 0 16 16"><path d="M12 8l-4-4v3H4a3 3 0 0 0 0 6h4v-2H4a1 1 0 0 1 0-2h4v3l4-4z"/></svg>
+                </button>
+            </div>
+            <span id="document-title">Untitled - MattPaint</span>
+            <button class="title-btn" id="help-btn" title="About MattPaint">?</button>
         </div>
 
         <!-- Ribbon Content -->
@@ -433,17 +424,23 @@
                 <div class="ribbon-group">
                     <div class="ribbon-group-content">
                         <div class="ribbon-buttons-row">
-                            <button class="ribbon-btn" id="btn-zoom-in" title="Zoom in">
-                                <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.5 10.9l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-1 2v1H7v2h2v1h2v-1h2V9h-2V8H9z"/></svg>
-                                <span>Zoom in</span>
+                            <button class="ribbon-btn large" id="btn-zoom-in" title="Zoom in">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.5 10.9l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm-1 2v1H7v2h2v1h2v-1h2V9h-2V8H9z"/></svg>
+                                </div>
+                                <span class="btn-label">Zoom in</span>
                             </button>
-                            <button class="ribbon-btn" id="btn-zoom-out" title="Zoom out">
-                                <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.5 10.9l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM7 9v2h6V9H7z"/></svg>
-                                <span>Zoom out</span>
+                            <button class="ribbon-btn large" id="btn-zoom-out" title="Zoom out">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 0 3.5 10.9l4.3 4.3 1.4-1.4-4.3-4.3A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8zM7 9v2h6V9H7z"/></svg>
+                                </div>
+                                <span class="btn-label">Zoom out</span>
                             </button>
-                            <button class="ribbon-btn" id="btn-zoom-100" title="100%">
-                                <svg viewBox="0 0 24 24"><text x="4" y="17" font-size="12" font-weight="bold">100%</text></svg>
-                                <span>100%</span>
+                            <button class="ribbon-btn large" id="btn-zoom-100" title="100%">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="12" y="15.5" font-size="8" font-weight="bold" text-anchor="middle" font-family="Segoe UI, sans-serif">100%</text></svg>
+                                </div>
+                                <span class="btn-label">100%</span>
                             </button>
                         </div>
                     </div>
@@ -464,7 +461,7 @@
                                 <input type="checkbox" id="chk-gridlines">
                                 <span>Gridlines</span>
                             </label>
-                            <label class="ribbon-checkbox" checked>
+                            <label class="ribbon-checkbox">
                                 <input type="checkbox" id="chk-statusbar" checked>
                                 <span>Status bar</span>
                             </label>
@@ -478,10 +475,14 @@
                 <!-- Display Group -->
                 <div class="ribbon-group">
                     <div class="ribbon-group-content">
-                        <button class="ribbon-btn" id="btn-fullscreen" title="Full screen">
-                            <svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14v6h6v-2H6v-4H4zm16 0v6h-6v-2h4v-4h2z"/></svg>
-                            <span>Full screen</span>
-                        </button>
+                        <div class="ribbon-buttons-row">
+                            <button class="ribbon-btn large" id="btn-fullscreen" title="Full screen">
+                                <div class="btn-icon large">
+                                    <svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4V4zm10 0h6v6h-2V6h-4V4zM4 14v6h6v-2H6v-4H4zm16 0v6h-6v-2h4v-4h2z"/></svg>
+                                </div>
+                                <span class="btn-label">Full screen</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="ribbon-group-label">Display</div>
                 </div>
@@ -941,6 +942,7 @@
     <input type="file" id="paste-file-input" accept="image/*" class="hidden">
 
     <!-- Scripts -->
+    <div id="toast" class="hidden"></div>
     <script src="js/app.js"></script>
     <script>
         // Self-test suite loads only when asked for: index.html?test

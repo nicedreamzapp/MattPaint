@@ -359,6 +359,13 @@
         document.getElementById('menu-save-as').addEventListener('click', () => { hideFileMenu(); saveFileAs(); });
         document.getElementById('menu-print').addEventListener('click', () => { hideFileMenu(); printFile(); });
         document.getElementById('menu-camera').addEventListener('click', () => { hideFileMenu(); openCamera(); });
+        document.getElementById('menu-copy-image').addEventListener('click', () => { hideFileMenu(); copyWholeImage(); });
+        const shareItem = document.getElementById('menu-share');
+        shareItem.addEventListener('click', () => { hideFileMenu(); shareImage(); });
+        try {
+            const probe = new File([new Blob([new Uint8Array(4)], { type: 'image/png' })], 'p.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [probe] })) shareItem.classList.remove('hidden');
+        } catch (e) {}
         document.getElementById('menu-email').addEventListener('click', () => { hideFileMenu(); sendEmail(); });
         document.getElementById('menu-wallpaper').addEventListener('click', () => { hideFileMenu(); setAsWallpaper(); });
         document.getElementById('menu-properties').addEventListener('click', () => { hideFileMenu(); showProperties(); });
@@ -1270,7 +1277,53 @@
     }
 
     // ==================== CLIPBOARD ====================
+    function showToast(msg, ms = 1800) {
+        const t = document.getElementById('toast');
+        if (!t) return;
+        t.textContent = msg;
+        t.classList.remove('hidden');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => t.classList.add('hidden'), ms);
+    }
+
+    // Copy the whole picture to the system clipboard (File > Copy image, or Copy with nothing selected)
+    function copyWholeImage() {
+        commitFloatingSelection();
+        state.clipboardData = null;
+        try {
+            mainCanvas.toBlob(blob => {
+                if (!blob || !navigator.clipboard || !window.ClipboardItem) {
+                    showToast('Copy not supported here. Use File > Save instead.');
+                    return;
+                }
+                navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+                    .then(() => showToast('Picture copied. Paste it anywhere.'))
+                    .catch(() => showToast('Copy blocked by the browser. Use File > Save instead.'));
+            }, 'image/png');
+        } catch (e) {
+            showToast('Copy not supported here. Use File > Save instead.');
+        }
+    }
+
+    // Phone/tablet share sheet (Web Share API with files)
+    function shareImage() {
+        commitFloatingSelection();
+        mainCanvas.toBlob(blob => {
+            if (!blob) return;
+            const file = new File([blob], (state.fileName || 'Untitled') + '.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({ files: [file], title: 'MattPaint' }).catch(() => {});
+            } else {
+                showToast('Sharing not supported here. Use File > Save instead.');
+            }
+        }, 'image/png');
+    }
+
     function copy() {
+        if (!state.floatingSelection && !state.selection) {
+            copyWholeImage();
+            return;
+        }
         if (state.floatingSelection) {
             state.clipboardData = {
                 width: state.floatingSelection.width,
