@@ -818,6 +818,8 @@ select:focus-visible {
     }
     #status-bar {
         font-size: 11px;
+        gap: 12px;
+        padding: 0 8px;
     }
     #status-pos, #status-selection {
         display: none;
