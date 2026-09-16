@@ -1,0 +1,74 @@
+{
+ "subject": "DAWN RIDGES",
+ "prompt": "Layered mountain ridges at dawn, receding into haze, with the sun low behind them.",
+ "model": "donedynamics/Qwen3.8-27B-heretic-VL-MLX-bf16",
+ "rounds": [
+  {
+   "round": 1,
+   "write": {
+    "s": 277.9,
+    "tok": 2711,
+    "tps": 9.9,
+    "peak_gb": 58.1
+   },
+   "paint": [
+    {
+     "ok": true,
+     "s": 12.8,
+     "tail": "DAWN RIDGES gen5: 386,182 strokes\npainted in 10.13s\ndefects: 4,354 (1.1%)\n"
+    }
+   ],
+   "look": {
+    "s": 91.8,
+    "tok": 900,
+    "tps": 10.2,
+    "peak_gb": 58.1
+   }
+  },
+  {
+   "round": 2,
+   "write": {
+    "s": 276.6,
+    "tok": 2707,
+    "tps": 10.1,
+    "peak_gb": 58.7
+   },
+   "paint": [
+    {
+     "ok": true,
+     "s": 13.3,
+     "tail": "DAWN RIDGES gen5: 386,182 strokes\npainted in 10.64s\ndefects: 4,352 (1.1%)\n"
+    }
+   ],
+   "look": {
+    "s": 85.0,
+    "tok": 825,
+    "tps": 10.1,
+    "peak_gb": 58.7
+   }
+  },
+  {
+   "round": 3,
+   "write": {
+    "s": 276.4,
+    "tok": 2707,
+    "tps": 10.1,
+    "peak_gb": 58.7
+   },
+   "paint": [
+    {
+     "ok": true,
+     "s": 13.2,
+     "tail": "DAWN RIDGES gen5: 386,182 strokes\npainted in 10.62s\ndefects: 4,352 (1.1%)\n"
+    }
+   ],
+   "look": {
+    "s": 74.5,
+    "tok": 731,
+    "tps": 10.2,
+    "peak_gb": 58.7
+   }
+  }
+ ],
+ "load_s": 2.1
+}

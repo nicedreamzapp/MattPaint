@@ -1,0 +1,27 @@
+{
+ "png": "g3_ridges_texture.png",
+ "finished": "2026-09-14T02:22:19-07:00",
+ "ops": 346797,
+ "wall_s": 11.035,
+ "ops_per_s": 31428,
+ "mouse_moves": 0,
+ "messages_sent": 397,
+ "mode": "replay",
+ "seed": 3001,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g3_ridges.py",
+ "script_sha256": "05595633025288b9",
+ "argv": [
+  "texture"
+ ],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789377728",
+ "host": "Mac",
+ "generation": 3,
+ "subject": "dawn_ridges",
+ "stage": "texture",
+ "prompt": "Layered mountain ridges at dawn, receding into haze, with the sun low behind them."
+}

@@ -1,0 +1,25 @@
+{
+ "png": "g5_choir.png",
+ "finished": "2026-09-14T22:10:02-07:00",
+ "ops": 191013,
+ "wall_s": 5.809,
+ "ops_per_s": 32882,
+ "mouse_moves": 0,
+ "messages_sent": 229,
+ "mode": "replay",
+ "seed": 5600,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_choir.py",
+ "script_sha256": "c59d6a1cdbb52146",
+ "argv": [],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789448995",
+ "host": "Mac",
+ "subject": "the_glass_choir",
+ "prompt": "The inside of a cathedral, light coming through stained glass.",
+ "generation": 5,
+ "stage": "paint"
+}

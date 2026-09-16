@@ -1,0 +1,289 @@
+Skip to content
+Upgrade
+This is the same procedural painting system you critiqued earlier, rebuilt from scratch on your advice. Still only three primitives: filled rectangles, straight lines, soft circular dabs. 412,000 of them.
+
+What I changed, all of it from the critique:
+
+1. Deleted every edge and outline stroke. There is no rim pass, no crest pass, no silhouette pass anywhere in the code. In the previous version 45 percent of all strokes went to outlining things. Now zero do. Every ridge you can see is the result of shading, not of a drawn line.
+
+2. The terrain is lit rather than filled. Each range carries spurs running toward the viewer, so the surface has real facing, and value comes from the dot product of the surface normal with the sun direction.
+
+3. The silhouette is built from geological hierarchy: a few enormous low frequency masses forming an envelope, then massifs, then peaks, then subsidiary ridges, each tier strictly smaller and lower frequency. High frequency noise never touches the outer silhouette. I verified it reads as a mountain range when filled with flat grey before adding any colour.
+
+4. Distance now loses information rather than just gaining haze: sharpness, saturation, contrast, texture grain size, shadow depth and the number of resolvable spurs all fall with depth. The dab size itself grows and its opacity falls with distance, so far terrain is not made of the same marks as near terrain.
+
+5. Ranges occlude each other rather than all presenting themselves at once.
+
+6. The sky is low frequency continuous bands rather than stippled dabs.
+
+7. Camera defects cut from 8.5 percent of the strokes to 1.6 percent, applied last. Two of you told me they were the last 2 percent of realism and I was missing the first 60.
+
+Be blunt again. What still reads as fake, ranked by cost, and what is the single highest impact change now? If you think I have introduced new problems that were not in the first version, say so specifically.This is the same procedural painting system you critiqued earlier, reThis is the same procedural painting system you critiqued earlier, rebuilt from scratch on your advice. Still only three primitives: filled rectangles, straight lines, soft circular dabs. 412,000 of them.
+
+What I changed, all of it from the critique:
+
+1. Deleted every edge and outline stroke. There is no rim pass, no crest pass, no silhouette pass anywhere in the code. In the previous version 45 percent of all strokes went to outlining things. Now zero do. Every ridge you can see is the result of shading, not of a drawn line.
+
+2. The terrain is lit rather than filled. Each range carries spurs running toward the viewer, so the surface has real facing, and value comes from the dot product of the surface normal with the sun direction.
+
+3. The silhouette is built from geological hierarchy: a few enormous low frequency masses forming an envelope, then massifs, then peaks, then subsidiary ridges, each tier strictly smaller and lower frequency. High frequency noise never touches the outer silhouette. I verified it reads as a mountain range when filled with flat grey before adding any colour.
+
+4. Distance now loses information rather than just gaining haze: sharpness, saturation, contrast, texture grain size, shadow depth and the number of resolvable spurs all fall with depth. The dab size itself grows and its opacity falls with distance, so far terrain is not made of the same marks as near terrain.
+
+5. Ranges occlude each other rather than all presenting themselves at once.
+
+6. The sky is low frequency continuous bands rather than stippled dabs.
+
+7. Camera defects cut from 8.5 percent of the strokes to 1.6 percent, applied last. Two of you told me they were the last 2 percent of realism and I was missing the first 60.
+
+Be blunt again. What still reads as fake, ranked by cost, and what is the single highest impact change now? If you think I have introduced new problems that were not in the first version, say so specifically.built from scratch on your advice. Still only three primitives: filled rectangles, straight lines, soft circular dabs. 412,000 of them.
+
+What I changed, all of it from the critique:
+
+1. Deleted every edge and outline stroke. There is no rim pass, no crest pass, no silhouette pass anywhere in the code. In the previous version 45 percent of all strokes went to outlining things. Now zero do. Every ridge you can see is the result of shading, not of a drawn line.
+
+2. The terrain is lit rather than filled. Each range carries spurs running toward the viewer, so the surface has real facing, and value comes from the dot product of the surface normal with the sun direction.
+
+3. The silhouette is built from geological hierarchy: a few enormous low frequency masses forming an envelope, then massifs, then peaks, then subsidiary ridges, each tier strictly smaller and lower frequency. High frequency noise never touches the outer silhouette. I verified it reads as a mountain range when filled with flat grey before adding any colour.
+
+4. Distance now loses information rather than just gaining haze: sharpness, saturation, contrast, texture grain size, shadow depth and the number of resolvable spurs all fall with depth. The dab size itself grows and its opacity falls with distance, so far terrain is not made of the same marks as near terrain.
+
+5. Ranges occlude each other rather than all presenting themselves at once.
+
+6. The sky is low frequency continuous bands rather than stippled dabs.
+
+7. Camera defects cut from 8.5 percent of the strokes to 1.6 percent, applied last. Two of you told me they were the last 2 percent of realism and I was missing the first 60.
+
+Be blunt again. What still reads as fake, ranked by cost, and what is the single highest impact change now? If you think I have introduced new problems that were not in the first version, say so specifically.
+Show more
+
+Yes. This is substantially better than the first version. You fixed the big conceptual mistake: it no longer looks like a collection of strokes trying to imitate a mountain. It now has an actual depth hierarchy.
+
+But I’m going to be blunt: it still does not read as a photograph. It reads as a very sophisticated procedural painting of mountains.
+
+Ranked by cost
+
+1. The mountains still have the wrong kind of 3D geometry — by far the biggest problem.
+
+The foreground ridge is essentially a vertical dark wall. I can see that you have spurs and normals, but visually they aren't producing convincing terrain planes.
+
+Look at the center-left peak. It rises, then its face drops almost straight down into darkness. Real mountain terrain almost never presents that way at this scale. You need to see large sloping planes running from summit toward the viewer.
+
+Right now the algorithm is doing:
+
+silhouette → assign surface → shade surface
+
+What a photograph needs is closer to:
+
+mountain mass → watershed → major ridges → slopes → erosion channels → individual terrain planes → atmospheric integration
+
+Your "spurs" are still behaving too much like decorative shading structures rather than the consequences of terrain.
+
+This is the single highest-impact change.
+
+2. The foreground is dramatically too dark and too uniform.
+
+This is probably the second-biggest issue.
+
+The bottom ~40% becomes almost black. Once that happens, you're losing the information that makes terrain recognizable.
+
+Real dawn mountains can be very dark, but they still contain:
+
+overlapping slopes
+
+valleys
+
+exposed faces
+
+atmospheric color
+
+reflected sky light
+
+variations in vegetation/rock
+
+recognizable terrain structure
+
+Your foreground currently becomes:
+
+black mass + faint vertical texture
+
+That is why the image still feels procedural.
+
+I'd actually make the foreground considerably lighter while simultaneously increasing geometric contrast.
+
+3. Your atmospheric perspective is now too mathematically layered.
+
+This is a new problem.
+
+The distant ranges are much better than before, but I can now see approximately four perfectly clean horizontal mountain layers:
+
+████████
+████████
+████████
+████████
+
+They are beautifully organized procedurally.
+
+And that's precisely why they look fake.
+
+Natural mountain ranges don't usually present as nested, smoothly separated horizontal sheets. Their boundaries should intersect, disappear, overlap, and occasionally reveal a nearer ridge cutting across a farther one.
+
+You've successfully implemented "depth hierarchy," but you've made the hierarchy too legible.
+
+4. The lighting still feels like a mathematical illumination model rather than sunlight.
+
+The central glow is nice, but the terrain has these broad vertical light/dark columns.
+
+Those are telling me:
+
+"surface normal × light direction"
+
+rather than:
+
+"sunlight hitting a complicated landscape."
+
+Real terrain illumination is enormously messy.
+
+You need large-scale bounced light and occlusion.
+
+A valley facing away from the sun shouldn't simply become darker according to its normal. It should also receive some light from the sky. Conversely, a crevice should be disproportionately dark because it is occluded.
+
+So I'd introduce something like:
+
+terrain brightness = direct sun + sky illumination + reflected local light − occlusion
+
+Not just Lambertian sun shading.
+
+5. The ridge silhouette is still too smooth in places.
+
+You've correctly eliminated high-frequency noise from the silhouette.
+
+But you've probably gone a little too far.
+
+The center ridge especially has long stretches of almost mathematically smooth curvature. Real mountain profiles have medium-frequency geological structure.
+
+Not noise.
+
+Structure.
+
+Think:
+
+broad massif
+
+shoulder
+
+secondary summit
+
+saddle
+
+shoulder
+
+peak
+
+broken ridge
+
+You want irregularity with hierarchy, not randomness.
+
+6. The sun is currently hurting the realism slightly.
+
+The little white disk looks like a graphic element pasted into the atmosphere.
+
+In an actual dawn photograph, depending on exposure and atmospheric conditions, the sun would likely be:
+
+partially diffused
+
+less geometrically perfect
+
+surrounded by a much more subtle luminance transition
+
+potentially blown out rather than appearing as a tiny white circle
+
+The circular shape itself isn't necessarily wrong. The problem is that it has graphic-object clarity.
+
+One thing you absolutely should NOT do
+
+Do not add more texture.
+
+You're very close to making the classic procedural-art mistake:
+
+"It doesn't look real → add more detail."
+
+Don't.
+
+You already have 412,000 strokes.
+
+The problem isn't insufficient information.
+
+It's incorrect information.
+
+The one change I'd make
+
+If I were sitting beside you looking at the code, I'd say:
+
+Stop generating "mountain faces" and generate actual terrain topology.
+
+For each major mountain mass, create a hidden continuous height field.
+
+Something conceptually like:
+
+             summit
+               /\
+              /  \
+       ridge /    \ ridge
+            /      \
+           / valley \
+          /          \
+         /            \
+        foreground
+
+Then derive the visible shading from that continuous surface.
+
+But critically, don't make the surface radial around the peak.
+
+Generate drainage/watershed structure.
+
+Water is one of nature's greatest procedural mountain generators.
+
+Have major ridges divide the landscape into drainage basins. Let smaller ridges branch from them. Let valleys become the inverse structure. Then use those structures to determine the normals and occlusion.
+
+That would give you the thing you're currently missing:
+
+terrain that looks like it was physically formed rather than geometrically decorated.
+
+And there's an important positive here
+
+Your distance system is working.
+
+Your removal of outlines was absolutely correct.
+
+Your atmospheric layering is working.
+
+Your geological silhouette hierarchy is working.
+
+Your camera defects are no longer the issue.
+
+So I would not rewrite the whole system again.
+
+I'd keep almost everything you've built and attack only the foreground terrain generator.
+
+If you get that one piece right, I think this could make a very large visual jump without increasing the stroke count at all.
+
+412,000 strokes isn't your limitation anymore. The topology is.
+
+Joy eXPerience Corp
+
+Seedance 2.5 AI Video Generator
+
+Create cinematic 30s AI videos. Commercial rights included. No installs or GPUs needed.
+
+Ad
+More options
+ChatGPT can make mistakes. Check important info.
+
+Think
+Start Voice
+⌃
+⇧
+V
+Sponsored options
+Ad

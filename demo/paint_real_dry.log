@@ -1,0 +1,14 @@
+(node:36821) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+   2.3s  blank
+  68.6s  sky
+  81.7s  sun
+ 113.7s  clouds
+ 162.3s  far_mountains
+ 200.4s  near_mountains
+ 274.5s  lake
+ 289.6s  ground
+ 297.6s  cabin
+ 345.8s  trees
+ 348.4s  done
+painted in 348s

@@ -1,0 +1,8 @@
+{"title": "FIRST LIGHT IN THE GROVE", "seed": 5, "horizon": 0.86,
+ "light": {"kind": "sun", "x": 0.72, "y": 0.02, "color": [255, 226, 180]},
+ "sky": {"top": [150, 160, 150], "horizon": [214, 214, 198]},
+ "fog_color": [214, 214, 198],
+ "layers": [{"type": "fog", "amount": 0.9, "top": 0.05, "bottom": 1.0},
+            {"type": "forest", "kind": "redwood", "count": 26, "ground": 0.86},
+            {"type": "shafts", "count": 6, "strength": 0.9},
+            {"type": "fog", "amount": 0.3, "top": 0.5, "bottom": 1.0}]}

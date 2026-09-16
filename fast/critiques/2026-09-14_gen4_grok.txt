@@ -1,0 +1,69 @@
+Skip to main content
+g4_ridges.png
+
+This is the same procedural painting system you critiqued earlier, rebuilt from scratch on your advice. Still only three primitives: filled rectangles, straight lines, soft circular dabs. 412,000 of them.
+
+What I changed, all of it from the critique:
+
+Deleted every edge and outline stroke. There is no rim pass, no crest pass, no silhouette pass anywhere in the code. In the previous version 45 percent of all strokes went to outlining things. Now zero do. Every ridge you can see is the result of shading, not of a drawn line.
+The terrain is lit rather than filled. Each range carries spurs running toward the viewer, so the surface has real facing, and value comes from the dot product of the surface normal with the sun direction.
+The silhouette is built from geological hierarchy: a few enormous low frequency masses forming an envelope, then massifs, then peaks, then subsidiary ridges, each tier strictly smaller and lower frequency. High frequency noise never touches the outer silhouette. I verified it reads as a mountain range when filled with flat grey before adding any colour.
+Distance now loses information rather than just gaining haze: sharpness, saturation, contrast, texture grain size, shadow depth and the number of resolvable spurs all fall with depth. The dab size itself grows and its opacity falls with distance, so far terrain is not made of the same marks as near terrain.
+Ranges occlude each other rather than all presenting themselves at once.
+The sky is low frequency continuous bands rather than stippled dabs.
+Camera defects cut from 8.5 percent of the strokes to 1.6 percent, applied last. Two of you told me they were the last 2 percent of realism and I was missing the first 60.
+
+Be blunt again. What still reads as fake, ranked by cost, and what is the single highest impact change now? If you think I have introduced new problems that were not in the first version, say so specifically.
+
+Worked for 40s
+
+The rebuild did the right things. Outlines are gone. Stacking and haze now do more work than decoration. The silhouette is no longer a traced contour. That is real progress.
+
+What still reads fake, ranked by how much it costs the illusion (and roughly how expensive the fix is):
+
+1. The near ridge is a black cutout with rain on it. Highest cost. Medium-hard fix.
+
+The closest mass has almost no facing. Value collapses to near-black, then you sprinkle vertical dotted streaks that read as precipitation, falling ash, or badly sampled god rays — not spurs, not gullies, not rock. Lighting that only survives as theatrical shafts is not lighting. A surface normal that never produces a mid-tone plane facing the sun is not a surface. This is the new problem you introduced: you deleted the outline pass and then starved the nearest terrain of every other cue that used to fake form.
+
+2. The skyline is still a low-frequency sine. High cost. Cheap-to-medium fix.
+
+Three similar rounded humps, roughly even spacing, similar amplitude. You said high-frequency noise never touches the envelope. That is correct and also the problem. Real ranges keep asymmetric low-frequency structure: one face steeper, saddles of unequal depth, a massif that is not a cosine. Flat grey would still look like rolling dunes or a sound wave. Hierarchy without irregularity at the largest scale just looks designed.
+
+3. Sky is overlapping soft circles. Medium-high cost. Cheap fix.
+
+The “continuous bands” claim is not what the picture shows. Left and right you can count the dab radius. Large low-frequency circles in a bright field are more visible than the same primitive in dark terrain. Dawn sky needs a gradient plus stretched or anisotropic marks, or bands that are actually rectangles/quads, not isotropic blobs.
+
+4. Mid ranges are cardboard layers with a brightness step. Medium cost. Cheap fix.
+
+Each successive ridge is a slightly lighter, slightly softer copy of the same idea. Internal contrast, spur count, and grain size do fall off, but they fall off uniformly. There is almost no local accident — no shadowed reentrant, no sunlit facet that belongs only to that range. Occlusion is present; intra-range lighting is still weak.
+
+5. The sun is a clean disk on a bright patch. Low-medium cost. Cheap fix.
+
+No integrated aureole, no wavelength-dependent bloom, no occlusion of the disk by atmosphere. Fine for a diagram. Wrong for dawn.
+
+6. Color temperature is timid. Lower cost than the form problems. Cheap fix.
+
+Shadowed near terrain should pick up cool skylight. Lit dust should go warmer than the mid haze. Right now everything is the same brown-grey family with a value ramp. That is why it still feels tinted rather than illuminated.
+
+What you did not reintroduce: rim strokes, crest outlines, 45% of the budget spent on edges. Good. Camera dirt at 1.6% is no longer the issue.
+
+Single highest-impact change now
+
+Give the nearest range actual planes.
+
+Keep the three primitives. Stop treating the foreground as “the dark layer.”
+
+Build 4–8 large facing facets per mass (still low frequency) whose brightness comes from N·L, not from a shaft overlay.
+Let a few of those facets catch the sun at 20–40% grey instead of 2%.
+Put the remaining high-frequency dabs on those facets as albedo/grain, not as vertical dotted rain.
+Kill or heavily irregularize the current god-ray streaks; if you want crepuscular rays, they belong in the air between camera and ridge, as large low-opacity rectangles or stretched dabs, not as texture on the mountain.
+
+Do that and the silhouette can stay relatively simple for one more generation. Right now the picture is a correctly stacked atmospheric perspective demo sitting on top of a featureless black hill with weather drawn on it. The lighting model is described in the code; it is not yet visible in the nearest 30% of the frame.
+
+Explore procedural noise functions
+Atmospheric scattering models
+
+
+
+
+Fast

@@ -1,0 +1,19 @@
+This is the same procedural painting system you critiqued earlier, rebuilt from scratch on your advice. Still only three primitives: filled rectangles, straight lines, soft circular dabs. 412,000 of them.
+
+What I changed, all of it from the critique:
+
+1. Deleted every edge and outline stroke. There is no rim pass, no crest pass, no silhouette pass anywhere in the code. In the previous version 45 percent of all strokes went to outlining things. Now zero do. Every ridge you can see is the result of shading, not of a drawn line.
+
+2. The terrain is lit rather than filled. Each range carries spurs running toward the viewer, so the surface has real facing, and value comes from the dot product of the surface normal with the sun direction.
+
+3. The silhouette is built from geological hierarchy: a few enormous low frequency masses forming an envelope, then massifs, then peaks, then subsidiary ridges, each tier strictly smaller and lower frequency. High frequency noise never touches the outer silhouette. I verified it reads as a mountain range when filled with flat grey before adding any colour.
+
+4. Distance now loses information rather than just gaining haze: sharpness, saturation, contrast, texture grain size, shadow depth and the number of resolvable spurs all fall with depth. The dab size itself grows and its opacity falls with distance, so far terrain is not made of the same marks as near terrain.
+
+5. Ranges occlude each other rather than all presenting themselves at once.
+
+6. The sky is low frequency continuous bands rather than stippled dabs.
+
+7. Camera defects cut from 8.5 percent of the strokes to 1.6 percent, applied last. Two of you told me they were the last 2 percent of realism and I was missing the first 60.
+
+Be blunt again. What still reads as fake, ranked by cost, and what is the single highest impact change now? If you think I have introduced new problems that were not in the first version, say so specifically.

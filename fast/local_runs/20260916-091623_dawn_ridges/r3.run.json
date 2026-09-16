@@ -1,0 +1,28 @@
+{
+ "png": "r3.png",
+ "finished": "2026-09-16T09:33:53-07:00",
+ "ops": 392294,
+ "wall_s": 10.91,
+ "ops_per_s": 35956,
+ "mouse_moves": 0,
+ "messages_sent": 452,
+ "mode": "replay",
+ "seed": 42,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "_local_dawn_ridges_r3.py",
+ "script_sha256": "e3f2c663f79cc47b",
+ "argv": [
+  "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/local_runs/20260916-091623_dawn_ridges/r3.png"
+ ],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789576421",
+ "host": "Matts-MacBook-Pro.local",
+ "subject": "dawn_ridges",
+ "prompt": "Layered mountain ridges at dawn, receding into haze, with the sun low behind them.",
+ "painter": "local-qwen3.8",
+ "generation": 5,
+ "stage": "paint"
+}

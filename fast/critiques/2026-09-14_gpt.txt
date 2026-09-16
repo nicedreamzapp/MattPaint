@@ -1,0 +1,263 @@
+Skip to content
+This image was not made by an image model. It was drawn procedurally in a browser paint program using only three primitives: filled rectangles, straight lines, and soft circular dabs. About 375,000 of them. A Python script decides where every stroke goes, then a language model looks at the result, describes in words what is wrong, and rewrites the script.
+
+The goal is for it to look like a photograph of mountains at dawn. It does not.
+
+I have already tried: a written value plan with every colour derived from it, recursive self-similar texture instead of uniform scatter, atmospheric perspective in explicit depth layers, and a final pass adding simulated camera defects (lens vignette, chromatic fringing at high contrast edges, sensor noise that rises in shadow, slight focus falloff, veiling glare).
+
+Please be blunt and specific. What actually reads as fake here? Rank the problems by how much each one costs, and for each say what concrete change would fix it. I care most about which single change would move it furthest toward photographic.
+Show more
+
+Yes. Bluntly: the biggest problem is not color, texture, noise, or camera simulation. It is the geometry and lighting of the mountains. The image is trying to photographically texture something that fundamentally reads as a procedurally generated illustration.
+
+Ranked by how much they hurt photographic realism
+Rank	Problem	Cost	Concrete fix
+1	Mountain silhouettes are visibly procedural	10/10	Replace the sawtooth/zigzag ridge construction with long, smooth, asymmetric geological contours. Generate ridgelines from low-frequency noise/real elevation data first, then add only occasional secondary peaks.
+2	Mountains are essentially black cutouts	9/10	Stop treating each mountain as a silhouette filled with dark texture. Build them as 3D-ish planes facing different directions, with enormous gradual value transitions. Dawn light should illuminate one side while the opposite side falls into shadow.
+3	The ridge edges are outlined/dotted	8.5/10	Remove the gold/dotted edge completely. Real mountains don't have an outline. The boundary should emerge from atmospheric contrast and overlapping terrain. If you need a line to define the ridge, the underlying tonal model isn't doing enough work.
+4	Texture is spatially uniform / visibly algorithmic	7.5/10	Make texture subordinate to terrain structure. Large rock/vegetation masses first, medium structure second, tiny texture last. Texture density should change dramatically with slope, elevation, illumination and distance.
+5	Sky looks like colored fog/dabs rather than atmosphere	7/10	Replace the circular soft-dab cloud fields with very large-scale continuous atmospheric gradients. Real dawn haze has enormous smooth structures with subtle density variation, not overlapping translucent blobs.
+6	Mountain depth doesn't behave like a photograph	6.5/10	Distant ridges should become progressively lower contrast, less saturated, lighter, and less detailed. But importantly, don't just apply opacity by layer. Tie it to actual simulated distance.
+7	The sun isn't illuminating the scene convincingly	6/10	The sun currently looks pasted onto the sky. Give it a directional light field: warm illumination should affect the sky immediately around it and create a coherent warm rim/face on appropriately oriented terrain.
+8	Too many similarly important edges	5.5/10	Photographs have a hierarchy of attention. Reserve strong contrast for a few major ridges. Most secondary ridges should nearly disappear into haze.
+9	Simulated camera defects are being applied to an illustration	3/10	Keep them extremely subtle. Vignette, chromatic aberration and noise cannot make incorrect geometry photographic. They actually make the procedural nature more obvious when overdone.
+The #1 change I'd make
+
+Throw away the current mountain contour generator and rebuild the terrain silhouette from very-low-frequency geometry.
+
+That's the single change most likely to make a dramatic difference.
+
+Look at this ridge:
+
+/_/__//___/_//\
+
+That's an algorithm announcing itself.
+
+A real mountain range tends more toward:
+
+/_____/‾___/_
+
+with huge variations in scale.
+
+And real mountain profiles aren't simply "random smooth noise." They have geological hierarchy:
+
+continent-scale ridge → mountain massif → major peak → subsidiary ridges → gullies
+
+Your current image has too much of the last category and not enough of the first three.
+
+Specifically
+
+I'd generate the skyline something like:
+
+Start with 3–6 enormous Gaussian/low-frequency mountain masses.
+
+Give each mass a different width and height.
+
+Distort those masses very gently.
+
+Add perhaps one or two secondary ridges to each.
+
+Add tiny irregularities only after the silhouette already looks convincing.
+
+Never let high-frequency noise directly control the outer silhouette.
+
+The silhouette should look convincing if you fill the entire mountain with solid gray.
+
+That's an important test.
+
+The second huge issue: you're painting the mountain instead of lighting it
+
+This is probably the biggest conceptual problem in the script.
+
+The foreground mountains look like:
+
+black shape + texture
+
+rather than:
+
+terrain + light + atmosphere
+
+Take the large mountain on the right. It has essentially one giant dark value. Your texture gives it surface variation, but the eye doesn't perceive a believable illuminated mountain.
+
+I'd instead create a continuous height/face model:
+
+                 SUN
+                  ☼
+                 /
+                /  warm light
+        _______/________
+       /                \
+      /                  \
+_____/                    \____
+       shadow      light
+
+The mountain should have very large tonal regions.
+
+Then put your 375,000 little strokes on top of that.
+
+Right now you're doing almost the reverse: lots of strokes are carrying the image while the underlying form isn't carrying enough of it.
+
+And I would absolutely delete the ridge outlines
+
+This is probably the easiest immediate improvement.
+
+Those little tan/gray dotted lines running along the mountain boundaries are extremely destructive.
+
+They say:
+
+"This is a computer drawing of a mountain."
+
+They should not exist.
+
+A photograph has a mountain edge because thousands of pixels on either side have different luminance/color/atmospheric properties. You want that transition to emerge naturally.
+
+Try literally removing those strokes and looking at the result.
+
+I suspect it will immediately look less like an illustration, even though it may initially look less "finished."
+
+Your soft circular dabs are also giving you away
+
+You've done something clever here, but the visual signature is wrong.
+
+The sky currently has this:
+
+dab + dab + dab + dab + dab
+
+which creates a kind of pastel/painted atmospheric texture.
+
+Photographic haze is much more low-frequency and continuous.
+
+Instead of:
+
+   ○     ○
+      ○      ○
+ ○       ○
+
+think:
+
+████████████████
+████████████████
+████████████████
+████████████████
+
+with extremely slow variations across hundreds of pixels.
+
+Then introduce a small amount of irregularity.
+
+One thing I would NOT spend time on
+
+Camera defects.
+
+You already tried:
+
+vignette
+
+chromatic fringing
+
+sensor noise
+
+shadow noise
+
+veiling glare
+
+focus falloff
+
+I'd stop.
+
+Those are the last 2% of realism.
+
+You're missing the first 60%.
+
+A real photograph of a badly modeled mountain with sensor noise still looks like a badly modeled mountain.
+
+There's also a very important photographic trick missing
+Occlusion.
+
+Real mountain ranges are constantly hiding themselves behind themselves.
+
+Your range tends to present every ridge simultaneously.
+
+You want something more like:
+
+FORE
+████████████████████████
+
+        MID
+     █████████████
+
+              DISTANT
+         █████████
+
+                   FAR
+              █████
+
+And each successive range should lose information.
+
+Not merely become transparent.
+
+It should lose:
+
+edge sharpness
+
+contrast
+
+saturation
+
+texture frequency
+
+local shadow detail
+
+while gaining atmospheric brightness.
+
+That's what creates the enormous sense of depth you get in actual mountain photographs.
+
+If I were rewriting your algorithm
+
+I'd actually reduce the number of primitives devoted to texture and spend them on tonal structure.
+
+Something approximately like:
+
+10% → sky/atmospheric field
+20% → large mountain masses
+25% → mountain light/shadow modeling
+20% → overlapping distant terrain
+15% → medium-scale terrain structure
+8% → fine texture
+2% → photographic imperfections
+
+Your current image feels much closer to:
+
+lots of fine marks + texture → hopefully becomes a mountain
+
+You want:
+
+convincing mountain → atmospheric depth → lighting → texture
+
+The acid test
+
+Before adding any texture, render your mountains in three flat grayscale values:
+
+near / middle / far
+
+If that already looks like a photograph of a mountain range, you've solved the hard problem.
+
+Then add the detail.
+
+Right now, if you removed all 375,000 strokes except the major silhouettes, the underlying construction would immediately reveal the procedural nature. Fixing that underlying construction is where I'd put almost all your effort.
+
+You’re out of attachments for now. Upgrade your plan for more, or try again in 16 minutes.
+Rejoin Plus
+
+Flova.ai
+
+Seedance 2.5 in a Multi-Model Workflow
+
+Combine Seedance 2.5 with other leading AI models in one production workflow.
+
+Ad
+More options
+ChatGPT can make mistakes. Check important info.
+
+Think
+Sponsored options
+Ad

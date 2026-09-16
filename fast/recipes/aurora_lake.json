@@ -1,0 +1,6 @@
+{"title": "AURORA LAKE", "seed": 3, "horizon": 0.56, "time": "night",
+ "light": {"kind": "none"},
+ "sky": {"top": [6, 10, 24], "horizon": [22, 34, 62]},
+ "layers": [{"type": "aurora", "strength": 1.0}, {"type": "stars", "count": 1600},
+            {"type": "hills", "y": 0.565, "height": 0.10, "color": [10, 14, 26]},
+            {"type": "water", "top": 0.565, "stillness": 0.9, "tint": [10, 20, 40]}]}

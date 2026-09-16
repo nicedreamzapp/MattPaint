@@ -1,0 +1,26 @@
+{
+ "png": "g5_dog.png",
+ "finished": "2026-09-14T22:15:44-07:00",
+ "ops": 107995,
+ "wall_s": 3.218,
+ "ops_per_s": 33562,
+ "mouse_moves": 0,
+ "messages_sent": 135,
+ "mode": "replay",
+ "seed": 6000,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_dog.py",
+ "script_sha256": "7ae0fc687750b2cd",
+ "argv": [],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789449340",
+ "host": "Mac",
+ "subject": "the_long_wait",
+ "holdout": true,
+ "prompt": "A dog lying on the ground, waiting.",
+ "generation": 5,
+ "stage": "paint"
+}

@@ -1,0 +1,27 @@
+{
+ "png": "g5_deep_light_gray.png",
+ "finished": "2026-09-14T21:49:26-07:00",
+ "ops": 65319,
+ "wall_s": 1.862,
+ "ops_per_s": 35085,
+ "mouse_moves": 0,
+ "messages_sent": 85,
+ "mode": "replay",
+ "seed": 5100,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_deep_light.py",
+ "script_sha256": "7817414e387a38f0",
+ "argv": [
+  "gray"
+ ],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789447764",
+ "host": "Mac",
+ "generation": 5,
+ "subject": "deep_light",
+ "stage": "gray",
+ "prompt": "A fish underwater, light falling from the surface above, caustics moving across its body."
+}

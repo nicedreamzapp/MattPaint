@@ -1,0 +1,18 @@
+A stranger would think it shows a dense, gray cloud bank or fog bank hovering over a dark plain, with a faint glow in the sky above.
+
+Here are the 3 most important problems stopping it from reading as "Layered mountain ridges at dawn, receding into haze, with the sun low behind them":
+
+**1. The "mountains" read as a single uniform cloud mass, not distinct receding ridges.**
+*   **What you SEE:** The mid-ground is a massive, undifferentiated blob of gray/white dabs. There are no distinct horizontal bands of ridges that step back into the distance. The "layers" are just variations in the density of the same cloud-like texture. It lacks the horizontal stratification that defines a mountain range.
+*   **Where:** The entire central 60% of the canvas.
+*   **The Fix:** The program is likely applying the "dab" texture uniformly across the whole mountain mass. It needs to explicitly define 4-5 distinct horizontal ridge lines (using a 1D noise function for the silhouette). Each ridge should be a distinct value step (lighter as they recede). The texture (dabs) should be applied *within* each ridge band, but the bands themselves must have clear, distinct value separation (atmospheric perspective) before the texture is applied. The "haze" should be a gradient overlay that increases with distance, not just a change in dab opacity.
+
+**2. The "sun" is a generic glow, not a light source interacting with the scene.**
+*   **What you SEE:** There is a soft, brownish/white glow in the upper center. However, it doesn't appear to be *behind* the mountains. The mountain silhouettes don't block it, and there is no corresponding rim light or "backlight" effect on the ridges closest to the sun. The light feels like it's floating in the sky rather than emanating from a specific point source that the terrain is silhouetted against.
+*   **Where:** Upper center, just above the highest ridge line.
+*   **The Fix:** The lighting model needs to be a true backlight. The sun should be a bright, small, high-intensity source. The ridges *in front* of it must be darker (silhouetted) than the sky behind them. Crucially, the "dawn" aspect requires a warm color temperature gradient in the sky that is strongest at the horizon/sun position and fades to cool blue at the top. The ridges should catch a faint warm rim light on their upper edges facing the sun, while their faces remain in cool shadow.
+
+**3. The "dawn" atmosphere is missing; the palette is muddy and lacks the specific color temperature shift.**
+*   **What you SEE:** The image is almost entirely grayscale with a very slight brownish tint in the center. "Dawn" implies a specific color story: cool blues/purples in the shadows and upper sky, transitioning to warm oranges/pinks/yellows near the horizon and on lit surfaces. Currently, the "haze" is just gray, and the "light" is just white/brown. It looks like a monochrome photo with a filter, not a time of day.
+*   **Where:** Entire canvas, specifically the sky and the "haze" between ridges.
+*   **The Fix:** Apply the "Colour temperature carries the light" rule. The sky gradient must go from deep blue (top) to a warm peach/orange (horizon). The "haze" between the mountain ridges should not be neutral gray; it should be a desaturated version of the sky color at that altitude (cool blue-gray for distant ridges, warmer gray for closer ones). The "sun" glow should be a strong warm yellow/orange. The shadows on the mountains should be a cool blue-purple, not just dark gray.

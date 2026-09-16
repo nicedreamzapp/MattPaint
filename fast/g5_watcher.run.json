@@ -1,0 +1,25 @@
+{
+ "png": "g5_watcher.png",
+ "finished": "2026-09-14T22:11:08-07:00",
+ "ops": 81904,
+ "wall_s": 2.462,
+ "ops_per_s": 33274,
+ "mouse_moves": 0,
+ "messages_sent": 105,
+ "mode": "replay",
+ "seed": 5700,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_watcher.py",
+ "script_sha256": "be09cb0e50c5b336",
+ "argv": [],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789449065",
+ "host": "Mac",
+ "subject": "the_watcher",
+ "prompt": "A creature on a branch at night, watching.",
+ "generation": 5,
+ "stage": "paint"
+}

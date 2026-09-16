@@ -1,0 +1,28 @@
+{
+ "png": "g3_horse_paint.png",
+ "finished": "2026-09-14T17:03:57-07:00",
+ "ops": 103489,
+ "wall_s": 3.531,
+ "ops_per_s": 29307,
+ "mouse_moves": 0,
+ "messages_sent": 128,
+ "mode": "replay",
+ "seed": 3002,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g3_horse.py",
+ "script_sha256": "8585373b28fa66f4",
+ "argv": [
+  "paint"
+ ],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789430632",
+ "host": "Mac",
+ "generation": 3,
+ "subject": "morning_field",
+ "stage": "paint",
+ "head_len_px": 150.0,
+ "prompt": "A horse standing in an open field in early morning light."
+}

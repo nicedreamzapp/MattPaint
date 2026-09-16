@@ -1,0 +1,7 @@
+This image was not made by an image model. It was drawn procedurally in a browser paint program using only three primitives: filled rectangles, straight lines, and soft circular dabs. About 375,000 of them. A Python script decides where every stroke goes, then a language model looks at the result, describes in words what is wrong, and rewrites the script.
+
+The goal is for it to look like a photograph of mountains at dawn. It does not.
+
+I have already tried: a written value plan with every colour derived from it, recursive self-similar texture instead of uniform scatter, atmospheric perspective in explicit depth layers, and a final pass adding simulated camera defects (lens vignette, chromatic fringing at high contrast edges, sensor noise that rises in shadow, slight focus falloff, veiling glare).
+
+Please be blunt and specific. What actually reads as fake here? Rank the problems by how much each one costs, and for each say what concrete change would fix it. I care most about which single change would move it furthest toward photographic.

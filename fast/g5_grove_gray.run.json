@@ -1,0 +1,27 @@
+{
+ "png": "g5_grove_gray.png",
+ "finished": "2026-09-14T21:57:48-07:00",
+ "ops": 714834,
+ "wall_s": 18.139,
+ "ops_per_s": 39408,
+ "mouse_moves": 0,
+ "messages_sent": 807,
+ "mode": "replay",
+ "seed": 5200,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_grove.py",
+ "script_sha256": "08943ebff35e1a4d",
+ "argv": [
+  "gray"
+ ],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789448249",
+ "host": "Mac",
+ "subject": "first_light_in_the_grove",
+ "prompt": "A redwood grove in fog at first light, with shafts of sun coming through the trees.",
+ "generation": 5,
+ "stage": "gray"
+}

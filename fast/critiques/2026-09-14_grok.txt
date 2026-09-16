@@ -1,0 +1,63 @@
+Skip to main content
+ab_after.png
+
+This image was not made by an image model. It was drawn procedurally in a browser paint program using only three primitives: filled rectangles, straight lines, and soft circular dabs. About 375,000 of them. A Python script decides where every stroke goes, then a language model looks at the result, describes in words what is wrong, and rewrites the script.
+
+The goal is for it to look like a photograph of mountains at dawn. It does not.
+
+I have already tried: a written value plan with every colour derived from it, recursive self-similar texture instead of uniform scatter, atmospheric perspective in explicit depth layers, and a final pass adding simulated camera defects (lens vignette, chromatic fringing at high contrast edges, sensor noise that rises in shadow, slight focus falloff, veiling glare).
+
+Please be blunt and specific. What actually reads as fake here? Rank the problems by how much each one costs, and for each say what concrete change would fix it. I care most about which single change would move it furthest toward photographic.
+
+Worked for 31s
+
+The image reads as a graphic, not a photograph, for one dominant reason: you are drawing the idea of ridges instead of drawing illuminated surfaces.
+
+The gold dotted traces are the single most expensive tell. They sit on top of the land like a map contour or a foil stamp. In a dawn photograph a ridge is not a line; it is the place where a slope facing the sun gets brighter than the slope facing away. Those traces announce “an algorithm followed a path and sprinkled dabs along it.” Everything else you added (vignette, chromatic fringe, shadow noise) cannot overpower that.
+
+Ranked by how much each problem costs:
+
+1. Crests drawn as explicit gold paths (highest cost)
+
+Photographic ridges have width, a lit face, and a shadowed face. Yours have a sparkling polyline.
+
+Fix: delete the ridge-stroke pass. Model each ridge as a band with a simple lighting term (dot product of a fake surface normal against the sun vector, or even just a vertical gradient that is warmer/brighter on the side toward the sun). The crest should be the result of that lighting, not a separate primitive.
+
+2. Foreground mass is a glitter-edged silhouette, not terrain
+
+The dark spikes read as a row of identical Christmas trees or a noise fill with a decorative rim. Real near-ground at that scale is either individual trees with gaps and height variation, or rock with facets. The uniform sparkle along every edge is the dab primitive advertising itself.
+
+Fix: either push that whole layer back into heavier atmosphere so it becomes a soft dark band, or give it two materials (tree canopy vs rock) with different dab sizes and no gold outline. The outline has to go.
+
+3. Almost no form on the mid-ground layers
+
+The pale ridges are flat color bands. Atmospheric perspective is present as hue shift, but there is no sense that any surface is tilted toward or away from the light. Real layered ridges still show gullies and slope changes even when they are pale.
+
+Fix: the same lighting term as #1, applied more weakly per depth layer. A little more contrast on the nearest mid-ridge, almost none on the farthest.
+
+4. Sky is a wash, not air
+
+The upper rainbow band and the perfectly round sun disk are illustration. Dawn sky in a photo is a gradient that interacts with haze; the sun usually has a soft bloom whose color leaks into the nearest haze, not a hard circle sitting on a watercolor field.
+
+Fix: make the sun a small high-value core plus a large, very low-contrast warm bloom that only exists in the upper-mid sky. Kill the spectral band at the top of the frame.
+
+5. Medium is consistent across the whole picture
+
+Every region is built from the same family of soft circular dabs. That produces a single “print texture” instead of the change in spatial frequency you get in a photograph (sharp or noisy near, soft and low-contrast far). Camera defects you already added sit on top of that medium; they do not replace it.
+
+Fix: vary dab size and opacity by depth and by material. Foreground dabs should be smaller and more opaque; distant ones larger, more transparent, and cooler. The texture itself has to recede.
+
+Single change that moves it furthest toward photographic:
+
+Stop stroking the ridges. Implement even a crude per-ridge lighting model so the gold happens on the sun-facing slope rather than as a separate line of dabs. That one substitution turns the mid-ground from a drawing into a set of volumes and makes the rest of the camera-defect work start to matter.
+
+The value plan and the depth layers are already doing useful work. The graphic traces and the outlined foreground are undoing it.
+
+18 sources
+Explore procedural terrain generation techniques
+Investigate neural style transfer methods
+
+
+
+
+Fast

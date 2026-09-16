@@ -1,1 +1,9 @@
 .DS_Store
+__pycache__/
+*.bak
+*.bak-*
+fast/_local_*.py
+fast/**/*.png
+fast/**/*.jpg
+fast/**/*.mp4
+!fast/director_runs/**/*.png

@@ -1,0 +1,4 @@
+{"title": "DAWN RIDGES", "seed": 7, "horizon": 0.70,
+ "light": {"kind": "sun", "x": 0.62, "y": 0.36, "color": [255, 196, 132]},
+ "sky": {"top": [26, 42, 88], "horizon": [255, 178, 108], "glow": [255, 218, 156]},
+ "layers": [{"type": "ridges", "count": 5, "top": 0.43, "bottom": 0.80, "height": 0.28, "haze": 0.75}]}

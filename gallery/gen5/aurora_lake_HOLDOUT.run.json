@@ -1,0 +1,26 @@
+{
+ "png": "g5_aurora.png",
+ "finished": "2026-09-14T22:14:11-07:00",
+ "ops": 88263,
+ "wall_s": 2.825,
+ "ops_per_s": 31247,
+ "mouse_moves": 0,
+ "messages_sent": 113,
+ "mode": "replay",
+ "seed": 5900,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_aurora.py",
+ "script_sha256": "6b38174d0386df88",
+ "argv": [],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789449248",
+ "host": "Mac",
+ "subject": "aurora_lake",
+ "holdout": true,
+ "prompt": "Aurora over a still lake at night, the light mirrored in the water.",
+ "generation": 5,
+ "stage": "paint"
+}

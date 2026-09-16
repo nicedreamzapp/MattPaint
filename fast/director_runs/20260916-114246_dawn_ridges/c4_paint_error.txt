@@ -1,0 +1,26 @@
+DAWN RIDGES gen5: 925,850 strokes
+Traceback (most recent call last):
+  File "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/scene_engine.py", line 580, in <module>
+    render(recipe, sys.argv[2] if len(sys.argv) > 2 else "scene.png", gray="gray" in sys.argv[3:])
+  File "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/scene_engine.py", line 574, in render
+    return asyncio.run(G5.paint(a, out, {"subject": recipe.get("title", ""), "engine": "scene_engine",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/g5lib.py", line 184, in paint
+    await tab.measure_canvas(); await tab.resize_canvas(art.W, art.H)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/engine.py", line 233, in measure_canvas
+    b = await self.box('#main-canvas', fresh=True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/engine.py", line 228, in box
+    if not b: raise RuntimeError("no element " + selector)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no element #main-canvas

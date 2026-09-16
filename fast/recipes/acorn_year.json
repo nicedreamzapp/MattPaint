@@ -1,0 +1,7 @@
+{"title": "THE ACORN YEAR", "seed": 4, "horizon": 0.70,
+ "light": {"kind": "sun", "x": 0.15, "y": 0.10, "color": [255, 226, 170]},
+ "sky": {"top": [74, 118, 176], "horizon": [196, 214, 226]},
+ "layers": [{"type": "clouds", "amount": 0.4, "y": 0.2},
+            {"type": "hills", "y": 0.72, "height": 0.05, "color": [96, 120, 100]},
+            {"type": "meadow", "top": 0.70},
+            {"type": "oak", "x": 0.48, "ground": 0.80, "height": 0.30, "width": 0.30}]}

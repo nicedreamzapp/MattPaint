@@ -1,0 +1,299 @@
+[
+ {
+  "recipe": "r0",
+  "attempt": 0,
+  "s": 279.7,
+  "tok": 2696,
+  "tps": 9.7,
+  "peak_gb": 58.0,
+  "think": true,
+  "cached": true,
+  "step": "director",
+  "t": "11:47:44"
+ },
+ {
+  "recipe": "r0",
+  "s": 5.9,
+  "ops": 585836,
+  "ok": true,
+  "step": "preflight",
+  "t": "11:47:50"
+ },
+ {
+  "recipe": "g0",
+  "gray": true,
+  "ok": true,
+  "s": 24.5,
+  "step": "paint",
+  "t": "11:48:15"
+ },
+ {
+  "round": 0,
+  "passed": false,
+  "s": 82.6,
+  "tok": 784,
+  "tps": 10.076223632821382,
+  "peak_gb": 58.5,
+  "think": false,
+  "cached": false,
+  "step": "look-gray",
+  "t": "11:49:37"
+ },
+ {
+  "recipe": "g1",
+  "s": 6.3,
+  "ops": 635291,
+  "ok": true,
+  "step": "preflight",
+  "t": "11:49:44"
+ },
+ {
+  "recipe": "g1",
+  "gray": true,
+  "ok": true,
+  "s": 23.5,
+  "step": "paint",
+  "t": "11:50:07"
+ },
+ {
+  "round": 1,
+  "passed": false,
+  "s": 81.7,
+  "tok": 771,
+  "tps": 10.021752157817842,
+  "peak_gb": 58.5,
+  "think": false,
+  "cached": false,
+  "step": "look-gray",
+  "t": "11:51:29"
+ },
+ {
+  "recipe": "c0",
+  "gray": false,
+  "ok": true,
+  "s": 24.7,
+  "step": "paint",
+  "t": "11:51:54"
+ },
+ {
+  "round": 1,
+  "s": 81.1,
+  "tok": 774,
+  "tps": 10.149675287925678,
+  "peak_gb": 58.5,
+  "think": false,
+  "cached": false,
+  "step": "look",
+  "t": "11:53:15"
+ },
+ {
+  "recipe": "c1",
+  "s": 7.4,
+  "ops": 729855,
+  "ok": true,
+  "step": "preflight",
+  "t": "11:53:22"
+ },
+ {
+  "recipe": "c1",
+  "gray": false,
+  "ok": true,
+  "s": 28.3,
+  "step": "paint",
+  "t": "11:53:51"
+ },
+ {
+  "recipe": "c1",
+  "challenger_shown": 2,
+  "won": true,
+  "why": "The light source in the second image is more consistent, with the sun's glow properly illuminating the ridges from behind and creating a mor",
+  "s": 8.1,
+  "tok": 45,
+  "tps": 10.37144664071096,
+  "peak_gb": 58.4,
+  "think": false,
+  "cached": false,
+  "step": "judge",
+  "t": "11:53:59"
+ },
+ {
+  "recipe": "c1",
+  "challenger_shown": 1,
+  "won": false,
+  "why": "The light in the second image is more convincing because the warm glow of the dawn sun creates a stronger, more distinct atmospheric haze th",
+  "s": 8.3,
+  "tok": 51,
+  "tps": 10.375267929915069,
+  "peak_gb": 58.4,
+  "think": false,
+  "cached": false,
+  "step": "judge",
+  "t": "11:54:07"
+ },
+ {
+  "round": 1,
+  "best": "c0.png",
+  "step": "kept-best",
+  "t": "11:54:07"
+ },
+ {
+  "round": 2,
+  "s": 83.6,
+  "tok": 804,
+  "tps": 10.161618611284117,
+  "peak_gb": 58.5,
+  "think": false,
+  "cached": false,
+  "step": "look",
+  "t": "11:55:30"
+ },
+ {
+  "recipe": "c2",
+  "s": 8.0,
+  "ops": 815657,
+  "ok": true,
+  "step": "preflight",
+  "t": "11:55:38"
+ },
+ {
+  "recipe": "c2",
+  "gray": false,
+  "ok": true,
+  "s": 31.3,
+  "step": "paint",
+  "t": "11:56:10"
+ },
+ {
+  "recipe": "c2",
+  "challenger_shown": 2,
+  "won": true,
+  "why": "The light in the second image is more convincing because the sun's glow creates a clear, bright focal point that naturally illuminates the h",
+  "s": 10.8,
+  "tok": 69,
+  "tps": 9.922264272208087,
+  "peak_gb": 58.4,
+  "think": false,
+  "cached": false,
+  "step": "judge",
+  "t": "11:56:21"
+ },
+ {
+  "recipe": "c2",
+  "challenger_shown": 1,
+  "won": true,
+  "why": "The light source in the first image is more consistent, with the sun's glow properly illuminating the ridges from behind and creating a beli",
+  "s": 9.0,
+  "tok": 58,
+  "tps": 10.337188929639945,
+  "peak_gb": 58.4,
+  "think": false,
+  "cached": false,
+  "step": "judge",
+  "t": "11:56:30"
+ },
+ {
+  "round": 2,
+  "step": "new-best",
+  "t": "11:56:30"
+ },
+ {
+  "round": 3,
+  "s": 94.5,
+  "tok": 900,
+  "tps": 10.01856984600033,
+  "peak_gb": 58.6,
+  "think": false,
+  "cached": false,
+  "step": "look",
+  "t": "11:58:04"
+ },
+ {
+  "recipe": "c3",
+  "s": 11.1,
+  "ops": 1091652,
+  "ok": true,
+  "step": "preflight",
+  "t": "11:58:15"
+ },
+ {
+  "recipe": "c3",
+  "gray": false,
+  "ok": true,
+  "s": 41.9,
+  "step": "paint",
+  "t": "11:58:57"
+ },
+ {
+  "recipe": "c3",
+  "challenger_shown": 2,
+  "won": true,
+  "why": "The second image presents a more convincing scene because the light source is more consistent, with the sun's glow properly illuminating the",
+  "s": 8.9,
+  "tok": 53,
+  "tps": 10.371957983018522,
+  "peak_gb": 58.4,
+  "think": false,
+  "cached": false,
+  "step": "judge",
+  "t": "11:59:06"
+ },
+ {
+  "recipe": "c3",
+  "challenger_shown": 1,
+  "won": false,
+  "why": "The light in the second image is more convincing because the warm glow of the dawn sun creates a stronger, more logical contrast with the co",
+  "s": 10.4,
+  "tok": 70,
+  "tps": 9.941640029380999,
+  "peak_gb": 58.4,
+  "think": false,
+  "cached": false,
+  "step": "judge",
+  "t": "11:59:16"
+ },
+ {
+  "round": 3,
+  "best": "c2.png",
+  "step": "kept-best",
+  "t": "11:59:16"
+ },
+ {
+  "round": 4,
+  "s": 95.9,
+  "tok": 900,
+  "tps": 9.876194449668537,
+  "peak_gb": 58.6,
+  "think": false,
+  "cached": false,
+  "step": "look",
+  "t": "12:00:52"
+ },
+ {
+  "recipe": "c4",
+  "s": 9.2,
+  "ops": 927600,
+  "ok": true,
+  "step": "preflight",
+  "t": "12:01:02"
+ },
+ {
+  "recipe": "c4",
+  "gray": false,
+  "ok": false,
+  "s": 20.0,
+  "step": "paint",
+  "t": "12:01:22"
+ },
+ {
+  "round": 4,
+  "best": "c2.png",
+  "step": "kept-best",
+  "t": "12:01:22"
+ },
+ {
+  "file": "gallery/gen6/dawn_ridges.png",
+  "best": "c2.png",
+  "step": "published",
+  "t": "12:01:22"
+ }
+]

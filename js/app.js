@@ -3683,6 +3683,31 @@
         }
     }
 
+    // ==================== FAST DRAW (agent accelerator, no UI) ====================
+    // Draws batches of rects/strokes straight to the canvas, bypassing the per-event
+    // mouse handler. Coordinates are canvas-internal pixels. Undo still works via commit.
+    window.__mpFast = function(ops) {
+        const ctx = mainCtx;
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        for (let i = 0; i < ops.length; i++) {
+            const o = ops[i];
+            if (o[0] === 0) {                       // rect: [0,x,y,w,h,r,g,b]
+                ctx.fillStyle = 'rgb(' + o[5] + ',' + o[6] + ',' + o[7] + ')';
+                ctx.fillRect(o[1], o[2], o[3], o[4]);
+            } else if (o[0] === 1) {                // stroke: [1,x1,y1,x2,y2,w,r,g,b]
+                ctx.strokeStyle = 'rgb(' + o[6] + ',' + o[7] + ',' + o[8] + ')';
+                ctx.lineWidth = o[5];
+                ctx.beginPath(); ctx.moveTo(o[1], o[2]); ctx.lineTo(o[3], o[4]); ctx.stroke();
+            } else if (o[0] === 2) {                // soft dab: [2,x,y,r,g,b,radius,alpha]
+                ctx.globalAlpha = o[7];
+                ctx.fillStyle = 'rgb(' + o[3] + ',' + o[4] + ',' + o[5] + ')';
+                ctx.beginPath(); ctx.arc(o[1], o[2], o[6], 0, 6.2832); ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+    };
+    window.__mpFastCommit = function() { try { saveHistory(); } catch (e) {} };
+
     // ==================== INITIALIZE ====================
     document.addEventListener('DOMContentLoaded', init);
 

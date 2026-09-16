@@ -1,0 +1,25 @@
+{
+ "png": "g5_narrows.png",
+ "finished": "2026-09-14T22:07:20-07:00",
+ "ops": 144568,
+ "wall_s": 4.2,
+ "ops_per_s": 34425,
+ "mouse_moves": 0,
+ "messages_sent": 175,
+ "mode": "replay",
+ "seed": 5500,
+ "source_ref": null,
+ "canvas": [
+  1380,
+  900
+ ],
+ "script": "g5_narrows.py",
+ "script_sha256": "c6a755fa0293301f",
+ "argv": [],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789448835",
+ "host": "Mac",
+ "subject": "the_narrows",
+ "prompt": "A slot canyon, light coming down from a narrow opening far above.",
+ "generation": 5,
+ "stage": "paint"
+}

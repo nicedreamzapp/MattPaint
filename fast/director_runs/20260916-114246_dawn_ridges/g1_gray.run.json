@@ -1,0 +1,105 @@
+{
+ "png": "g1_gray.png",
+ "finished": "2026-09-16T11:50:07-07:00",
+ "ops": 635518,
+ "wall_s": 16.589,
+ "ops_per_s": 38309,
+ "mouse_moves": 0,
+ "messages_sent": 722,
+ "mode": "replay",
+ "seed": null,
+ "source_ref": null,
+ "canvas": [
+  1035,
+  675
+ ],
+ "script": "scene_engine.py",
+ "script_sha256": "ff2594c80787c4c8",
+ "argv": [
+  "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/director_runs/20260916-114246_dawn_ridges/g1.json",
+  "/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/director_runs/20260916-114246_dawn_ridges/g1_gray.png",
+  "gray"
+ ],
+ "page_url": "https://nicedreamzwholesale.com/paint/?r=1789584590",
+ "host": "Matts-MacBook-Pro.local",
+ "subject": "DAWN RIDGES",
+ "engine": "scene_engine",
+ "recipe": {
+  "title": "DAWN RIDGES",
+  "seed": 12,
+  "horizon": 0.7,
+  "time": "dawn",
+  "light": {
+   "kind": "sun",
+   "x": 0.58,
+   "y": 0.65,
+   "color": [
+    255,
+    190,
+    126
+   ],
+   "strength": 1.15
+  },
+  "sky": {
+   "top": [
+    24,
+    38,
+    80
+   ],
+   "horizon": [
+    255,
+    168,
+    104
+   ],
+   "glow": [
+    255,
+    218,
+    154
+   ]
+  },
+  "fog_color": [
+   222,
+   204,
+   182
+  ],
+  "layers": [
+   {
+    "type": "clouds",
+    "amount": 0.16,
+    "y": 0.24,
+    "spread": 0.14,
+    "color": [
+     255,
+     208,
+     164
+    ]
+   },
+   {
+    "type": "ridges",
+    "count": 8,
+    "top": 0.44,
+    "bottom": 1.0,
+    "height": 0.34,
+    "haze": 0.65,
+    "rock": [
+     104,
+     120,
+     154
+    ]
+   },
+   {
+    "type": "fog",
+    "amount": 0.35,
+    "top": 0.55,
+    "bottom": 1.0,
+    "color": [
+     224,
+     204,
+     182
+    ]
+   }
+  ]
+ },
+ "generation": 5,
+ "stage": "gray"
+}
