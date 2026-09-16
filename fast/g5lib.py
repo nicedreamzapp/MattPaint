@@ -180,7 +180,8 @@ async def paint(art, out, meta, gray=False, defect_frac=0.02, focal_y=None):
     if not up: launch_brave(9231, size=(1560, 1010)); await asyncio.sleep(2.0)
     br = Browser(9231); await br.connect()
     tab = await br.existing_page("replay") or await br.new_tab("replay")
-    await tab.goto("https://nicedreamzwholesale.com/paint/?r=" + str(int(time.time())))
+    from engine import paint_url
+    await tab.goto(paint_url())
     await tab.measure_canvas(); await tab.resize_canvas(art.W, art.H)
     tab.run_meta = dict(meta, generation=5, stage="gray" if gray else "paint")
     t0 = time.time()

@@ -75,6 +75,31 @@ window.__fp = window.__fp || (() => {
 # flag is exactly the thing that quietly flips back.
 BANNED_FLAGS = ("--headless", "--window-position=-", "--start-minimized", "--disable-gpu-compositing")
 
+APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # the MattPaint app itself
+LOCAL_PORT = 8797
+SITE_URL = "https://nicedreamzwholesale.com/paint/"
+
+def paint_url():
+    """Where the paint window loads MattPaint from. 2026-09-16: the local copy of the app, served
+    from this Mac, so painting works with no internet. Falls back to the website only if the
+    local server can't be started."""
+    def up():
+        try:
+            urllib.request.urlopen(f"http://127.0.0.1:{LOCAL_PORT}/index.html", timeout=1)
+            return True
+        except Exception:
+            return False
+    if not up():
+        subprocess.Popen([sys.executable, "-m", "http.server", str(LOCAL_PORT), "--bind", "127.0.0.1",
+                          "--directory", APP_DIR], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                         start_new_session=True)
+        for _ in range(20):
+            if up():
+                break
+            time.sleep(0.25)
+    base = f"http://127.0.0.1:{LOCAL_PORT}/index.html" if up() else SITE_URL
+    return f"{base}?r={int(time.time())}"
+
 def _no_browser_in_preflight():
     # 2026-09-16: a script that paints through its own runner instead of G5.paint() would reach
     # the browser during a "no browser" preflight and paint on Matt's screen. Refuse here, where
