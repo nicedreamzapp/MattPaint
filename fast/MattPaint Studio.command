@@ -1,5 +1,5 @@
 #!/bin/bash
-# MattPaint Studio — type what you want painted; local Qwen 3.8 art-directs and the gen 6 scene
+# MattPaint Studio — type what you want painted; local Gemma 4 art-directs and the gen 6 scene
 # engine paints it from scratch in MattPaint, on screen. No images go in.
 # Double-click. Song Forge pauses while a painting is being made and comes back after each one.
 cd "$(dirname "$0")"
@@ -8,7 +8,7 @@ clear
 echo ""
 echo "  ╔══════════════════════════════════════════════════╗"
 echo "  ║  MattPaint Studio · gen 6                        ║"
-echo "  ║  local Qwen 3.8 directs · the engine paints      ║"
+echo "  ║  local Gemma 4 directs · the engine paints       ║"
 echo "  ╚══════════════════════════════════════════════════╝"
 echo ""
 echo "  It can paint: skies, sun, moon, stars, aurora, clouds, mountain ridges,"

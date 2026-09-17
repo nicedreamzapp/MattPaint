@@ -43,9 +43,71 @@ def extract_json(text):
         return None, f"The recipe is not valid JSON ({e}). Reply with one ```json block."
 
 
+HEX = re.compile(r"^#?([0-9a-fA-F]{6})$")
+
+
+def unhex(v):
+    """The model may write colours as "#rrggbb" (a third of the tokens of [r, g, b])."""
+    if isinstance(v, str) and HEX.match(v):
+        h = HEX.match(v).group(1)
+        return [int(h[i:i + 2], 16) for i in (0, 2, 4)]
+    if isinstance(v, list):
+        return [unhex(x) for x in v]
+    if isinstance(v, dict):
+        return {k: unhex(x) for k, x in v.items()}
+    return v
+
+
+def tohex(v):
+    if isinstance(v, list) and len(v) == 3 and all(isinstance(x, (int, float)) for x in v):
+        return "#%02x%02x%02x" % tuple(int(max(0, min(255, x))) for x in v)
+    if isinstance(v, list):
+        return [tohex(x) for x in v]
+    if isinstance(v, dict):
+        return {k: tohex(x) for k, x in v.items()}
+    return v
+
+
+def compact(r):
+    """The recipe as the model sees it: hex colours, one layer per numbered line. Short to read,
+    and nothing in it invites the model to copy a long pretty-printed block back."""
+    h = tohex(r)
+    head = {k: v for k, v in h.items() if k != "layers"}
+    lines = [json.dumps(head, separators=(",", ":"))]
+    for i, l in enumerate(h.get("layers", [])):
+        lines.append(f"layer {i}: " + json.dumps(l, separators=(",", ":")))
+    return "\n".join(lines)
+
+
+def apply_patch(recipe, patch):
+    """{"set": {"light.y": 0.7, "layers.3.amount": 0.6}, "add": [{"at": 2, "layer": {...}}],
+        "remove": [5]}  -> new recipe, or (None, problem)."""
+    import copy
+    r = copy.deepcopy(recipe)
+    try:
+        for path, val in (patch.get("set") or {}).items():
+            keys = path.split(".")
+            cur = r
+            for k in keys[:-1]:
+                cur = cur[int(k)] if isinstance(cur, list) else cur.setdefault(k, {})
+            last = keys[-1]
+            if isinstance(cur, list):
+                cur[int(last)] = unhex(val)
+            else:
+                cur[last] = unhex(val)
+        for i in sorted((int(x) for x in patch.get("remove") or []), reverse=True):
+            del r["layers"][i]
+        for a in patch.get("add") or []:
+            r["layers"].insert(int(a.get("at", len(r["layers"]))), unhex(a["layer"]))
+    except Exception as e:
+        return None, f"The change list could not be applied ({type(e).__name__}: {e}). Paths look like light.y or layers.3.amount."
+    return r, None
+
+
 def validate(r):
     """Drop what the engine can't paint and clamp numbers, so a slip becomes a note, not a crash."""
     import scene_engine as SE
+    r = unhex(r)
     notes = []
     if not isinstance(r, dict):
         return None, "The recipe must be a JSON object."
@@ -83,6 +145,7 @@ class Direction:
         self.q, self.key, self.prompt, self.dir = q, key, prompt, rundir
         self.rounds, self.gray_rounds, self.holdout = rounds, gray_rounds, holdout
         self.steps = []
+        self.lost = []          # (changes, judge's reason) for revisions that lost
         self.prefix = ("You are the art director for a painting engine. You never draw strokes yourself: "
                        "you write a short recipe and the engine paints it from scratch.\n\n"
                        + (HERE / "RECIPES.md").read_text() + "\n\nTHE PAINTING RULES THE ENGINE FOLLOWS:\n"
@@ -101,11 +164,15 @@ class Direction:
         p.write_text(json.dumps(r, indent=1))
         return p
 
-    def checked(self, text, name):
-        """JSON -> validated -> engine preflight. Returns (recipe, problem)."""
+    def checked(self, text, name, base=None):
+        """JSON -> (patch applied to base) -> validated -> engine preflight. Returns (recipe, problem)."""
         r, problem = extract_json(text)
         if r is None:
             return None, problem
+        if base is not None and "layers" not in r:
+            r, problem = apply_patch(base, r)
+            if r is None:
+                return None, problem
         r, note = validate(r)
         if r is None:
             return None, note
@@ -161,12 +228,19 @@ class Direction:
                 "This is the painting. First say in one sentence what a stranger would think it shows. "
                 "Then name the 3 changes that would make it read most strongly as the prompt, with the "
                 "believable light the rules ask for.")
-        return (head + f"\nTHE CURRENT RECIPE:\n```json\n{json.dumps(recipe, indent=1)}\n```\n\n{what}\n"
-                "Then reply with the COMPLETE revised recipe in one ```json block. Change only what your "
-                "critique calls for.")
+        tried = ""
+        if self.lost:
+            tried = ("\nALREADY TRIED THIS SUBJECT AND JUDGED WORSE (do not repeat these):\n"
+                     + "\n".join(f"- {c} -> {why}" for c, why in self.lost[-4:]) + "\n")
+        return (head + f"\nTHE CURRENT RECIPE (colours may be written #rrggbb):\n{compact(recipe)}\n{tried}\n{what}\n"
+                "Then reply with ONLY the changes, in one ```json block:\n"
+                '{"set": {"light.y": 0.7, "layers.3.amount": 0.6, "fog_color": "#e0c8a8"}, '
+                '"add": [{"at": 2, "layer": {"type": "shafts", "count": 5}}], "remove": [4]}\n'
+                "Use only the parts you need. Never repeat the whole recipe.")
 
     def judge(self, best, new, name):
         wins = 0
+        self.last_why = ""
         for first, second, challenger in ((best, new, 2), (new, best, 1)):
             text, st = self.q.ask(
                 f"Two paintings of: \"{self.prompt}\"\nWhich reads more convincingly as that scene, with "
@@ -175,6 +249,8 @@ class Direction:
             m = re.search(r"WINNER:\s*([12])", text)
             won = bool(m and int(m.group(1)) == challenger)
             wins += won
+            if not won:
+                self.last_why = (text.splitlines() or [""])[-1][:160]
             self.log("judge", recipe=name, challenger_shown=challenger, won=won,
                      why=(text.splitlines() or [""])[-1][:140], **st)
         return wins == 2
@@ -197,7 +273,7 @@ class Direction:
             if passed or self.holdout or g >= self.gray_rounds:
                 break
             g += 1
-            new, problem = self.checked(text, f"g{g}")
+            new, problem = self.checked(text, f"g{g}", base=r)
             if new is None or new == r:
                 self.log("gray-revision-skipped", reason=(problem or "unchanged")[:120])
                 break
@@ -206,20 +282,24 @@ class Direction:
         if best is None:
             return self.finish("colour paint failed")
         best_recipe = r
+        tried = []
         for n in range(1, 0 if self.holdout else self.rounds + 1):
             name = f"c{n}"
             text, st = self.q.ask(self.look_prompt(False, best_recipe), images=[str(best)], max_tokens=2500)
             (self.dir / f"{name}_look.md").write_text(text)
             self.log("look", round=n, **st)
-            new, problem = self.checked(text, name)
-            if new is None or new == best_recipe:
-                self.log("round-skipped", round=n, reason=(problem or "recipe unchanged")[:160])
+            new, problem = self.checked(text, name, base=best_recipe)
+            if new is None or new == best_recipe or new in tried:
+                self.log("round-skipped", round=n, reason=(problem or "recipe unchanged or already tried")[:160])
                 continue
+            tried.append(new)
             png = self.paint(new, name)
             if png and self.judge(best, png, name):
                 best, best_recipe = png, new
                 self.log("new-best", round=n)
             else:
+                change = (extract_json(text)[0] or {})
+                self.lost.append((json.dumps(change, separators=(",", ":"))[:300], self.last_why))
                 self.log("kept-best", round=n, best=best.name)
         GALLERY.mkdir(parents=True, exist_ok=True)
         slug = slug_of(self.key) + TAG

@@ -5,7 +5,7 @@ gens 1-5 learned; the recipe only says what to paint, where, and under what ligh
 traced from an image.
 
 All positions and sizes are **fractions of the canvas**: x 0 = left edge, 1 = right edge;
-y 0 = top, 1 = bottom. Colours are `[r, g, b]` 0-255 and are HUES — the engine sets the value
+y 0 = top, 1 = bottom. Colours are `[r, g, b]` 0-255 or `"#rrggbb"` (shorter, preferred) and are HUES — the engine sets the value
 (brightness) from the light, so a colour says "what kind of warm", not "how bright".
 
 ```json

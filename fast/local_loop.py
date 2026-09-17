@@ -41,7 +41,10 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 GALLERY = HERE.parent / "gallery" / "gen6_local"
 # MATTPAINT_MODEL swaps the director model for a head-to-head (2026-09-17: Gemma 4 vs Qwen 3.8).
-MODEL = os.environ.get("MATTPAINT_MODEL") or "donedynamics/Qwen3.8-27B-heretic-VL-MLX-bf16"
+# 2026-09-17 Matt picked Gemma 4 (bf16, with vision) after the redwood head-to-head. Qwen stays one
+# env var away: MATTPAINT_MODEL=donedynamics/Qwen3.8-27B-heretic-VL-MLX-bf16
+MODEL = os.environ.get("MATTPAINT_MODEL") or os.path.expanduser(
+    "~/.cache/huggingface/hub/gemma-4-31b-it-abliterated-VL-mlx-bf16")
 PAINT_PY = os.path.expanduser("~/.local/mlx-server/bin/python3")   # has websockets/numpy/PIL
 GEN_LABEL = "6TH GEN · LOCAL QWEN 3.8"
 HOLDOUTS = ("AURORA LAKE", "THE LONG WAIT")    # same two the mini held out in gen5

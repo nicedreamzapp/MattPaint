@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run director.py (gen 6, local Qwen) with the memory it needs: waits for any Song Forge song to
+# Run director.py (gen 6, local Gemma 4 since 2026-09-17) with the memory it needs: waits for any Song Forge song to
 # finish, pauses Song Forge, takes a forge_guard seat for the model, and on exit puts Song Forge
 # back. The painting window stays open on the last picture (Matt: every picture in view).
 #   ./run_director.sh "DAWN RIDGES"            one subject
