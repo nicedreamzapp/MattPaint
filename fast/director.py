@@ -23,6 +23,7 @@ import local_loop as LL                                   # Qwen (with the verif
 
 PAINT_PY = LL.PAINT_PY
 GALLERY = HERE.parent / "gallery" / "gen6"
+TAG = os.environ.get("MATTPAINT_TAG", "")          # e.g. "_gemma" so a head-to-head keeps both
 HOLDOUTS = LL.HOLDOUTS
 
 
@@ -119,7 +120,7 @@ class Direction:
             self.log("recipe-note", recipe=name, note=note[:200])
         return r, None
 
-    def ask_recipe(self, ask, name, images=(), think=False, max_tokens=900):
+    def ask_recipe(self, ask, name, images=(), think=False, max_tokens=2500):
         note = ""
         for attempt in range(3):
             text, st = self.q.ask(ask + note, images=images, max_tokens=max_tokens, think=think,
@@ -189,7 +190,7 @@ class Direction:
             png = self.paint(r, f"g{g}", gray=True)
             if png is None:
                 return self.finish("gray paint failed")
-            text, st = self.q.ask(self.look_prompt(True, r), images=[str(png)], max_tokens=900)
+            text, st = self.q.ask(self.look_prompt(True, r), images=[str(png)], max_tokens=2500)
             (self.dir / f"g{g}_look.md").write_text(text)
             passed = bool(re.search(r"VERDICT:\s*PASS", text))
             self.log("look-gray", round=g, passed=passed, **st)
@@ -207,7 +208,7 @@ class Direction:
         best_recipe = r
         for n in range(1, 0 if self.holdout else self.rounds + 1):
             name = f"c{n}"
-            text, st = self.q.ask(self.look_prompt(False, best_recipe), images=[str(best)], max_tokens=900)
+            text, st = self.q.ask(self.look_prompt(False, best_recipe), images=[str(best)], max_tokens=2500)
             (self.dir / f"{name}_look.md").write_text(text)
             self.log("look", round=n, **st)
             new, problem = self.checked(text, name)
@@ -221,7 +222,7 @@ class Direction:
             else:
                 self.log("kept-best", round=n, best=best.name)
         GALLERY.mkdir(parents=True, exist_ok=True)
-        slug = slug_of(self.key)
+        slug = slug_of(self.key) + TAG
         shutil.copy(best, GALLERY / f"{slug}.png")
         (GALLERY / f"{slug}.json").write_text(json.dumps(best_recipe, indent=1))
         self.log("published", file=f"gallery/gen6/{slug}.png", best=best.name)
@@ -259,7 +260,7 @@ def main():
     q = LL.Qwen(think=not a.no_think)
     print(f"model loaded in {q.load_s}s, prefix cache {'on' if q.cache_on else 'off'}", flush=True)
     for key, prompt in jobs:
-        d = HERE / "director_runs" / f"{stamp}_{slug_of(key)}"
+        d = HERE / "director_runs" / f"{stamp}_{slug_of(key)}{TAG}"
         d.mkdir(parents=True, exist_ok=True)
         try:
             Direction(q, key, prompt, d, a.rounds, a.gray_rounds, key in HOLDOUTS).go()

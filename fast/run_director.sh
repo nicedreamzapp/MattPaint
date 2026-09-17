@@ -23,7 +23,11 @@ restore() {
 }
 trap restore EXIT INT TERM
 
-if curl -s -m 3 http://127.0.0.1:8767/api/status 2>/dev/null | grep -q '"ace_up"'; then
+# Pause Song Forge if it is up OR merely loaded. Checking only ace_up missed a Song Forge that was
+# still starting back up from the previous run (2026-09-17 1:40a): it came up beside a 62GB model,
+# memory ran out, and forge_guard froze the director.
+if curl -s -m 3 http://127.0.0.1:8767/api/status 2>/dev/null | grep -q '"ace_up"' \
+   || launchctl print "gui/$(id -u)/com.nicedreamz.songforge-m5-stack" >/dev/null 2>&1; then
   while [ "$(busy)" != "0" ]; do echo "waiting for a Song Forge song to finish..."; sleep 10; done
   echo "pausing Song Forge"
   launchctl bootout "gui/$(id -u)/com.nicedreamz.songforge-m5-stack" 2>/dev/null

@@ -40,7 +40,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 GALLERY = HERE.parent / "gallery" / "gen6_local"
-MODEL = "donedynamics/Qwen3.8-27B-heretic-VL-MLX-bf16"
+# MATTPAINT_MODEL swaps the director model for a head-to-head (2026-09-17: Gemma 4 vs Qwen 3.8).
+MODEL = os.environ.get("MATTPAINT_MODEL") or "donedynamics/Qwen3.8-27B-heretic-VL-MLX-bf16"
 PAINT_PY = os.path.expanduser("~/.local/mlx-server/bin/python3")   # has websockets/numpy/PIL
 GEN_LABEL = "6TH GEN · LOCAL QWEN 3.8"
 HOLDOUTS = ("AURORA LAKE", "THE LONG WAIT")    # same two the mini held out in gen5
@@ -216,7 +217,8 @@ class Qwen:
             cache = lm.make_cache()
             self._prefill(ids[:keep], cache)
         suffix = ids[keep:]
-        eos = {self.tok.eos_token_id} | {self.tok.convert_tokens_to_ids(t) for t in ("<|im_end|>", "<|endoftext|>")}
+        vocab = self.tok.get_vocab()
+        eos = {self.tok.eos_token_id} | {vocab[t] for t in ("<|im_end|>", "<|endoftext|>", "<turn|>") if t in vocab}
         out = []
         t = time.time()
         logits = lm(mx.array([suffix]), cache=cache).logits[:, -1, :]
@@ -269,8 +271,9 @@ class Qwen:
         if r is None:
             r = self._generate(prefix + prompt, images, max_tokens, temperature, think)
         text, ntok, tps = r
-        if "</think>" in text:
-            text = text.split("</think>", 1)[1]
+        for end in ("</think>", "<channel|>"):       # Qwen / Gemma 4 end of reasoning
+            if end in text:
+                text = text.split(end, 1)[1]
         return text.strip(), {"s": round(time.time() - t, 1), "tok": ntok, "tps": tps,
                               "peak_gb": round(mx.get_peak_memory() / 1e9, 1),
                               "think": think, "cached": cached}
