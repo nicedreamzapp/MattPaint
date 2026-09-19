@@ -7,3 +7,12 @@ fast/**/*.png
 fast/**/*.jpg
 fast/**/*.mp4
 !fast/director_runs/**/*.png
+
+# local-only (2026-09-18)
+fast/paint_window.json
+fast/songforge_yield.sh
+fast/experiments/
+fast/director_runs/
+fast/*.bak*
+fast/pictures/
+.claude/

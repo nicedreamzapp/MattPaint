@@ -18,7 +18,7 @@ also paints as a flat-gray construction test.
 
 LAYER TYPES — see LAYERS below for every parameter and its default.
 """
-import asyncio, json, math, random, sys
+import asyncio, json, math, os, random, sys
 import art as A
 from art import Art, mix, TOPBAR
 import g3lib as G
@@ -46,6 +46,11 @@ LAYERS = {
     "stars":   dict(count=1600),
 }
 
+# 2026-09-18: towns, castles, ghosts, figures... and free shapes — see scene_objects.py
+import scene_objects as SO
+LAYERS.update(SO.OBJECTS)
+LAYERS["shapes"] = dict(items=[])
+
 
 def _merge(defaults, given):
     out = dict(defaults)
@@ -60,7 +65,10 @@ class Scene:
         random.seed(int(recipe.get("seed", 1)))
         self.a = Art(W, H, str(recipe.get("title", "UNTITLED")).upper()[:40])
         self.P = G5.Paint(self.a, gray)
-        self.col = self.P.col
+        # 2026-09-18: every landscape colour was capped near 0.6 saturation, so neon/black-light
+        # prompts came out pastel. "vivid" (1.0 default, up to 1.6) lifts it for the whole scene.
+        _viv = max(0.5, min(1.6, float(recipe.get("vivid", 1.0))))
+        self.col = (lambda v, hue, sat=0.62: self.P.col(v, hue, min(1.0, sat * _viv))) if _viv != 1.0 else self.P.col
         self.R, self.L, self.D = self.a.R, self.a.L, self.a.D
         self.hor = H * float(recipe.get("horizon", 0.70))
         lt = recipe.get("light", {})
@@ -75,6 +83,10 @@ class Scene:
         self.sky_top = tuple(sk.get("top", [8, 12, 30] if night else [52, 92, 160]))
         self.sky_hor = tuple(sk.get("horizon", [24, 34, 64] if night else [214, 196, 170]))
         self.glow = tuple(sk.get("glow", self.lcol))
+        # 2026-09-18: a dusk sky was always bright pastel; a black-light or stormy sky needs to go dark
+        # and saturated. sky.brightness scales the sky's value, sky.saturation its colour (0-1).
+        self.sky_bright = max(0.2, min(1.5, float(sk.get("brightness", 1.0))))
+        self.sky_sat = max(0.2, min(1.0, float(sk.get("saturation", 0.66))))
         self.aurora = None
         self.fog_amt = 0.0
 
@@ -109,7 +121,7 @@ class Scene:
             v += (0.12 if self.night else 0.38) * self.lstr * math.exp(-(dx * dx + dy * dy) * 0.8)
         if self.aurora:
             v += 0.68 * min(1.0, self.aurora_at(x, y)[0]) ** 0.75
-        return min(0.985, v)
+        return min(0.985, v * self.sky_bright)
 
     def sky_hue(self, x, y):
         base = mix(self.sky_top, self.sky_hor, G.frac(y, TOPBAR, self.hor) ** 0.82)
@@ -132,7 +144,7 @@ class Scene:
         for y in range(TOPBAR - 2, bottom, 2):        # wide stretched rects, not dabs
             for k in range(NC):
                 x0 = W * k / NC; xm = x0 + W / (2.0 * NC)
-                R(x0, y, W / NC + 2, 3, col(self.sky_value(xm, y), self.sky_hue(xm, y), 0.66))
+                R(x0, y, W / NC + 2, 3, col(self.sky_value(xm, y), self.sky_hue(xm, y), self.sky_sat))
         if not self.night:                            # variation: many tiny (bright field)
             for _ in range(22000):
                 x = random.uniform(-40, W + 40); y = random.uniform(TOPBAR, self.hor + 12)
@@ -563,14 +575,21 @@ class Scene:
             t = l.get("type")
             if t not in LAYERS or t == "aurora":
                 continue
-            getattr(self, t)(_merge(LAYERS[t], l))
+            if t in SO.DRAW:
+                SO.DRAW[t](SO.Pen(self), _merge(LAYERS[t], l))
+            elif t == "shapes":
+                SO.draw_shapes(SO.Pen(self), _merge(LAYERS[t], l))
+            else:
+                getattr(self, t)(_merge(LAYERS[t], l))
+        SO.finish(SO.Pen(self))
         return self.a
 
 
 def render(recipe, out, gray=False):
     s = Scene(recipe, gray)
     a = s.build()
-    A.GEN = str(recipe.get("gen_label", "6TH GEN · SCENE ENGINE")) + (" · FLAT GRAY" if gray else "")
+    A.GEN = str(recipe.get("gen_label", "6TH GEN")) + (" · FLAT GRAY" if gray else "")
+    A.BY = os.environ.get("MATTPAINT_NAME") or str(recipe.get("painter", ""))
     return asyncio.run(G5.paint(a, out, {"subject": recipe.get("title", ""), "engine": "scene_engine",
                                          "recipe": recipe}, gray=gray, focal_y=H * 0.6))
 

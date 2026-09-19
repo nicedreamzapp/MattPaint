@@ -3703,7 +3703,75 @@
                 ctx.fillStyle = 'rgb(' + o[3] + ',' + o[4] + ',' + o[5] + ')';
                 ctx.beginPath(); ctx.arc(o[1], o[2], o[6], 0, 6.2832); ctx.fill();
                 ctx.globalAlpha = 1;
+            } else if (o[0] === 3) {                // light dab: [3,x,y,r,g,b,radius,alpha,mode]
+                // Adds light instead of covering (Screen / Add / Color Dodge), soft-edged. The
+                // neon-glow idea comes from Robbie Tilton's Compositor: robbietilton.com/compositor
+                const g = ctx.createRadialGradient(o[1], o[2], 0, o[1], o[2], o[6]);
+                const c = o[3] + ',' + o[4] + ',' + o[5];
+                g.addColorStop(0, 'rgba(' + c + ',' + o[7] + ')');
+                g.addColorStop(0.45, 'rgba(' + c + ',' + (o[7] * 0.45) + ')');
+                g.addColorStop(1, 'rgba(' + c + ',0)');
+                ctx.globalCompositeOperation = ['screen', 'lighter', 'color-dodge'][o[8]] || 'screen';
+                ctx.fillStyle = g;
+                ctx.beginPath(); ctx.arc(o[1], o[2], o[6], 0, 6.2832); ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
             }
+        }
+    };
+
+    // Finishing pass for the painting engine (2026-09-18), after Photoshop-style compositing as in
+    // Robbie Tilton's Compositor (https://robbietilton.com/compositor): BLOOM = the bright parts,
+    // blurred, added back with Screen; GRADE = a gradient map toward shadow/highlight colours;
+    // GRAIN = fine noise. top = rows to leave alone (the title bar).
+    window.__mpFinish = function(opt) {
+        const ctx = mainCtx, W = mainCanvas.width, H = mainCanvas.height, top = opt.top || 0;
+        const h = H - top;
+        if (opt.bloom > 0) {
+            const src = ctx.getImageData(0, top, W, h), d = src.data, th = opt.threshold || 185;
+            for (let i = 0; i < d.length; i += 4) {             // keep only what is bright
+                const l = 0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2];
+                const k = Math.max(0, Math.min(1, (l - th) / (255 - th)));
+                d[i] *= k; d[i + 1] *= k; d[i + 2] *= k;
+            }
+            const off = document.createElement('canvas'); off.width = W; off.height = h;
+            off.getContext('2d').putImageData(src, 0, 0);
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            for (const [r, a] of [[W * 0.004, 0.9], [W * 0.012, 0.7], [W * 0.03, 0.55]]) {
+                ctx.globalAlpha = Math.min(1, a * opt.bloom);
+                ctx.filter = 'blur(' + r.toFixed(1) + 'px)';
+                ctx.drawImage(off, 0, top);
+            }
+            ctx.restore();
+        }
+        if (opt.grade > 0 || opt.grain > 0 || opt.contrast > 0) {
+            const img = ctx.getImageData(0, top, W, h), d = img.data;
+            const sh = opt.shadows || [26, 6, 64], hi = opt.highlights || [255, 176, 64];
+            const amt = opt.grade || 0, gr = (opt.grain || 0) * 255;
+            for (let i = 0; i < d.length; i += 4) {
+                if (amt > 0) {
+                    const l = (0.2126 * d[i] + 0.7152 * d[i + 1] + 0.0722 * d[i + 2]) / 255;
+                    const w = l * l * (3 - 2 * l);              // smooth shadow -> highlight
+                    const t0 = sh[0] * (1 - w) + hi[0] * w, t1 = sh[1] * (1 - w) + hi[1] * w, t2 = sh[2] * (1 - w) + hi[2] * w;
+                    const tl = Math.max(1, 0.2126 * t0 + 0.7152 * t1 + 0.0722 * t2) / 255;
+                    const k = l / tl;                           // same brightness, the grade's hue
+                    d[i] = d[i] * (1 - amt) + Math.min(255, t0 * k) * amt;
+                    d[i + 1] = d[i + 1] * (1 - amt) + Math.min(255, t1 * k) * amt;
+                    d[i + 2] = d[i + 2] * (1 - amt) + Math.min(255, t2 * k) * amt;
+                }
+                if (opt.contrast > 0) {                         // S-curve: deep darks, hot lights
+                    const cc = opt.contrast;
+                    for (let c = 0; c < 3; c++) {
+                        const v = d[i + c] / 255, sv = v * v * (3 - 2 * v);
+                        d[i + c] = 255 * (v * (1 - cc) + sv * cc);
+                    }
+                }
+                if (gr > 0) {
+                    const n = (Math.random() - 0.5) * gr;
+                    d[i] += n; d[i + 1] += n; d[i + 2] += n;
+                }
+            }
+            ctx.putImageData(img, 0, top);
         }
     };
     window.__mpFastCommit = function() { try { saveHistory(); } catch (e) {} };

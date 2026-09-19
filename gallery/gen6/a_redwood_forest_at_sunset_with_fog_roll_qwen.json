@@ -1,0 +1,117 @@
+{
+ "title": "REDWOOD FOG SUNSET",
+ "seed": 13,
+ "horizon": 0.68,
+ "time": "dusk",
+ "light": {
+  "kind": "sun",
+  "x": 0.72,
+  "y": 0.88,
+  "color": [
+   255,
+   150,
+   88
+  ],
+  "strength": 0.95
+ },
+ "sky": {
+  "top": [
+   34,
+   42,
+   84
+  ],
+  "horizon": [
+   255,
+   138,
+   80
+  ],
+  "glow": [
+   255,
+   210,
+   148
+  ]
+ },
+ "fog_color": [
+  224,
+  202,
+  176
+ ],
+ "layers": [
+  {
+   "type": "clouds",
+   "amount": 0.32,
+   "y": 0.2,
+   "spread": 0.22,
+   "color": [
+    255,
+    164,
+    108
+   ]
+  },
+  {
+   "type": "meadow",
+   "top": 0.68,
+   "lit": [
+    198,
+    124,
+    74
+   ],
+   "dark": [
+    56,
+    48,
+    62
+   ]
+  },
+  {
+   "type": "fog",
+   "amount": 0.5,
+   "top": 0.42,
+   "bottom": 0.8,
+   "color": [
+    226,
+    202,
+    178
+   ]
+  },
+  {
+   "type": "forest",
+   "kind": "redwood",
+   "count": 24,
+   "ground": 0.84,
+   "near": 1.0,
+   "far": 0.0,
+   "bark": [
+    42,
+    36,
+    44
+   ],
+   "bark_lit": [
+    218,
+    126,
+    76
+   ]
+  },
+  {
+   "type": "fog",
+   "amount": 0.85,
+   "top": 0.78,
+   "bottom": 1.0,
+   "color": [
+    222,
+    198,
+    172
+   ]
+  },
+  {
+   "type": "shafts",
+   "count": 7,
+   "strength": 1.0,
+   "spread": 0.3,
+   "color": [
+    255,
+    196,
+    132
+   ]
+  }
+ ]
+}

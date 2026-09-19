@@ -1,0 +1,104 @@
+{
+ "title": "SUNSET REDWOODS",
+ "seed": 42,
+ "horizon": 0.65,
+ "time": "dusk",
+ "light": {
+  "kind": "sun",
+  "x": 0.72,
+  "y": 0.45,
+  "color": [
+   255,
+   165,
+   70
+  ],
+  "strength": 1.2
+ },
+ "sky": {
+  "top": [
+   45,
+   60,
+   120
+  ],
+  "horizon": [
+   255,
+   150,
+   90
+  ],
+  "glow": [
+   255,
+   220,
+   160
+  ]
+ },
+ "fog_color": [
+  170,
+  165,
+  180
+ ],
+ "layers": [
+  {
+   "type": "ridges",
+   "count": 3,
+   "top": 0.55,
+   "haze": 0.85,
+   "rock": [
+    80,
+    70,
+    60
+   ]
+  },
+  {
+   "type": "forest",
+   "kind": "redwood",
+   "count": 32,
+   "ground": 0.82,
+   "bark": [
+    60,
+    40,
+    30
+   ],
+   "bark_lit": [
+    190,
+    120,
+    70
+   ]
+  },
+  {
+   "type": "meadow",
+   "top": 0.82,
+   "lit hue": [
+    110,
+    90,
+    60
+   ],
+   "dark hue": [
+    40,
+    50,
+    30
+   ]
+  },
+  {
+   "type": "fog",
+   "amount": 0.6,
+   "top": 0.4,
+   "bottom": 1.0,
+   "color": [
+    170,
+    165,
+    180
+   ]
+  },
+  {
+   "type": "shafts",
+   "count": 7,
+   "strength": 0.9,
+   "spread": 0.35,
+   "color": [
+    255,
+    200,
+    140
+   ]
+  }
+ ]
+}

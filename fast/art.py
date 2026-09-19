@@ -10,6 +10,10 @@ class Art:
         self.W=W; self.H=H; self.title=title; self.ops=[]
     def R(self,x,y,w,h,c): self.ops.append([0,int(x),int(y),int(max(1,w)),int(max(1,h)),int(c[0]),int(c[1]),int(c[2])])
     def L(self,x1,y1,x2,y2,w,c): self.ops.append([1,round(x1,1),round(y1,1),round(x2,1),round(y2,1),float(w),int(c[0]),int(c[1]),int(c[2])])
+    def G(self,x,y,r,c,a=0.6,mode=0):
+        """light dab: ADDS light (0 screen, 1 add, 2 colour dodge), soft edged — see app.js op 3"""
+        if r<=0: return
+        self.ops.append([3,round(float(x),1),round(float(y),1),int(c[0]),int(c[1]),int(c[2]),round(max(0.5,float(r)),1),round(float(a),3),int(mode)])
     def D(self,x,y,r,c,a=1.0):
         if r<=0: return
         self.ops.append([2,round(x,1),round(y,1),int(c[0]),int(c[1]),int(c[2]),round(max(0.4,r),1),round(a,3)])
@@ -95,12 +99,13 @@ def text(art, s, cx, cy, size, tracking, col, bg=(18,20,18), sup=3):
         art.R(x0+xx,y0+yy,1,1, mix(bg,col,a))
 
 GEN=""
+BY=""      # who painted it (the model), shown first on the header line — Matt, 2026-09-18
 def stamp(art):
     n=len(art.ops)
     art.R(0,0,art.W,TOPBAR,(18,20,18))
     art.L(0,TOPBAR,art.W,TOPBAR,1.5,(120,118,96))
     text(art, art.title, art.W*0.5, TOPBAR*0.42, 21, 7, (232,226,196))
-    sub=f"{n:,} STROKES" + (f"   ·   {GEN}" if GEN else "")
+    sub=(f"PAINTED BY {BY.upper()}   ·   " if BY else "") + f"{n:,} STROKES" + (f"   ·   {GEN}" if GEN else "")
     text(art, sub, art.W*0.5, TOPBAR*0.78, 11, 5, (150,146,120))
     return n
 

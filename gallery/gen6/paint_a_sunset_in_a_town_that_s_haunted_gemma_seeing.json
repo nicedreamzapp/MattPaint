@@ -1,0 +1,114 @@
+{
+ "title": "BLACKLIGHT HALLOWEEN",
+ "seed": 42,
+ "horizon": 0.6,
+ "time": "dusk",
+ "light": {
+  "kind": "sun",
+  "x": 0.48,
+  "y": 0.4,
+  "color": [
+   255,
+   170,
+   0
+  ],
+  "strength": 1.2
+ },
+ "sky": {
+  "top": [
+   75,
+   0,
+   130
+  ],
+  "horizon": [
+   255,
+   69,
+   0
+  ],
+  "glow": [
+   255,
+   204,
+   0
+  ]
+ },
+ "fog_color": [
+  106,
+  13,
+  173
+ ],
+ "layers": [
+  {
+   "type": "clouds",
+   "amount": 0.6,
+   "y": 0.3,
+   "color": [
+    255,
+    0,
+    255
+   ]
+  },
+  {
+   "type": "ridges",
+   "count": 3,
+   "top": 0.4,
+   "rock": [
+    26,
+    0,
+    51
+   ]
+  },
+  {
+   "type": "hills",
+   "y": 0.55,
+   "height": 0.2,
+   "color": [
+    26,
+    0,
+    51
+   ]
+  },
+  {
+   "type": "meadow",
+   "top": 0.6,
+   "lit": [
+    0,
+    255,
+    0
+   ],
+   "dark": [
+    26,
+    0,
+    51
+   ]
+  },
+  {
+   "type": "rocks",
+   "count": 15,
+   "top": 0.8,
+   "size": 0.1,
+   "color": [
+    255,
+    140,
+    0
+   ]
+  },
+  {
+   "type": "fog",
+   "amount": 0.4,
+   "color": [
+    138,
+    43,
+    226
+   ]
+  },
+  {
+   "type": "shafts",
+   "count": 8,
+   "color": [
+    255,
+    170,
+    0
+   ]
+  }
+ ]
+}

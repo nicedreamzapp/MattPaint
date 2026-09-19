@@ -25,6 +25,18 @@ PAINT_PY = LL.PAINT_PY
 GALLERY = HERE.parent / "gallery" / "gen6"
 TAG = os.environ.get("MATTPAINT_TAG", "")          # e.g. "_gemma" so a head-to-head keeps both
 HOLDOUTS = LL.HOLDOUTS
+WHO = os.environ.get("MATTPAINT_NAME") or ("Qwen 3.8" if "qwen" in LL.MODEL.lower() else
+       "SuperGemma" if "supergemma" in LL.MODEL.lower() else "Gemma 4")   # shown in the terminal and on the painting
+os.environ["MATTPAINT_NAME"] = WHO           # the painter subprocess reads it for the header line
+# 2026-09-18: the engine can paint things, not only landscape (scene_objects.py). Only tell the
+# director about objects when the engine in this folder actually has them.
+import scene_engine as _SE
+HAS_OBJECTS = hasattr(_SE, "SO")
+OBJECTS_DOC = ("\n\n" + (HERE / "RECIPES_OBJECTS.md").read_text()) if HAS_OBJECTS else ""
+FIRST_ASK = ("First list every thing the prompt names and give each one an object (or build it from "
+             "shapes); then decide the light. Reply with the full recipe in one ```json block."
+             if HAS_OBJECTS else
+             "Read the prompt as LIGHT first, then write the recipe. Reply with the full recipe in one ```json block.")    # who the terminal says is working
 
 
 def slug_of(s):
@@ -130,6 +142,27 @@ def validate(r):
     return r, "; ".join(notes) or None
 
 
+def ticking(label, fn, *a, **kw):
+    """Matt, 2026-09-18: the first recipe is four silent minutes and it looked frozen. Show a live
+    clock on one terminal line while the model thinks or MattPaint paints, then clear it."""
+    import threading
+    done = threading.Event()
+    t0 = time.time()
+    frames = "|/-\\"
+    def tick():
+        i = 0
+        while not done.wait(0.5):
+            e = int(time.time() - t0)
+            sys.stdout.write(f"\r\033[K   {frames[i % 4]} {label} {e // 60}:{e % 60:02d}")
+            sys.stdout.flush(); i += 1
+    th = threading.Thread(target=tick, daemon=True); th.start()
+    try:
+        return fn(*a, **kw)
+    finally:
+        done.set(); th.join()
+        sys.stdout.write("\r\033[K"); sys.stdout.flush()
+
+
 def run(py, args, timeout, env_extra=None):
     env = dict(os.environ, **(env_extra or {}))
     t = time.time()
@@ -141,16 +174,19 @@ def run(py, args, timeout, env_extra=None):
 
 
 class Direction:
-    def __init__(self, q, key, prompt, rundir, rounds, gray_rounds, holdout):
+    def __init__(self, q, key, prompt, rundir, rounds, gray_rounds, holdout, ref=None):
         self.q, self.key, self.prompt, self.dir = q, key, prompt, rundir
+        self.ref = ref          # --ref: the director SEES a target picture (2026-09-18 experiment)
         self.rounds, self.gray_rounds, self.holdout = rounds, gray_rounds, holdout
         self.steps = []
         self.lost = []          # (changes, judge's reason) for revisions that lost
         self.prefix = ("You are the art director for a painting engine. You never draw strokes yourself: "
                        "you write a short recipe and the engine paints it from scratch.\n\n"
-                       + (HERE / "RECIPES.md").read_text() + "\n\nTHE PAINTING RULES THE ENGINE FOLLOWS:\n"
+                       + (HERE / "RECIPES.md").read_text() + OBJECTS_DOC + "\n\nTHE PAINTING RULES THE ENGINE FOLLOWS:\n"
                        + (HERE / "GEN5_RULES.md").read_text()
-                       + f"\n\nTHE PROMPT (the only description you get): {prompt}\n")
+                       + (f"\n\nTHE PROMPT: {prompt}\nYou are also shown THE TARGET PICTURE (always the "
+                          "first image). Match it as closely as the engine's layers allow.\n" if ref else
+                          f"\n\nTHE PROMPT (the only description you get): {prompt}\n"))
 
     def log(self, step, **kw):
         kw.update(step=step, t=time.strftime("%H:%M:%S"))
@@ -190,7 +226,8 @@ class Direction:
     def ask_recipe(self, ask, name, images=(), think=False, max_tokens=2500):
         note = ""
         for attempt in range(3):
-            text, st = self.q.ask(ask + note, images=images, max_tokens=max_tokens, think=think,
+            text, st = ticking(f"{WHO} is thinking up the recipe (~4 min)" if think else f"{WHO} is writing the recipe",
+                               self.q.ask, (self.prefix if images else "") + ask + note, images=images, max_tokens=max_tokens, think=think,
                                   temperature=0.3 if attempt == 0 else 0.6,
                                   prefix="" if images else self.prefix)
             self.log("director", recipe=name, attempt=attempt, **st)
@@ -206,7 +243,8 @@ class Direction:
         png = self.dir / f"{name}{'_gray' if gray else ''}.png"
         # Matt's rule: every picture is painted in MattPaint, in view. There is no off-screen path.
         for attempt in range(2):         # one retry: a page that loads slowly is not a bad recipe
-            rc, out, secs = run(PAINT_PY, ["scene_engine.py", str(p), str(png)] + (["gray"] if gray else []), 300)
+            rc, out, secs = ticking("painting in MattPaint" + (" (gray sketch)" if gray else ""), run, PAINT_PY,
+                                    ["scene_engine.py", str(p), str(png)] + (["gray"] if gray else []), 300)
             ok = rc == 0 and png.exists()
             if ok:
                 break
@@ -219,15 +257,21 @@ class Direction:
             Image.open(png).convert("L").save(png)
         return png
 
+    def seen(self, png):
+        return [str(self.ref), str(png)] if self.ref else [str(png)]
+
     def look_prompt(self, gray, recipe):
-        head = self.prefix
+        head = self.prefix + ("\nImage 1 is THE TARGET PICTURE; image 2 is the current painting.\n" if self.ref else "")
         what = ("This is the FLAT GRAY construction test of the painting. Judge ONLY composition and "
                 "structure: does the arrangement of light and dark read as the prompt? First line exactly "
                 "VERDICT: PASS or VERDICT: FAIL."
                 if gray else
                 "This is the painting. First say in one sentence what a stranger would think it shows. "
-                "Then name the 3 changes that would make it read most strongly as the prompt, with the "
-                "believable light the rules ask for.")
+                + ("Then list every thing the prompt names that is MISSING, too small, or only a dark shape, "
+                   "and fix the worst 3: add objects, svg drawings or shapes, move them nearer, light them, "
+                   "colour them." if HAS_OBJECTS else
+                   "Then name the 3 changes that would make it read most strongly as the prompt, with the "
+                   "believable light the rules ask for."))
         tried = ""
         if self.lost:
             tried = ("\nALREADY TRIED THIS SUBJECT AND JUDGED WORSE (do not repeat these):\n"
@@ -242,9 +286,11 @@ class Direction:
         wins = 0
         self.last_why = ""
         for first, second, challenger in ((best, new, 2), (new, best, 1)):
-            text, st = self.q.ask(
-                f"Two paintings of: \"{self.prompt}\"\nWhich reads more convincingly as that scene, with "
-                "believable light? Ignore the title bars. First line exactly WINNER: 1 or WINNER: 2, then one "
+            text, st = ticking(f"{WHO} is judging new vs best", self.q.ask,
+                f"Two paintings of: \"{self.prompt}\"\n" + ("Which one SHOWS more of the things the prompt names, "
+                "clearly and recognisably, in the colours it asks for? A dark silhouette against a sunset "
+                "loses to a picture where you can see what things are." if HAS_OBJECTS else
+                "Which reads more convincingly as that scene, with believable light?") + " Ignore the title bars. First line exactly WINNER: 1 or WINNER: 2, then one "
                 "sentence why.", images=[str(first), str(second)], max_tokens=80, temperature=0.0)
             m = re.search(r"WINNER:\s*([12])", text)
             won = bool(m and int(m.group(1)) == challenger)
@@ -257,8 +303,8 @@ class Direction:
 
     def go(self):
         print(f"\n=== {self.key}{' (HOLDOUT)' if self.holdout else ''} — {self.prompt}", flush=True)
-        r, _ = self.ask_recipe("Read the prompt as LIGHT first, then write the recipe. Reply with the full "
-                               "recipe in one ```json block.", "r0", think=True)
+        r, _ = self.ask_recipe(FIRST_ASK, "r0", think=True, max_tokens=5000 if HAS_OBJECTS else 2500,
+                               images=[str(self.ref)] if self.ref else ())
         if r is None:
             return self.finish("no paintable recipe")
         g = 0
@@ -266,7 +312,8 @@ class Direction:
             png = self.paint(r, f"g{g}", gray=True)
             if png is None:
                 return self.finish("gray paint failed")
-            text, st = self.q.ask(self.look_prompt(True, r), images=[str(png)], max_tokens=2500)
+            text, st = ticking(f"{WHO} is checking the gray sketch", self.q.ask, self.look_prompt(True, r),
+                               images=self.seen(png), max_tokens=4000)
             (self.dir / f"g{g}_look.md").write_text(text)
             passed = bool(re.search(r"VERDICT:\s*PASS", text))
             self.log("look-gray", round=g, passed=passed, **st)
@@ -285,7 +332,8 @@ class Direction:
         tried = []
         for n in range(1, 0 if self.holdout else self.rounds + 1):
             name = f"c{n}"
-            text, st = self.q.ask(self.look_prompt(False, best_recipe), images=[str(best)], max_tokens=2500)
+            text, st = ticking(f"round {n}: {WHO} is studying the painting", self.q.ask,
+                               self.look_prompt(False, best_recipe), images=self.seen(best), max_tokens=4000)
             (self.dir / f"{name}_look.md").write_text(text)
             self.log("look", round=n, **st)
             new, problem = self.checked(text, name, base=best_recipe)
@@ -326,6 +374,7 @@ def main():
     ap.add_argument("--rounds", type=int, default=4)
     ap.add_argument("--gray-rounds", type=int, default=1)
     ap.add_argument("--no-think", action="store_true")
+    ap.add_argument("--ref", help="a target picture the director gets to see")
     a = ap.parse_args()
     P = LL.prompts()
     stamp = time.strftime("%Y%m%d-%H%M%S")
@@ -343,7 +392,8 @@ def main():
         d = HERE / "director_runs" / f"{stamp}_{slug_of(key)}{TAG}"
         d.mkdir(parents=True, exist_ok=True)
         try:
-            Direction(q, key, prompt, d, a.rounds, a.gray_rounds, key in HOLDOUTS).go()
+            Direction(q, key, prompt, d, a.rounds, a.gray_rounds, key in HOLDOUTS,
+                      ref=Path(a.ref).resolve() if a.ref else None).go()
         except Exception:
             import traceback
             (d / "crash.txt").write_text(traceback.format_exc())

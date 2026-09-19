@@ -52,8 +52,8 @@ Every layer is `{"type": ..., <params>}`. Leave a param out to use its default.
 | `shafts` | sunbeams through fog, falling away from the light, with dust motes | count 1-8 (6), strength (0.8), spread (0.30), color |
 
 ## Directing well (the gen 1-5 doctrine, in recipe terms)
-- **Read the prompt as LIGHT first.** Decide where the light is and what it reaches before
-  choosing layers. Most prompts are more about light than objects.
+- **The subject first, then the light.** Everything the prompt names must be in the picture,
+  visible and recognisable. Then decide where the light is and what it reaches.
 - **Far to near.** Sky, then distant land, then water (it reflects what is above it), then near
   ground, then objects, then fog and shafts over the top.
 - **Distance is haze.** Far layers lift toward the sky colour; use `haze` and `fog` rather than

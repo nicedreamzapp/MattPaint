@@ -3,7 +3,8 @@ short script about ITS OWN light rather than a rediscovery of the same lessons.
 
 Nothing in here draws an outline. There is no edge, rim or silhouette function, on purpose.
 """
-import math, random, asyncio, time, urllib.request, os
+import math, random, asyncio, time, urllib.request, os, json
+from pathlib import Path
 import art as A
 from art import Art, mix, TOPBAR, stamp
 import g3lib as G
@@ -164,6 +165,53 @@ def terrain_normal(x, y, ridges, jitter=0.0):
     return nx/n, ny/n
 
 # ---------------------------------------------------------------- the runner
+async def open_canvas(W, H):
+    """The MattPaint window, at Matt's size, with a blank W x H canvas shown whole. -> (br, tab)"""
+    from engine import Browser, launch_brave
+    try: urllib.request.urlopen("http://localhost:9231/json/version", timeout=1); up = True
+    except Exception: up = False
+    if not up:
+        try:
+            _w = json.loads(Path(__file__).with_name("paint_window.json").read_text())
+            launch_brave(9231, pos=(_w["left"], _w["top"]), size=(_w["width"], _w["height"]))
+        except Exception:
+            launch_brave(9231, size=(1560, 1010))
+        await asyncio.sleep(2.0)
+    br = Browser(9231); await br.connect()
+    tab = await br.existing_page("replay") or await br.new_tab("replay")
+    # Matt, 2026-09-18: the paint window is ALWAYS this size and spot (paint_window.json, the one he
+    # set by hand, about a third of the screen). Never full screen, never whatever size it launched at.
+    prefs = Path(__file__).with_name("paint_window.json")
+    try:
+        want = json.loads(prefs.read_text())
+        w = await br.call("Browser.getWindowForTarget", {"targetId": tab.target_id})
+        if w["bounds"].get("windowState") != "normal" or any(w["bounds"][k] != v for k, v in want.items()):
+            await br.call("Browser.setWindowBounds", {"windowId": w["windowId"], "bounds": {"windowState": "normal"}})
+            await br.call("Browser.setWindowBounds", {"windowId": w["windowId"], "bounds": want})
+            await asyncio.sleep(0.3)
+    except Exception as e:
+        print(f"could not place the paint window ({e})", flush=True)
+    from engine import paint_url
+    await tab.goto(paint_url())
+    await tab.measure_canvas(); await tab.resize_canvas(W, H)
+    # Matt, 2026-09-18: whatever size he drags the window to, show the WHOLE picture inside it,
+    # re-zooming live on every resize (fit_canvas only fit once, so a bigger window kept a tiny picture).
+    await tab.eval("""(() => {
+        window.__mpFit = () => {
+            const c = document.getElementById('main-canvas');
+            const box = document.getElementById('canvas-container').getBoundingClientRect();
+            const room = Math.min(window.innerHeight, box.bottom) - box.top;
+            let z = Math.min(1, (box.width - 24) / c.width, (room - 24) / c.height);
+            z = Math.max(0.1, Math.floor(z * 40) / 40);
+            const s = document.getElementById('status-zoom-slider');
+            if (Math.abs(s.value - z * 100) > 0.5) { s.value = z * 100; s.dispatchEvent(new Event('input', {bubbles: true})); }
+        };
+        if (!window.__mpFitOn) { window.__mpFitOn = 1; addEventListener('resize', () => requestAnimationFrame(window.__mpFit)); }
+        window.__mpFit();
+    })()""", ret=False)
+    return br, tab
+
+
 async def paint(art, out, meta, gray=False, defect_frac=0.02, focal_y=None):
     n = stamp(art)
     print(f"{art.title} gen5{' [FLAT GRAY]' if gray else ''}: {n:,} strokes", flush=True)
@@ -171,23 +219,33 @@ async def paint(art, out, meta, gray=False, defect_frac=0.02, focal_y=None):
         # 2026-09-16, local loop: build the op list and stop — no browser. Catches crashes, empty
         # paintings and runaway op counts before anything opens on Matt's screen.
         xs = [o[1] for o in art.ops]; ys = [o[2] for o in art.ops]
+        json.dumps(art.ops)   # 2026-09-18: numpy numbers passed preflight, then crashed the real paint
         print(f"PREFLIGHT ops={len(art.ops)} x={min(xs, default=0):.0f}..{max(xs, default=0):.0f} "
               f"y={min(ys, default=0):.0f}..{max(ys, default=0):.0f}", flush=True)
         return
-    from engine import Browser, launch_brave
-    try: urllib.request.urlopen("http://localhost:9231/json/version", timeout=1); up = True
-    except Exception: up = False
-    if not up: launch_brave(9231, size=(1560, 1010)); await asyncio.sleep(2.0)
-    br = Browser(9231); await br.connect()
-    tab = await br.existing_page("replay") or await br.new_tab("replay")
-    from engine import paint_url
-    await tab.goto(paint_url())
-    await tab.measure_canvas(); await tab.resize_canvas(art.W, art.H)
+    br, tab = await open_canvas(art.W, art.H)
     tab.run_meta = dict(meta, generation=5, stage="gray" if gray else "paint")
     t0 = time.time()
+    # Matt, 2026-09-18: a whole painting landed in under 3 seconds, too fast to watch it being
+    # built. Spread it over ~PAINT_SECONDS (default 30) so every picture paints in front of him.
+    secs = float(os.environ.get("PAINT_SECONDS", "30"))
+    chunks = max(1, (len(art.ops) + 1799) // 1800)
     for i in range(0, len(art.ops), 1800):
-        tab.fast(art.ops[i:i+1800]); await tab.sync(); await asyncio.sleep(0.04)
+        tab.fast(art.ops[i:i+1800]); await tab.sync(); await asyncio.sleep(max(0.04, secs / chunks))
     await tab.sync()
+    # Finishing pass — bloom, colour grade, grain — Photoshop-style compositing after Robbie
+    # Tilton's Compositor (https://robbietilton.com/compositor). Recipe key "finish"; off in gray.
+    fin = dict(bloom=0.35, grain=0.02, contrast=0.3)
+    fin.update((meta.get("recipe") or {}).get("finish") or {})
+    if not gray and any(float(fin.get(k) or 0) > 0 for k in ("bloom", "grade", "grain", "contrast")):
+        from art import TOPBAR as _TB
+        fin["top"] = _TB + 2
+        for k in ("shadows", "highlights"):
+            v = fin.get(k)
+            if isinstance(v, str) and v.startswith("#") and len(v) == 7:
+                fin[k] = [int(v[i:i + 2], 16) for i in (1, 3, 5)]
+        await tab.eval(f"window.__mpFinish && window.__mpFinish({json.dumps(fin)})", ret=False)
+        await tab.sync()
     print(f"painted in {time.time()-t0:.2f}s", flush=True)
     await tab.png(out)
     if not gray and defect_frac:

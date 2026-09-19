@@ -1,0 +1,132 @@
+{
+ "title": "NEON NIGHTMARE TOWN",
+ "seed": 42,
+ "horizon": 0.6,
+ "time": "dusk",
+ "light": {
+  "kind": "sun",
+  "x": 0.5,
+  "y": 0.4,
+  "color": [
+   188,
+   19,
+   254
+  ],
+  "strength": 1.3
+ },
+ "sky": {
+  "top": [
+   26,
+   0,
+   51
+  ],
+  "horizon": [
+   188,
+   19,
+   254
+  ],
+  "glow": [
+   204,
+   255,
+   0
+  ]
+ },
+ "fog_color": [
+  75,
+  0,
+  130
+ ],
+ "layers": [
+  {
+   "type": "ridges",
+   "count": 2,
+   "top": 0.4,
+   "rock": [
+    26,
+    0,
+    51
+   ]
+  },
+  {
+   "type": "hills",
+   "y": 0.6,
+   "color": [
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "type": "ridges",
+   "count": 3,
+   "top": 0.5,
+   "haze": 0.4,
+   "rock": [
+    75,
+    0,
+    130
+   ],
+   "seed": 101
+  },
+  {
+   "type": "forest",
+   "kind": "pine",
+   "count": 40,
+   "ground": 0.6,
+   "bark": [
+    26,
+    0,
+    51
+   ],
+   "bark_lit": [
+    188,
+    19,
+    254
+   ]
+  },
+  {
+   "type": "pines",
+   "count": 25,
+   "ground": 0.7,
+   "height": 0.4,
+   "color": [
+    26,
+    0,
+    51
+   ]
+  },
+  {
+   "type": "rocks",
+   "count": 15,
+   "top": 0.85,
+   "size": 0.06,
+   "color": [
+    255,
+    0,
+    255
+   ]
+  },
+  {
+   "type": "fog",
+   "amount": 0.6,
+   "top": 0.4,
+   "bottom": 1.0,
+   "color": [
+    188,
+    19,
+    254
+   ]
+  },
+  {
+   "type": "shafts",
+   "count": 8,
+   "strength": 1.1,
+   "spread": 0.4,
+   "color": [
+    204,
+    255,
+    0
+   ]
+  }
+ ]
+}
