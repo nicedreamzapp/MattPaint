@@ -37,7 +37,7 @@ if curl -s -m 3 http://127.0.0.1:8767/api/status 2>/dev/null | grep -q '"ace_up"
   FORGE_STOPPED=1; sleep 5
 fi
 
-LEASE="$(/usr/bin/python3 "$MEM" wait qwen-director 48 --timeout 300 2>/dev/null)"
+LEASE="$(/usr/bin/python3 "$MEM" wait qwen-director 48 --timeout 300 2>/dev/null | grep -oE "L[0-9]+-[0-9]+" | tail -1)"
 [ -n "$LEASE" ] && echo "memory seat $LEASE" || echo "forge_guard gave no seat — running anyway"
 
 HF_HUB_OFFLINE=1 PYTHONWARNINGS=ignore "$HOME/.local/mlx-vlm-latest/bin/python3" director.py "$@" &

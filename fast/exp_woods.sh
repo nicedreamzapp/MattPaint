@@ -39,7 +39,7 @@ for spec in \
   for mode in blind; do
     echo; echo "##### $NAME — $mode  $(date +%H:%M)"
     # a fresh seat per run: hold_mem_lease releases the seat when its process exits
-    LEASE="$(/usr/bin/python3 "$MEM" wait qwen-director 48 --timeout 300 2>/dev/null)"
+    LEASE="$(/usr/bin/python3 "$MEM" wait qwen-director 48 --timeout 300 2>/dev/null | grep -oE "L[0-9]+-[0-9]+" | tail -1)"
     echo "memory seat ${LEASE:-none}"
     extra=(); [ "$mode" = seeing ] && extra=(--ref "$EXP/target.png")
     ( trap - EXIT INT TERM      # the background copy must never run restore()
