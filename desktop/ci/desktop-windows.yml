@@ -1,0 +1,51 @@
+# Builds the Windows download of MattPaint, runs its self-test, and attaches the installer to a
+# release. Run it by hand (Actions > Desktop app for Windows > Run workflow) with the release tag.
+name: Desktop app for Windows
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attach the installer to (leave empty to only build and test)
+        required: false
+permissions:
+  contents: write
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: dtolnay/rust-toolchain@stable
+      - run: npm ci
+      - run: npx tauri build --bundles nsis
+      - name: Self-test (save, print, wallpaper through the real app)
+        shell: pwsh
+        run: |
+          $dir = New-Item -ItemType Directory -Force "$env:RUNNER_TEMP\selftest"
+          $env:MATTPAINT_SELFTEST = $dir.FullName
+          $p = Start-Process -FilePath "src-tauri\target\release\mattpaint.exe" -PassThru
+          if (-not $p.WaitForExit(90000)) { Stop-Process -Id $p.Id -Force; throw "self-test did not finish" }
+          Get-ChildItem $dir | Format-Table Name, Length
+          $r = Get-Content "$dir\report.json" -Raw | ConvertFrom-Json
+          $r | Format-List
+          if (-not ($r.tauri -and $r.bridged -and (Test-Path "$dir\Untitled.png") -and (Test-Path "$dir\print.txt"))) { throw "self-test failed" }
+      - name: Name the installer
+        shell: pwsh
+        run: |
+          $setup = Get-ChildItem "src-tauri\target\release\bundle\nsis\*-setup.exe" | Select-Object -First 1
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item $setup.FullName "dist\MattPaint-windows-setup.exe"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MattPaint-windows-setup
+          path: desktop/dist/MattPaint-windows-setup.exe
+      - name: Attach to the release
+        if: ${{ inputs.tag != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ inputs.tag }}" dist/MattPaint-windows-setup.exe --clobber

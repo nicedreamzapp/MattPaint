@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NSCameraUsageDescription</key>
+  <string>MattPaint uses the camera only when you choose From Camera to take a picture to paint on.</string>
+  <key>NSAppleEventsUsageDescription</key>
+  <string>MattPaint asks the Mac to use your picture as the desktop wallpaper when you choose Set as desktop background.</string>
+</dict>
+</plist>
