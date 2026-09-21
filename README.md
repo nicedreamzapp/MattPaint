@@ -2,7 +2,16 @@
 
 A pixel-perfect recreation of **Microsoft Paint (Windows 10)** for the web. Built with pure vanilla JavaScript, HTML5 Canvas, and CSS - no dependencies, no build step. Works on desktop, tablet and phone.
 
-**Try it live:** [nicedreamzwholesale.com/paint](https://nicedreamzwholesale.com/paint/) · [nicedreamzapp.github.io/MattPaint](https://nicedreamzapp.github.io/MattPaint/)
+**[⬇️ Download for Mac](https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-mac.zip)**
+(Apple Silicon and Intel, signed and notarized) &nbsp;·&nbsp;
+**[⬇️ Download for Windows](https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-windows-setup.exe)**
+(Windows 10 and 11)
+
+**Or use it free in your browser, no download:** [nicedreamzwholesale.com/paint](https://nicedreamzwholesale.com/paint/) · [nicedreamzapp.github.io/MattPaint](https://nicedreamzapp.github.io/MattPaint/)
+
+The desktop app is the same Paint in its own window, working offline, with a real Save window,
+the system print dialog, and a Set as desktop background that actually sets it. It lives in
+[`desktop/`](desktop/).
 
 ![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen)
 
