@@ -42,18 +42,63 @@ def open_between(a, b):
         o = a if a[0] > b[0] else b
         in_open[o[0]][o[1]] = True
 
-random.seed(SEED)
-seen = [[False] * k for k in ncell]
 GATE = (NR - 1, ncell[-1] // 2 - 1)              # left side, facing the bunny
 GATE_Y = CY + (RMAX) * math.sin(math.radians((GATE[1] + 0.5) * 360 / ncell[-1]))
-stack = [GATE]; seen[GATE[0]][GATE[1]] = True
-while stack:
-    c = stack[-1]
-    opts = [b for b in nbrs(*c) if not seen[b[0]][b[1]]]
-    if not opts: stack.pop(); continue
-    b = random.choice(opts); open_between(c, b); seen[b[0]][b[1]] = True; stack.append(b)
-HUB = random.randrange(ncell[0]); in_open[0][HUB] = True
-print(f"{NR} rings, {sum(ncell)} cells", flush=True)
+
+def connected(a, b):
+    if a[0] == b[0]:
+        k = b[1] if (a[1] + 1) % ncell[a[0]] == b[1] else a[1]
+        return ccw_open[a[0]][k]
+    o = a if a[0] > b[0] else b
+    return in_open[o[0]][o[1]]
+
+def carve(seed):
+    """growing tree (newest 55% / random 45%): it branches all along the way. A pure backtracker
+    from the gate made its first long run the answer, with zero forks on it (2026-09-22)."""
+    global in_open, ccw_open
+    in_open = [[False] * k for k in ncell]; ccw_open = [[False] * k for k in ncell]
+    rnd = random.Random(seed)
+    seen = [[False] * k for k in ncell]
+    live = [GATE]; seen[GATE[0]][GATE[1]] = True
+    while live:
+        idx = len(live) - 1 if rnd.random() < 0.55 else rnd.randrange(len(live))
+        c = live[idx]
+        opts = [b for b in nbrs(*c) if not seen[b[0]][b[1]]]
+        if not opts: live.pop(idx); continue
+        b = rnd.choice(opts); open_between(c, b); seen[b[0]][b[1]] = True; live.append(b)
+    hub = rnd.randrange(ncell[0]); in_open[0][hub] = True
+    return hub
+
+def grade(hub):
+    """route from the gate to the carrot, and how many forks on it are real choices
+    (the wrong turn leads into 4+ rooms, so it takes a look to rule out)"""
+    from collections import deque
+    prev = {GATE: None}; q = deque([GATE])
+    while q:
+        c = q.popleft()
+        for b in set(nbrs(*c)):
+            if b not in prev and connected(c, b): prev[b] = c; q.append(b)
+    route = []; c = (0, hub)
+    while c: route.append(c); c = prev[c]
+    on = set(route); good = 0
+    for c in route:
+        for b in set(nbrs(*c)):
+            if b in on or not connected(c, b): continue
+            size, st, vis = 0, [b], {b}
+            while st:
+                x = st.pop(); size += 1
+                for y in set(nbrs(*x)):
+                    if y not in on and y not in vis and connected(x, y): vis.add(y); st.append(y)
+            good += size >= 4
+    return len(route), good
+
+best = None
+for sd in range(SEED * 1000, SEED * 1000 + 400):     # keep the maze with the most real choices
+    n_route, forks = grade(carve(sd))
+    if 35 <= n_route <= 70 and (best is None or forks > best[0]): best = (forks, sd, n_route)
+FORKS, BEST_SEED, ROUTE_LEN = best
+HUB = carve(BEST_SEED)
+print(f"maze {BEST_SEED}: {sum(ncell)} rooms, route {ROUTE_LEN} rooms, {FORKS} real choices on the way", flush=True)
 
 # ---------- draw it (supersampled, then painted) ----------
 def S(v): return v * SS
