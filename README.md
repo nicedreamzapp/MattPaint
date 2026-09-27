@@ -2,6 +2,8 @@
 
 A pixel-perfect recreation of **Microsoft Paint (Windows 10)** for the web. Built with pure vanilla JavaScript, HTML5 Canvas, and CSS - no dependencies, no build step. Works on desktop, tablet and phone.
 
+**In one sentence:** MattPaint is Paint in your browser (or as a Mac and Windows app), with every classic tool, shape and brush, and it is live right now at the links below.
+
 **[⬇️ Download for Mac](https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-mac.zip)**
 (Apple Silicon and Intel, signed and notarized) &nbsp;·&nbsp;
 **[⬇️ Download for Windows](https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-windows-setup.exe)**
@@ -13,11 +15,22 @@ The desktop app is the same Paint in its own window, working offline, with a rea
 the system print dialog, and a Set as desktop background that actually sets it. It lives in
 [`desktop/`](desktop/).
 
-![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mac%20%7C%20iOS%20%7C%20Android-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen)
+![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Mac%20%7C%20Windows%20%7C%20iOS%20%7C%20Android-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen)
 
 ![MattPaint on desktop](screenshot.png)
 
 <img src="screenshot-phone.png" alt="MattPaint on a phone" width="260">
+
+## 🛠️ What I built
+
+Everything here was built by **Matt Macosko**:
+
+- **The Paint app**: [`index.html`](index.html) (ribbon UI), [`js/app.js`](js/app.js) (every tool, shape, brush, selection, undo/redo, zoom and file operation) and [`css/`](css/) (including the phone layout).
+- **The self-test suite**: [`test-in-app.js`](test-in-app.js), 65 checks that run inside the live page.
+- **The desktop app**: [`desktop/`](desktop/). [`desktop.js`](desktop/desktop.js) turns the web version's download, print pop-up and wallpaper instructions into a real Save window, the system print dialog and an actual wallpaper change; [`src-tauri/src/main.rs`](desktop/src-tauri/src/main.rs) is the native side; [`build-mac.sh`](desktop/build-mac.sh) and [`.github/workflows/desktop-windows.yml`](.github/workflows/desktop-windows.yml) build the Mac and Windows downloads, and the Windows workflow runs [`selftest.js`](desktop/selftest.js) against the built app. The app shell is the upstream [Tauri](https://tauri.app) framework.
+- **A painting-from-scratch experiment**: [`fast/`](fast/) drives MattPaint through the Chrome DevTools Protocol ([`fast/engine.py`](fast/engine.py)) and paints pictures stroke by stroke with no images going in. [`fast/scene_engine.py`](fast/scene_engine.py) holds the drawing knowledge, and [`fast/director.py`](fast/director.py) has a local open-weight vision model (upstream Gemma 4 or Qwen, run with upstream MLX) write a short recipe ([`fast/RECIPES.md`](fast/RECIPES.md)), look at the painting and revise it. Results, generation by generation, are in [`gallery/`](gallery/).
+
+![Paintings made stroke by stroke in MattPaint](gallery/_collection.jpg)
 
 ## Features
 
@@ -52,14 +65,14 @@ the system print dialog, and a Set as desktop background that actually sets it. 
 - Crop to selection
 
 ### Image Operations
-- Rotate (90°, 180°, custom)
+- Rotate (90° left or right, 180°)
 - Flip (horizontal/vertical)
 - Resize with aspect ratio lock
 - Skew transformation
 - Zoom (up to 800%)
 
 ### File Operations
-- New, Open, Save (PNG, JPEG, BMP, GIF)
+- New, Open, Save (PNG, JPEG, WebP, BMP)
 - Print support
 - Drag & drop image loading
 - Set as desktop wallpaper
@@ -81,6 +94,7 @@ the system print dialog, and a Set as desktop background that actually sets it. 
 | Eraser | `E` |
 | Fill | `G` |
 | Text | `T` |
+| Color Picker | `I` |
 | Select | `S` |
 | Magnifier | `Z` |
 | Line | `L` |
@@ -88,12 +102,14 @@ the system print dialog, and a Set as desktop background that actually sets it. 
 | Oval | `O` |
 | Undo | `Cmd/Ctrl + Z` |
 | Redo | `Cmd/Ctrl + Y` |
+| Cut | `Cmd/Ctrl + X` |
 | Copy | `Cmd/Ctrl + C` |
 | Paste | `Cmd/Ctrl + V` |
 | Select All | `Cmd/Ctrl + A` |
 | Save | `Cmd/Ctrl + S` |
 | New | `Cmd/Ctrl + N` |
 | Open | `Cmd/Ctrl + O` |
+| Print | `Cmd/Ctrl + P` |
 | Zoom In | `+` |
 | Zoom Out | `-` |
 
@@ -122,13 +138,16 @@ Then visit `http://localhost:8000`
 MattPaint/
 ├── index.html          # Main HTML file
 ├── js/
-│   └── app.js          # All application logic (~3300 lines)
+│   └── app.js          # All application logic (~3800 lines)
 ├── css/
 │   ├── paint.css       # Main styles + phone layout
 │   ├── ribbon.css      # Ribbon toolbar styles
 │   └── dialogs.css     # Modal dialog styles
 ├── test-in-app.js      # In-browser self-test suite
-└── TESTING-CHECKLIST.md
+├── TESTING-CHECKLIST.md
+├── desktop/            # Mac and Windows app (Tauri)
+├── fast/               # Painting-from-scratch experiment (Python)
+└── gallery/            # Paintings made by fast/
 ```
 
 ## Tests
@@ -144,11 +163,18 @@ Add `?test` to the URL (for example `index.html?test`) and the built-in suite ru
 
 ## Why MattPaint?
 
-- **Zero Dependencies** - No npm, no build tools, no frameworks
-- **Lightweight** - Under 100KB total
+- **Zero Dependencies** - The web version needs no npm, no build tools, no frameworks (only the desktop build uses npm and Tauri)
+- **Lightweight** - About 230KB of HTML, JS and CSS, unminified
 - **Offline Ready** - Works without internet
 - **Faithful Recreation** - Looks and feels like real MS Paint
 - **Educational** - Clean, readable vanilla JS code
+
+## Known limits
+
+- **BMP save**: browsers can't encode BMP from a canvas, so most will give you a PNG with a `.bmp` name. Pick PNG, JPEG or WebP for a real file.
+- **Web version**: Save downloads the file, Print opens a pop-up, and Set as desktop background downloads the picture and tells you how to set it yourself. The desktop app does all three for real.
+- **Desktop app**: Mac and Windows only, no Linux build. `desktop/build-mac.sh` needs an Apple Developer ID certificate and notary key to produce the signed download.
+- **`fast/`** is a personal experiment tied to Matt's Mac: it expects Brave at its Mac path, a local MLX model server and local model files, and `run_director.sh` coordinates with other local services. It is not set up to run on another machine.
 
 ## License
 
