@@ -22,6 +22,32 @@ sys.path.insert(0, str(HERE))
 import local_loop as LL                                   # Qwen (with the verified prefix cache)
 
 PAINT_PY = LL.PAINT_PY
+CLAUDE_BIN = os.path.expanduser("~/.claude/bin/claude-stable")
+
+
+class ClaudeQ:
+    """Matt 2026-10-05 ("yes for now wire that up instead"): local Gemma took ~4 min to hand-write a
+    dog as SVG and it came out a yellow blob. --painter claude sends the same brief to Claude through
+    `claude -p` (his subscription, never the paid API). Same ask() shape as LL.Qwen."""
+    load_s, cache_on = 0, False
+    def __init__(self, model):
+        self.model = model
+    def ask(self, prompt, images=(), max_tokens=6000, temperature=0.2, think=False, prefix=""):
+        text = prefix + prompt
+        if images:
+            text += ("\n\nTHE IMAGES, in order (open each with the Read tool before answering): "
+                     + ", ".join(str(i) for i in images))
+        t0 = time.time()
+        p = subprocess.run([CLAUDE_BIN, "-p", "--model", self.model, "--output-format", "json",
+                            "--strict-mcp-config", "--no-session-persistence",
+                            "--tools", "Read" if images else ""],
+                           input=text, capture_output=True, text=True, timeout=600, cwd=str(HERE))
+        try:
+            j = json.loads(p.stdout); out = j.get("result", ""); tok = (j.get("usage") or {}).get("output_tokens", 0)
+        except Exception:
+            out, tok = p.stdout or p.stderr, 0
+        s = round(time.time() - t0, 1)
+        return out, {"s": s, "tok": tok, "tps": round(tok / s, 1) if s else 0, "model": self.model}
 GALLERY = HERE.parent / "gallery" / "gen6"
 TAG = os.environ.get("MATTPAINT_TAG", "")          # e.g. "_gemma" so a head-to-head keeps both
 HOLDOUTS = LL.HOLDOUTS
@@ -247,7 +273,7 @@ class Direction:
     def ask_recipe(self, ask, name, images=(), think=False, max_tokens=2500):
         note = ""
         for attempt in range(3):
-            text, st = ticking(f"{WHO} is thinking up the recipe (~4 min)" if think else f"{WHO} is writing the recipe",
+            text, st = ticking(f"{WHO} is thinking up the recipe" if think else f"{WHO} is writing the recipe",
                                self.q.ask, (self.prefix if images else "") + ask + note, images=images, max_tokens=max_tokens, think=think,
                                   temperature=0.3 if attempt == 0 else 0.6,
                                   prefix="" if images else self.prefix)
@@ -399,6 +425,8 @@ def main():
     ap.add_argument("--gray-rounds", type=int, default=1)
     ap.add_argument("--no-think", action="store_true")
     ap.add_argument("--ref", help="a target picture the director gets to see")
+    ap.add_argument("--painter", default="local", help="local (Gemma/Qwen on this Mac) or claude")
+    ap.add_argument("--claude-model", default="claude-opus-5-5")
     a = ap.parse_args()
     P = LL.prompts()
     stamp = time.strftime("%Y%m%d-%H%M%S")
@@ -410,8 +438,12 @@ def main():
         jobs = [(a.prompt[:40].upper(), a.prompt)]
     else:
         sys.exit("give a prompt or a PROMPTS.md subject, or --all")
-    q = LL.Qwen(think=not a.no_think)
-    print(f"model loaded in {q.load_s}s, prefix cache {'on' if q.cache_on else 'off'}", flush=True)
+    if a.painter == "claude":
+        q = ClaudeQ(a.claude_model)
+        print(f"painter: Claude ({a.claude_model})", flush=True)
+    else:
+        q = LL.Qwen(think=not a.no_think)
+        print(f"model loaded in {q.load_s}s, prefix cache {'on' if q.cache_on else 'off'}", flush=True)
     for key, prompt in jobs:
         d = HERE / "director_runs" / f"{stamp}_{slug_of(key)}{TAG}"
         d.mkdir(parents=True, exist_ok=True)
