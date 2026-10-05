@@ -332,7 +332,7 @@ class Direction:
         if r is None:
             return self.finish("no paintable recipe")
         g = 0
-        while True:
+        while self.gray_rounds >= 0:     # --gray-rounds -1 (Moonstone fast mode): straight to colour
             png = self.paint(r, f"g{g}", gray=True)
             if png is None:
                 return self.finish("gray paint failed")
