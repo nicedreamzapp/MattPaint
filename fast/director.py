@@ -33,7 +33,11 @@ os.environ["MATTPAINT_NAME"] = WHO           # the painter subprocess reads it f
 import scene_engine as _SE
 HAS_OBJECTS = hasattr(_SE, "SO")
 OBJECTS_DOC = ("\n\n" + (HERE / "RECIPES_OBJECTS.md").read_text()) if HAS_OBJECTS else ""
-FIRST_ASK = ("First list every thing the prompt names and give each one an object (or build it from "
+FIRST_ASK = ("What the prompt names IS the painting. If it names a thing (a dog, a car, a person), that thing "
+             "is the subject: draw it big and centred, filling at least half the canvas, with real detail. Do NOT "
+             "turn it into a landscape: no ridges, meadows, trees, rocks, fog or sun shafts unless the prompt asks "
+             "for that setting; a plain sky or a simple floor behind the subject is enough. "
+             "First list every thing the prompt names and give each one an object (or build it from "
              "shapes); then decide the light. Reply with the full recipe in one ```json block."
              if HAS_OBJECTS else
              "Read the prompt as LIGHT first, then write the recipe. Reply with the full recipe in one ```json block.")    # who the terminal says is working
