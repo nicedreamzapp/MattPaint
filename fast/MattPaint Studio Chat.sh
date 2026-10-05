@@ -5,6 +5,13 @@
 cd "$(dirname "$0")"
 echo "MattPaint Studio · gen 6 — local Gemma 4 directs, the engine paints it on screen."
 echo "Type what you want painted (add \"rounds 6\" to change the rounds, default 4). Each painting takes about 10-20 minutes."
+# Matt 2026-10-05: open MattPaint and paint something the moment the chat opens, so the window is
+# up and moving before he has typed anything. Skipped if the window is already up (a painting may be running).
+if ! curl -s -m 1 http://localhost:9231/json/version >/dev/null 2>&1; then
+  echo "Opening MattPaint and painting Dawn Ridges while you think of something..."
+  "$HOME/.local/mlx-server/bin/python3" scene_engine.py ../gallery/gen6/dawn_ridges.json /tmp/mattpaint_warmup.png >/dev/null 2>&1 \
+    && echo "Dawn Ridges is up." || echo "MattPaint didn't open, it will try again when you send something."
+fi
 printf '\n› '
 while IFS= read -r PROMPT; do
   PROMPT="$(echo "$PROMPT" | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')"
