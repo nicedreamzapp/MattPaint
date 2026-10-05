@@ -146,8 +146,14 @@ def ticking(label, fn, *a, **kw):
     """Matt, 2026-09-18: the first recipe is four silent minutes and it looked frozen. Show a live
     clock on one terminal line while the model thinks or MattPaint paints, then clear it."""
     import threading
-    done = threading.Event()
     t0 = time.time()
+    if not sys.stdout.isatty():   # Moonstone chat (2026-10-05): one line in, one line out, no \r spinner
+        print(f"   {label}...", flush=True)
+        try:
+            return fn(*a, **kw)
+        finally:
+            e = int(time.time() - t0); print(f"   done in {e // 60}:{e % 60:02d}", flush=True)
+    done = threading.Event()
     frames = "|/-\\"
     def tick():
         i = 0
