@@ -22,6 +22,9 @@ while IFS= read -r PROMPT; do
     PROMPT="$(echo "$PROMPT" | sed -E 's/[,;]?[[:space:]]*[Rr]ounds?[[:space:]]*[0-9]+//; s/[[:space:]]+$//')"
   fi
   echo "Painting \"$PROMPT\" with $ROUNDS rounds. Painter: $(basename "${MATTPAINT_MODEL:-gemma-4-31b-it-abliterated-VL-mlx-bf16}"), running locally. Watch the MattPaint window."
+  # window closed since the chat opened? open it now, painting Dawn Ridges while the model loads
+  curl -s -m 1 http://localhost:9231/json/version >/dev/null 2>&1 || \
+    ("$HOME/.local/mlx-server/bin/python3" scene_engine.py ../gallery/gen6/dawn_ridges.json /tmp/mattpaint_warmup.png >/dev/null 2>&1 &)
   ./run_director.sh "$PROMPT" --rounds "$ROUNDS" 2>&1 | grep --line-buffered -v -iE "warn|fetching|it/s"
   echo "Done, the best painting is on screen and saved in MattPaint/gallery/gen6/. What next?"
   printf '\n› '
