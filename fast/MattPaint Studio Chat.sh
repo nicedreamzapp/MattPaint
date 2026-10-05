@@ -27,7 +27,7 @@ while IFS= read -r PROMPT; do
   # Matt 2026-10-05: Claude draws (about 1.5 min, a real dog); local Gemma took 5 min for a blob. No local
   # model, so Song Forge is never paused. MATTPAINT_PAINTER=local brings the Gemma path back.
   if [ "${MATTPAINT_PAINTER:-claude}" = claude ]; then
-    MATTPAINT_NAME=Claude PYTHONWARNINGS=ignore "$HOME/.local/mlx-vlm-latest/bin/python3" director.py "$PROMPT" \
+    MATTPAINT_NAME="Claude Opus 5.5" PYTHONWARNINGS=ignore "$HOME/.local/mlx-vlm-latest/bin/python3" director.py "$PROMPT" \
       --painter claude --rounds "$ROUNDS" --gray-rounds -1 2>&1 | grep --line-buffered -v -iE "warn|fetching|it/s"
   else
     ./run_director.sh "$PROMPT" --rounds "$ROUNDS" --no-think --gray-rounds -1 2>&1 | grep --line-buffered -v -iE "warn|fetching|it/s"
