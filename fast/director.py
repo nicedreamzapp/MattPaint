@@ -190,13 +190,24 @@ class Direction:
         self.rounds, self.gray_rounds, self.holdout = rounds, gray_rounds, holdout
         self.steps = []
         self.lost = []          # (changes, judge's reason) for revisions that lost
+        # Matt 2026-10-05 ("its programming is too strong, it needs to paint what I asked the best it can"):
+        # "draw me a dog" came back as ridges, a meadow, an oak and fog with a small blob for the dog. The
+        # landscape toolbox and doctrine were steering every picture, so the job now leads AND closes the brief.
+        mandate = (f"YOUR ONE JOB: paint exactly what THE PROMPT asks for, as well as you possibly can. "
+                   f"THE PROMPT: {prompt}\n"
+                   "If it names a thing (a dog, a car, a person), the painting IS that thing: big, centred, filling "
+                   "most of the canvas, recognisable at a glance, with real detail. The toolbox below was first "
+                   "built for landscapes; that is history, not a style. Use mountains, meadows, trees, rocks, fog or "
+                   "sunbeams ONLY when the prompt asks for that kind of place. For anything the toolbox has no "
+                   "object for, draw it yourself with svg layers, several of them if it helps (body, head, "
+                   "features, a light side and a shadow side), as carefully as you can.\n\n")
         self.prefix = ("You are the art director for a painting engine. You never draw strokes yourself: "
-                       "you write a short recipe and the engine paints it from scratch.\n\n"
-                       + (HERE / "RECIPES.md").read_text() + OBJECTS_DOC + "\n\nTHE PAINTING RULES THE ENGINE FOLLOWS:\n"
+                       "you write a short recipe and the engine paints it from scratch.\n\n" + mandate
+                       + "THE TOOLBOX:\n\n" + (HERE / "RECIPES.md").read_text() + OBJECTS_DOC + "\n\nTHE PAINTING RULES THE ENGINE FOLLOWS:\n"
                        + (HERE / "GEN5_RULES.md").read_text()
                        + (f"\n\nTHE PROMPT: {prompt}\nYou are also shown THE TARGET PICTURE (always the "
                           "first image). Match it as closely as the engine's layers allow.\n" if ref else
-                          f"\n\nTHE PROMPT (the only description you get): {prompt}\n"))
+                          f"\n\n" + mandate))
 
     def log(self, step, **kw):
         kw.update(step=step, t=time.strftime("%H:%M:%S"))
@@ -277,6 +288,8 @@ class Direction:
                 "VERDICT: PASS or VERDICT: FAIL."
                 if gray else
                 "This is the painting. First say in one sentence what a stranger would think it shows. "
+                "If that sentence is not THE PROMPT, fixing that comes before anything else: make the asked-for "
+                "subject bigger, nearer and clearer, and remove layers the prompt never asked for. "
                 + ("Then list every thing the prompt names that is MISSING, too small, or only a dark shape, "
                    "and fix the worst 3: add objects, svg drawings or shapes, move them nearer, light them, "
                    "colour them." if HAS_OBJECTS else
@@ -297,7 +310,8 @@ class Direction:
         self.last_why = ""
         for first, second, challenger in ((best, new, 2), (new, best, 1)):
             text, st = ticking(f"{WHO} is judging new vs best", self.q.ask,
-                f"Two paintings of: \"{self.prompt}\"\n" + ("Which one SHOWS more of the things the prompt names, "
+                f"Two paintings of: \"{self.prompt}\"\n" + ("Which one would a stranger say IS that, at a glance? "
+                "Scenery the prompt never asked for counts against a painting. Which one SHOWS more of the things the prompt names, "
                 "clearly and recognisably, in the colours it asks for? A dark silhouette against a sunset "
                 "loses to a picture where you can see what things are." if HAS_OBJECTS else
                 "Which reads more convincingly as that scene, with believable light?") + " Ignore the title bars. First line exactly WINNER: 1 or WINNER: 2, then one "
