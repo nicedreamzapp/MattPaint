@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MattPaint: Paint, back on every screen</title>
+<meta name="description" content="MattPaint is a free recreation of Microsoft Paint (Windows 10) that runs in any browser, on phones and tablets, and as a Mac and Windows app. Every classic tool, shape and brush, no account, no tracking.">
+<!-- TODO-VERIFY: final public URL of this page (nicedreamzwholesale.com/software/ ?) -->
+<link rel="canonical" href="https://nicedreamzwholesale.com/software/">
+<meta name="theme-color" content="#0078D4">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nice Dreamz">
+<meta property="og:title" content="MattPaint: Paint, back on every screen">
+<meta property="og:description" content="Microsoft Paint (Windows 10), recreated for the browser, phones and tablets, Mac and Windows. Free, no account, no tracking.">
+<meta property="og:url" content="https://nicedreamzwholesale.com/software/">
+<meta property="og:image" content="https://nicedreamzapp.github.io/MattPaint/screenshot.png">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="900">
+<meta property="og:image:alt" content="MattPaint open on a desktop browser, showing the Paint ribbon, palette and canvas">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MattPaint: Paint, back on every screen">
+<meta name="twitter:description" content="Microsoft Paint (Windows 10), recreated for the browser, phones and tablets, Mac and Windows. Free, no account, no tracking.">
+<meta name="twitter:image" content="https://nicedreamzapp.github.io/MattPaint/screenshot.png">
+<meta name="twitter:image:alt" content="MattPaint open on a desktop browser, showing the Paint ribbon, palette and canvas">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230078D4'/%3E%3Ccircle cx='16' cy='16' r='10' fill='%23FFF'/%3E%3Ccircle cx='11' cy='13' r='2.4' fill='%23ED1C24'/%3E%3Ccircle cx='17' cy='10' r='2.4' fill='%23FFF200'/%3E%3Ccircle cx='21.5' cy='15' r='2.4' fill='%2322B14C'/%3E%3Ccircle cx='19' cy='21' r='2.4' fill='%233F48CC'/%3E%3Ccircle cx='12' cy='20' r='2.4' fill='%23FF7F27'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "MattPaint",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "Web browser, macOS 11 or later, Windows 10, Windows 11, iOS (browser), Android (browser)",
+  "description": "A recreation of Microsoft Paint (Windows 10) for the web, phones and tablets, and as a Mac and Windows desktop app. Vanilla JavaScript and HTML5 Canvas, no dependencies.",
+  "url": "https://nicedreamzwholesale.com/paint/",
+  "downloadUrl": [
+    "https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-mac.zip",
+    "https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-windows-setup.exe"
+  ],
+  "softwareVersion": "1.0.0",
+  "datePublished": "2025-12-26",
+  "license": "https://opensource.org/licenses/MIT",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "screenshot": [
+    "https://nicedreamzapp.github.io/MattPaint/screenshot.png",
+    "https://nicedreamzapp.github.io/MattPaint/screenshot-phone.png"
+  ],
+  "author": { "@type": "Person", "name": "Matt Macosko", "url": "https://github.com/nicedreamzapp" },
+  "publisher": { "@type": "Organization", "name": "Nice Dreamz", "url": "https://nicedreamzwholesale.com/software/" },
+  "codeRepository": "https://github.com/nicedreamzapp/MattPaint"
+}
+</script>
+
+<style>
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --text: #1b1f24;
+  --muted: #56606b;
+  --line: #d9dee5;
+  --accent: #0063b1;
+  --accent-ink: #ffffff;
+  --chip: #e8f1fb;
+  --todo-bg: #fff4ce;
+  --todo-ink: #6b4e00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161b; --surface: #1b2129; --text: #e9edf2; --muted: #a3adb8; --line: #2e3742;
+    --accent: #4aa3f0; --accent-ink: #0b1622; --chip: #1d3047; --todo-bg: #3d3313; --todo-ink: #f3d77b;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161b; --surface: #1b2129; --text: #e9edf2; --muted: #a3adb8; --line: #2e3742;
+  --accent: #4aa3f0; --accent-ink: #0b1622; --chip: #1d3047; --todo-bg: #3d3313; --todo-ink: #f3d77b;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 17px/1.6 "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  overflow-wrap: anywhere;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent); }
+a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--surface); padding: 8px 12px; }
+.skip:focus { left: 16px; top: 16px; z-index: 10; }
+.wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+header.top { border-bottom: 1px solid var(--line); background: var(--surface); }
+header.top .wrap { display: flex; align-items: center; gap: 10px; padding-top: 12px; padding-bottom: 12px; }
+header.top svg { width: 32px; height: 32px; flex: none; }
+header.top strong { font-size: 18px; }
+header.top nav { margin-left: auto; display: none; gap: 18px; font-size: 15px; }
+header.top nav a { color: var(--muted); text-decoration: none; }
+header.top nav a:hover { color: var(--accent); }
+
+.hero { padding: 40px 0 24px; }
+.hero h1 { font-size: clamp(30px, 7vw, 48px); line-height: 1.12; margin: 0 0 14px; letter-spacing: -0.01em; }
+.hero p.lede { font-size: clamp(18px, 4.4vw, 21px); color: var(--muted); margin: 0 0 24px; max-width: 40em; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 10px 18px; border-radius: 8px; font-weight: 600;
+  text-decoration: none; border: 1px solid var(--line); background: var(--surface); color: var(--text);
+  flex: 1 1 100%;
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn small { font-weight: 400; opacity: .8; }
+.fine { font-size: 14px; color: var(--muted); margin: 6px 0 0; }
+
+.shots { display: grid; gap: 16px; grid-template-columns: 1fr; align-items: start; margin: 8px 0 8px; }
+figure { margin: 0; }
+figure img { border-radius: 10px; border: 1px solid var(--line); background: #fff; }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.phone img { max-width: 240px; margin: 0 auto; }
+.phone figcaption { text-align: center; }
+
+section { padding: 32px 0; border-top: 1px solid var(--line); }
+section h2 { font-size: clamp(24px, 5vw, 30px); margin: 0 0 14px; line-height: 1.2; }
+section p { margin: 0 0 14px; max-width: 42em; }
+.grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.card h3 { margin: 0 0 6px; font-size: 18px; }
+.card p { margin: 0; color: var(--muted); font-size: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.chips li { background: var(--chip); padding: 4px 10px; border-radius: 999px; font-size: 15px; }
+
+.badges { display: grid; gap: 10px; grid-template-columns: 1fr; }
+.badge {
+  display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 10px 16px;
+  border-radius: 10px; background: #000; color: #fff; text-decoration: none;
+}
+.badge svg { width: 26px; height: 26px; flex: none; fill: currentColor; }
+.badge span { display: flex; flex-direction: column; line-height: 1.2; }
+.badge small { font-size: 12px; opacity: .85; }
+.badge b { font-size: 18px; }
+.badge.todo { background: var(--todo-bg); color: var(--todo-ink); border: 1px dashed currentColor; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 0 16px; margin-bottom: 10px; }
+summary { cursor: pointer; font-weight: 600; padding: 14px 0; min-height: 48px; }
+details p { margin: 0 0 14px; }
+.todo-note { background: var(--todo-bg); color: var(--todo-ink); padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+.gallery img { border-radius: 10px; }
+footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 15px; }
+footer p { margin: 0 0 8px; }
+
+@media (min-width: 560px) {
+  .btn { flex: 0 1 auto; }
+  .badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 760px) {
+  header.top nav { display: flex; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shots { grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); }
+  .hero { padding: 56px 0 32px; }
+}
+@media (min-width: 1000px) {
+  .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .badges { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="6" fill="#0078D4"/><circle cx="16" cy="16" r="10" fill="#FFF"/><circle cx="11" cy="13" r="2.4" fill="#ED1C24"/><circle cx="17" cy="10" r="2.4" fill="#FFF200"/><circle cx="21.5" cy="15" r="2.4" fill="#22B14C"/><circle cx="19" cy="21" r="2.4" fill="#3F48CC"/><circle cx="12" cy="20" r="2.4" fill="#FF7F27"/></svg>
+    <strong>MattPaint</strong>
+    <nav aria-label="Page sections">
+      <a href="#features">Features</a>
+      <a href="#get">Get it</a>
+      <a href="#faq">FAQ</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <div class="hero">
+      <h1>Microsoft Paint, back on every screen.</h1>
+      <p class="lede">MattPaint is a free recreation of Paint from Windows 10. It runs in any browser, on phones and tablets, and as a Mac and Windows app. Every classic tool, shape and brush is there. No account, no ads, no tracking.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://nicedreamzwholesale.com/paint/">Open it in your browser <small>free</small></a>
+        <a class="btn" href="https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-mac.zip">Download for Mac</a>
+        <a class="btn" href="https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-windows-setup.exe">Download for Windows</a>
+      </div>
+      <p class="fine">Mac: Apple Silicon and Intel, macOS 11 or later, signed and notarized. Windows: 10 and 11. Version 1.0.0.</p>
+    </div>
+
+    <div class="shots">
+      <figure>
+        <img src="../screenshot.png" width="1400" height="900" alt="MattPaint in a desktop browser: the Windows 10 style ribbon with Home and View tabs, tool and shape buttons, the color palette, and a white canvas.">
+        <figcaption>On a desktop browser.</figcaption>
+      </figure>
+      <figure class="phone">
+        <img src="../screenshot-phone.png" width="390" height="844" alt="MattPaint on a phone: the ribbon scrolls sideways above a canvas sized to the screen.">
+        <figcaption>On a phone. The canvas fits the screen and the ribbon scrolls sideways.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section id="what">
+    <div class="wrap">
+      <h2>What it does</h2>
+      <p>You open it and draw, the same way you did in Paint. Pencil, brushes, fill bucket, eyedropper, text, shapes, select and crop, rotate and flip, resize and skew, zoom, rulers and gridlines. The ribbon, palette and status bar look and sit where you remember them.</p>
+      <p>The web version is plain JavaScript and HTML5 Canvas, about 230 KB with no libraries and no build step. The Mac and Windows app wraps that same Paint in its own window using the open source <a href="https://tauri.app">Tauri</a> framework, and turns Save, Print and Set as desktop background into the real thing: a save window, the system print dialog, and a wallpaper that actually changes.</p>
+    </div>
+  </section>
+
+  <section id="who">
+    <div class="wrap">
+      <h2>Who it's for</h2>
+      <div class="grid">
+        <div class="card"><h3>People who miss Paint</h3><p>On a Mac, a Chromebook, a phone or an iPad, where Paint never existed.</p></div>
+        <div class="card"><h3>Kids and classrooms</h3><p>Opens in a browser tab with nothing to install and no sign up.</p></div>
+        <div class="card"><h3>Quick edits</h3><p>Crop a screenshot, circle something, add an arrow and some text, save as PNG or JPEG.</p></div>
+        <div class="card"><h3>Touch and stylus users</h3><p>Draw with a finger or a pen on phones and tablets. The canvas sizes itself to the screen.</p></div>
+        <div class="card"><h3>Keyboard users</h3><p>Single key tool shortcuts (P, B, E, G, T, I, S, Z, L, R, O) plus the usual Ctrl or Cmd shortcuts.</p></div>
+        <div class="card"><h3>People learning to code</h3><p>One readable JavaScript file, MIT licensed, no frameworks.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Features</h2>
+      <div class="grid">
+        <div class="card"><h3>Nine brushes</h3><p>Standard, two calligraphy angles, airbrush, oil, crayon, marker, natural pencil and watercolor. Marker and watercolor are see-through.</p></div>
+        <div class="card"><h3>Every classic shape</h3><p>Line, curve, rectangle, rounded rectangle, oval, polygon, triangles, diamond, 5 and 6 point stars, four arrows, heart, lightning bolt. Outline and fill styles.</p></div>
+        <div class="card"><h3>Selections</h3><p>Rectangle and free-form lasso, move, cut, copy, paste, transparent selection, crop to selection.</p></div>
+        <div class="card"><h3>Image tools</h3><p>Rotate 90 or 180 degrees, flip, resize by percent or pixels with aspect lock, skew, zoom from 12.5% to 800%.</p></div>
+        <div class="card"><h3>Text</h3><p>Fonts, sizes, bold, italic, underline and strikethrough.</p></div>
+        <div class="card"><h3>Files</h3><p>Open or drag in an image. Save as PNG, JPEG or WebP. Print. Copy the picture to the clipboard, or share it from a phone's share sheet.</p></div>
+        <div class="card"><h3>50 steps of undo</h3><p>Undo and redo from the quick access bar or the keyboard.</p></div>
+        <div class="card"><h3>Edit colors</h3><p>A 30 color palette, a custom color picker with hue, RGB and hex input, and custom color slots.</p></div>
+        <div class="card"><h3>Self-tested</h3><p>Add <code>?test</code> to the address and 65 checks run inside the live page. The Windows build runs its own save, print and wallpaper self-test before it ships.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="get">
+    <div class="wrap">
+      <h2>Get it</h2>
+      <p>The browser version and both desktop downloads are free and available now.</p>
+      <div class="badges">
+        <a class="badge" href="https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-mac.zip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.2-1.2 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.2zM14 5.3c.7-.8 1.2-2 1-3.2-1 0-2.2.7-3 1.5-.6.7-1.2 1.9-1 3.1 1.1.1 2.3-.6 3-1.4z"/></svg>
+          <span><small>Download for</small><b>Mac</b></span>
+        </a>
+        <a class="badge" href="https://github.com/nicedreamzapp/MattPaint/releases/latest/download/MattPaint-windows-setup.exe">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5l7.4-1v7.1H3V5.5zm0 13l7.4 1v-7H3v6zm8.3 1.1L21 21v-8.4h-9.7v7zM11.3 4.4v7.2H21V3l-9.7 1.4z"/></svg>
+          <span><small>Download for</small><b>Windows</b></span>
+        </a>
+        <!-- TODO-VERIFY: no App Store link exists anywhere in the repo. Replace href and remove .todo when there is one, or delete this badge. -->
+        <a class="badge todo" href="#TODO-VERIFY-app-store" aria-label="App Store link to be confirmed">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.2-1.2 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.2zM14 5.3c.7-.8 1.2-2 1-3.2-1 0-2.2.7-3 1.5-.6.7-1.2 1.9-1 3.1 1.1.1 2.3-.6 3-1.4z"/></svg>
+          <span><small>TODO-VERIFY</small><b>App Store</b></span>
+        </a>
+        <!-- TODO-VERIFY: no Google Play link exists anywhere in the repo. Replace href and remove .todo when there is one, or delete this badge. -->
+        <a class="badge todo" href="#TODO-VERIFY-google-play" aria-label="Google Play link to be confirmed">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 2.5v19c0 .4.4.6.7.4L15 12 4.7 2.1c-.3-.2-.7 0-.7.4zm12.3 8.3l2.9-1.7c.9.5.9 1.9 0 2.4l-2.9 1.7L13.9 12l2.4-1.2zM6 2.6l9 5.2-2.1 2.1L6 2.6zm0 18.8l6.9-7.3 2.1 2.1-9 5.2z"/></svg>
+          <span><small>TODO-VERIFY</small><b>Google Play</b></span>
+        </a>
+      </div>
+      <p class="fine">On iPhone, iPad and Android today, MattPaint runs in the browser at <a href="https://nicedreamzwholesale.com/paint/">nicedreamzwholesale.com/paint</a>. Also mirrored at <a href="https://nicedreamzapp.github.io/MattPaint/">nicedreamzapp.github.io/MattPaint</a>.</p>
+    </div>
+  </section>
+
+  <section id="paintings">
+    <div class="wrap">
+      <h2>It can also paint by itself</h2>
+      <p>A side experiment in the repo drives MattPaint through the Chrome DevTools Protocol and paints pictures stroke by stroke, from a one line prompt, with no images going in. A local open-weight vision model (Gemma 4 or Qwen, run on a Mac with Apple's open source <a href="https://github.com/ml-explore/mlx">MLX</a> and the community <a href="https://github.com/Blaizzy/mlx-vlm">mlx-vlm</a> package) writes a short recipe, looks at the painting, and revises it. Every brush stroke happens in the real app, on screen.</p>
+      <figure class="gallery">
+        <img src="../gallery/_collection.jpg" width="1500" height="1026" loading="lazy" alt="A grid of paintings made stroke by stroke in MattPaint: mountain ridges at dawn, an aurora over a lake, a redwood grove in fog, a horse in a field, a car at night, a fish underwater and more.">
+        <figcaption>Paintings made in MattPaint, stroke by stroke. The experiment is tied to Matt's own Mac and is not part of the download.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <h2>FAQ</h2>
+      <details><summary>Is it really free?</summary><p>Yes. The browser version and the Mac and Windows downloads cost nothing, and the code is MIT licensed.</p></details>
+      <details><summary>Is this made by Microsoft?</summary><p>No. MattPaint is an independent recreation of how Paint looked and worked in Windows 10. It is not affiliated with or endorsed by Microsoft.</p></details>
+      <details><summary>Do I need an account?</summary><p>No. There is no sign in, no account and nothing to register.</p></details>
+      <details><summary>Does it work offline?</summary><p>The desktop app works fully offline. The web version is plain files with no server calls, so once the page has loaded you can keep drawing without a connection.</p></details>
+      <details><summary>Does it work on iPhone, iPad and Android?</summary><p>Yes, in the browser. Touch and stylus drawing work, the canvas sizes itself to the screen, and the ribbon scrolls sideways. On phones you can share a picture straight to the share sheet.</p></details>
+      <details><summary>What file types can I save?</summary><p>PNG, JPEG and WebP. There is a BMP option, but browsers can't encode BMP from a canvas, so most will give you a PNG with a .bmp name. Pick PNG for a real lossless file.</p></details>
+      <details><summary>Is it accessible with a screen reader?</summary><p>Not well yet, and we would rather say so up front. Every tool has a keyboard shortcut and a tooltip, and focus moves through the ribbon with Tab, but the buttons do not carry screen reader labels yet and drawing on the canvas needs a pointer, finger or stylus. Feedback from screen reader and switch users is very welcome.</p></details>
+      <details><summary>What's different in the desktop app?</summary><p>The same Paint, in its own window. Save opens a real save window, Print uses the system print dialog, and Set as desktop background sets your wallpaper. In the browser those become a download, a print pop-up, and instructions.</p></details>
+      <details><summary>Is there a Linux build?</summary><p>Not of the desktop app. Linux users can use the browser version.</p></details>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <h2>Privacy</h2>
+      <p>Your pictures stay on your device. MattPaint has no accounts, no ads, no analytics and no tracking code, and the app itself makes no network requests. Drawing, undo history and the clipboard all live in your browser tab or in the app's window.</p>
+      <p>Pictures only leave the app when you save, print, copy or share them yourself. The desktop app keeps a copy of a picture you set as wallpaper in its own app data folder, because the operating system needs a file to point at.</p>
+      <p class="fine"><span class="todo-note">TODO-VERIFY</span> There is no written privacy policy in the repo; this summary is based on reading the app's code. The web host (nicedreamzwholesale.com or GitHub Pages) may keep standard server logs. Link the full policy here once it exists.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2>Contact and press</h2>
+      <p>MattPaint is made by Matt Macosko at Nice Dreamz. For reviews, interviews or screenshots, get in touch through <a href="https://nicedreamzwholesale.com/software/">nicedreamzwholesale.com/software</a> <span class="todo-note">TODO-VERIFY press contact email</span>. Bugs and ideas go to <a href="https://github.com/nicedreamzapp/MattPaint/issues">GitHub issues</a>.</p>
+      <p>Press assets: <a href="../screenshot.png">desktop screenshot</a> (1400 by 900), <a href="../screenshot-phone.png">phone screenshot</a> (390 by 844), <a href="../desktop/icon-1024.png">app icon</a> (1024 by 1024), <a href="../gallery/_collection.jpg">paintings collection</a>. Fact sheet: <a href="PRESS.md">PRESS.md</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>MattPaint by Matt Macosko, Nice Dreamz. MIT License. Source on <a href="https://github.com/nicedreamzapp/MattPaint">GitHub</a>.</p>
+    <p>Built on the work of others: Microsoft Paint, the original it recreates; HTML5 Canvas; <a href="https://tauri.app">Tauri</a> for the desktop app; and for the painting experiment, <a href="https://github.com/ml-explore/mlx">MLX</a>, <a href="https://github.com/Blaizzy/mlx-vlm">mlx-vlm</a>, the Gemma and Qwen open-weight models, and Robbie Tilton's <a href="https://robbietilton.com/compositor">Compositor</a>. Microsoft and Paint are trademarks of Microsoft Corporation.</p>
+  </div>
+</footer>
+</body>
+</html>
