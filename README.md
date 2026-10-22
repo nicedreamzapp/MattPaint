@@ -21,7 +21,8 @@ the system print dialog, and a Set as desktop background that actually sets it. 
 
 <img src="screenshot-phone.png" alt="MattPaint on a phone" width="260">
 
-## 🛠️ What I built
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-banner-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-banner-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-banner.svg" width="100%" alt="01. What I built. Paint for the web, Mac and Windows"></picture>
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-r1-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-r1-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-r1.svg" width="100%" alt="Pure vanilla JS. HTML5 Canvas and CSS, no dependencies, no build step. 65 checks. Self-tests that run inside the live page. Desktop app. A real Save window, print dialog and wallpaper change."></picture>
 
 Everything here was built by **Matt Macosko**:
 
@@ -32,7 +33,10 @@ Everything here was built by **Matt Macosko**:
 
 ![Paintings made stroke by stroke in MattPaint](gallery/_collection.jpg)
 
-## Features
+<img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s01-rule.svg" width="100%" alt="">
+
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-banner-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-banner-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-banner.svg" width="100%" alt="02. Features and shortcuts. Every classic tool, shape and brush"></picture>
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-r1-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-r1-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-r1.svg" width="100%" alt="Classic tools. Pencil, brushes, shapes, selection, undo and redo. Works everywhere. Desktop, tablet and phone."></picture>
 
 ### Drawing Tools
 - **Pencil** - Freehand drawing with pixel precision
@@ -85,7 +89,7 @@ Everything here was built by **Matt Macosko**:
 - Full keyboard shortcuts
 - Touch/stylus support
 
-## Keyboard Shortcuts
+### Keyboard Shortcuts
 
 | Action | Shortcut |
 |--------|----------|
@@ -113,7 +117,10 @@ Everything here was built by **Matt Macosko**:
 | Zoom In | `+` |
 | Zoom Out | `-` |
 
-## Getting Started
+<img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s02-rule.svg" width="100%" alt="">
+
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-banner-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-banner-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-banner.svg" width="100%" alt="03. Getting started. Open it in a browser or run the desktop app"></picture>
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-r1-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-r1-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-r1.svg" width="100%" alt="In the browser. No download needed. Mac and Windows. Downloads on the releases page. Self-test. Add ?test to the URL."></picture>
 
 ### Option 1: Use it online
 Open [nicedreamzwholesale.com/paint](https://nicedreamzwholesale.com/paint/) on anything with a browser. On a phone the canvas sizes itself to the screen and the ribbon scrolls sideways.
@@ -132,7 +139,7 @@ npx serve
 
 Then visit `http://localhost:8000`
 
-## Project Structure
+### Project Structure
 
 ```
 MattPaint/
@@ -150,18 +157,21 @@ MattPaint/
 └── gallery/            # Paintings made by fast/
 ```
 
-## Tests
+### Tests
 
 Add `?test` to the URL (for example `index.html?test`) and the built-in suite runs 65 checks against the live DOM and reports in the corner of the page. It is not loaded otherwise.
 
-## Browser Support
+### Browser Support
 
 - Chrome / Edge
 - Firefox
 - Safari, including iPhone and iPad (touch drawing)
 - Android Chrome
 
-## Why MattPaint?
+<img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s03-rule.svg" width="100%" alt="">
+
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-banner-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-banner-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-banner.svg" width="100%" alt="04. Why, limits and license. Zero dependencies, honest limits"></picture>
+<picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-r1-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-r1-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-r1.svg" width="100%" alt="About 230KB. Unminified HTML, JS and CSS. Offline ready. Works without internet. MIT. Use, modify and distribute."></picture>
 
 - **Zero Dependencies** - The web version needs no npm, no build tools, no frameworks (only the desktop build uses npm and Tauri)
 - **Lightweight** - About 230KB of HTML, JS and CSS, unminified
@@ -169,21 +179,23 @@ Add `?test` to the URL (for example `index.html?test`) and the built-in suite ru
 - **Faithful Recreation** - Looks and feels like real MS Paint
 - **Educational** - Clean, readable vanilla JS code
 
-## Known limits
+### Known limits
 
 - **BMP save**: browsers can't encode BMP from a canvas, so most will give you a PNG with a `.bmp` name. Pick PNG, JPEG or WebP for a real file.
 - **Web version**: Save downloads the file, Print opens a pop-up, and Set as desktop background downloads the picture and tells you how to set it yourself. The desktop app does all three for real.
 - **Desktop app**: Mac and Windows only, no Linux build. `desktop/build-mac.sh` needs an Apple Developer ID certificate and notary key to produce the signed download.
 - **`fast/`** is a personal experiment tied to Matt's Mac: it expects Brave at its Mac path, a local MLX model server and local model files, and `run_director.sh` coordinates with other local services. It is not set up to run on another machine.
 
-## License
+### License
 
 MIT License - feel free to use, modify, and distribute.
 
-## Author
+### Author
 
 Created by **Matt Macosko** ([@nicedreamzapp](https://github.com/nicedreamzapp))
 
 ---
 
 *"Sometimes you just need to paint."*
+
+<img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/main/assets/readme/s04-rule.svg" width="100%" alt="">
