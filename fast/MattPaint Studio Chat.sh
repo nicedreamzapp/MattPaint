@@ -3,8 +3,8 @@
 # stdin and prints "›" when it's ready, so Moonstone's chat box is where you type what to paint.
 # Add "rounds 6" anywhere in the message to change the improvement rounds (default 0, fast).
 cd "$(dirname "$0")"
-echo "MattPaint Studio · gen 6 — Claude draws it, the engine paints it on screen, about a minute and a half."
-echo "Type what you want painted. Fast mode: one straight painting, no sketch, no improvement rounds (add \"rounds 2\" to have it improve itself). Everything you type here gets painted, so talk to Claude in the other chat."
+echo "MattPaint Studio — Claude builds the scene in 3D, real light is worked out, and MattPaint paints it on screen so it looks like a photo. About 3 to 5 minutes."
+echo "Type what you want painted. Start with \"cartoon\" for the old quick engine (about a minute and a half). Everything you type here gets painted, so talk to Claude in the other chat."
 # Matt 2026-10-05: open MattPaint the moment the chat opens, so the window is
 # up and moving before he has typed anything. Skipped if the window is already up (a painting may be running).
 if ! curl -s -m 1 http://localhost:9231/json/version >/dev/null 2>&1; then
@@ -20,6 +20,17 @@ while IFS= read -r PROMPT; do
     ROUNDS="${BASH_REMATCH[1]}"
     PROMPT="$(echo "$PROMPT" | sed -E 's/[,;]?[[:space:]]*[Rr]ounds?[[:space:]]*[0-9]+//; s/[[:space:]]+$//')"
   fi
+  # Matt 2026-11-02 ("make it look real"): photoreal is the default now; "cartoon ..." keeps the gen-6 engine.
+  if [[ ! "$PROMPT" =~ ^[Cc]artoon[[:space:]:,]* ]]; then
+    curl -s -m 1 http://localhost:9231/json/version >/dev/null 2>&1 || \
+      ("$HOME/.local/mlx-server/bin/python3" open_window.py >/dev/null 2>&1 &)
+    echo "Painting \"$PROMPT\" to look real. Watch the MattPaint window: a rough pass first, then the final."
+    /usr/bin/python3 -u photo_director.py "$PROMPT" 2>&1 | grep --line-buffered -v -iE "warn|fp = o|cam\\["
+    echo "Done, it's on screen and saved in MattPaint/gallery/opus-photoreal/. What next?"
+    printf '\n› '
+    continue
+  fi
+  PROMPT="$(echo "$PROMPT" | sed -E 's/^[Cc]artoon[[:space:]:,]*//')"
   echo "Painting \"$PROMPT\" with $ROUNDS rounds. Painter: Claude. Watch the MattPaint window."
   # window closed since the chat opened? open it now while the model loads
   curl -s -m 1 http://localhost:9231/json/version >/dev/null 2>&1 || \

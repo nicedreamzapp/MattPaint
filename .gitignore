@@ -16,3 +16,4 @@ fast/director_runs/
 fast/*.bak*
 fast/pictures/
 .claude/
+fast/photo_runs/
