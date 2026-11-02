@@ -18,3 +18,12 @@ fast/pictures/
 .claude/
 fast/photo_runs/
 gallery/films/
+explainer/footage/
+explainer/edit/seg/
+explainer/edit/codeframes/
+explainer/edit/*.wav
+explainer/edit/*.mp4
+explainer/*.mp4
+explainer/music/*.wav
+explainer/sfx/
+explainer/narration/*.wav

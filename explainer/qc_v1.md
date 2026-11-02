@@ -1,0 +1,227 @@
+# film_qc report — MattPaint_explainer_v1.mp4
+**Verdict: FAIL — 77 defect(s)**
+Checks run: 143 | passed: 66 | failed: 77
+
+## Defects
+- lipsync@0.2s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@13.4s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@33.3s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@43.8s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@55.5s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@72.9s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@92.6s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- lipsync@102.3s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- artifact@0.5s: The image shows a dark, forested scene with a large, mechanical or robotic figure standing between tree trunks. The figu
+- artifact@1.5s: The image shows a dark, forested scene with a large, mechanical or armored figure standing between tree trunks. The figu
+- artifact@2.5s: The image shows a large, armored, humanoid figure standing in a dark, misty forest. The figure appears to be a robot or 
+- artifact@3.5s: The image shows a large, dark, mechanical figure standing in a forested, dimly lit environment. The figure appears to be
+- artifact@4.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- artifact@5.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- artifact@6.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- artifact@7.5s: The image shows a robot-like figure standing in a dark, misty forest. The figure appears to be a mechanical or armored e
+- artifact@8.5s: The image shows a robot-like figure standing in a forested environment. The figure appears to be a mechanical or armored
+- artifact@9.5s: The image shows a robot-like figure standing in a forested environment. The figure has a humanoid form with two arms and
+- artifact@10.5s: The image shows a large, mechanical robot-like figure standing in a forest. It has a humanoid form with two arms and two
+- artifact@11.5s: The image shows a robot-like figure standing in a forested environment. The figure has a mechanical, armored appearance 
+- artifact@12.5s: The image shows a large, mechanical robot-like figure standing in a forested environment. The figure has a bulky, armore
+- artifact@16.5s: The image provided is a screenshot of Python code, specifically from a file named `robot_forest_bl.py`, containing 1,418
+- artifact@17.5s: The image provided is a screenshot of Python code from a file named `robot_forest_bl.py`, containing 1,418 lines. The vi
+- artifact@18.5s: The image provided is a screenshot of a Python script file named `robot_forest_bl.py`, containing 1,418 lines of code, w
+- artifact@26.5s: The image provided is a screenshot of Python code from a file named `robot_forest_bl.py`, showing lines 323–359. The cod
+- artifact@33.5s: The image shows a robot-like figure standing in a dark, misty forest. The figure appears to be constructed from blocky, 
+- artifact@36.5s: The image shows a robot-like figure standing in a dark, forested environment. The figure appears to be a mechanical or a
+- artifact@37.5s: The image shows a robot-like figure standing in a dark, misty forest. The figure appears to be a humanoid robot with a b
+- artifact@39.5s: The image shows a robot-like figure standing in a forested environment. The figure appears to be a 3D model, possibly re
+- artifact@40.5s: The animated character in the image is a robot-like figure standing in a forested environment. It has a boxy, mechanical
+- artifact@43.5s: The image shows a large, mechanical or armored figure standing in a forested environment. The figure appears to be a rob
+- artifact@44.5s: The image shows a large, mechanical or armored figure standing in a forested environment. The figure appears to be a rob
+- artifact@49.5s: The image shows a robot in a forest setting, viewed from behind, with trees and foliage in the background. The robot app
+- artifact@50.5s: The image shows a robot in a forest setting, viewed from behind. The robot has a mechanical, armored appearance with a c
+- artifact@51.5s: The image shows a robot standing in a forest environment. The robot has a mechanical, armored appearance with a bright c
+- artifact@52.5s: The image shows a robot standing in a forest environment. The robot has a mechanical, armored appearance with a bright c
+- artifact@53.5s: The image shows a large, mechanical robot standing in a forest. The robot has a bulky, armored design with a bright circ
+- artifact@54.5s: The image shows a large, mechanical or armored figure standing in a forested environment. The figure appears to be a rob
+- artifact@73.5s: The image shows a robot-like character standing in a forest, with a glowing circular light on its chest. The character a
+- artifact@74.5s: The image shows a robot-like character standing in a forest, with a glowing circular light on its chest. The character a
+- artifact@75.5s: The image shows a robot-like figure standing in a forest, with a glowing circular light on its chest. The figure appears
+- artifact@76.5s: The image shows a robot-like character standing in a forest, with a glowing circular light on its chest. The character a
+- artifact@77.5s: The image shows a robot character standing in a forest environment. The robot has a humanoid form with two arms, two leg
+- artifact@78.5s: The image shows a robot-like character standing in a forest setting, rendered in a 3D style. The robot has a humanoid fo
+- artifact@79.5s: The image shows a robot-like figure standing in a forest setting, with a bright circular light on its chest. The figure 
+- artifact@80.5s: The image shows a robot-like character standing in a forest setting. The character has a mechanical, armored appearance 
+- artifact@81.5s: The image shows a robot-like figure standing in a forest setting. The figure has a mechanical, armored appearance with a
+- artifact@82.5s: The image shows a robot-like character standing in a forest setting. The robot has a humanoid form with two arms, two le
+- artifact@83.5s: The image shows a robot-like character standing in a forest setting. The character has a mechanical, armored appearance 
+- artifact@84.5s: The animated character in the image is a robot standing in a forested environment. It has a humanoid form with a torso, 
+- artifact@85.5s: The animated character in the image is a robot standing in a forested environment. It has a humanoid form with a torso, 
+- artifact@86.5s: The image shows a robot-like character standing in a forest environment, viewed from a low angle. The character has a me
+- artifact@87.5s: The image shows a robot-like character standing in a forest environment, viewed from the front. The robot has a humanoid
+- artifact@88.5s: The image shows a robot-like figure standing in a forested environment, viewed from a low angle. The figure appears to b
+- artifact@89.5s: The image shows a single animated character, seemingly a robot or mechanical figure, standing in a forested environment 
+- artifact@90.5s: The image shows a time-lapse video of a digital painting process in Microsoft Paint, depicting a character in a forest s
+- artifact@91.5s: The image shows a time-lapse animation within Microsoft Paint, depicting 120 frames painted at 70x speed. The scene appe
+- artifact@92.5s: The image shows a robot standing in a dark forest. The robot appears to be a mechanical figure with a humanoid shape — i
+- artifact@93.5s: The image shows a robot standing in a forest, viewed from the front. The robot has a humanoid form with a torso, two arm
+- artifact@94.5s: The image shows a robot standing in a forest, rendered in a dark, moody style. The robot appears to have a humanoid form
+- artifact@95.5s: The image shows a robot standing in a forest, viewed from the front. The robot has a humanoid form with two arms, two le
+- artifact@96.5s: The image shows a robot-like figure standing in a forested environment. The figure has a mechanical, armored appearance 
+- artifact@97.5s: The image shows a robot standing in a forest environment. The robot has a humanoid form with a torso, two arms, and two 
+- artifact@98.5s: The image shows a robot standing in a forest environment, viewed from behind. The robot has a mechanical, armored appear
+- artifact@99.5s: The image shows a robot standing in a forest, rendered in a 3D style with a bright light on its chest. The robot has a h
+- artifact@100.5s: The image shows a robot-like figure standing in a forest environment, viewed from the front. The robot has a large, circ
+- artifact@101.5s: The image shows a large, armored robot-like figure standing in a forested environment. The figure has a mechanical, bulk
+- artifact@102.5s: The image shows a dark, forested scene with a large, mechanical or armored figure standing between tree trunks. The figu
+- artifact@103.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- artifact@104.5s: The image shows a large, mechanical or robotic figure standing in a forested environment. The figure appears to be a hum
+- artifact@105.5s: The image shows a large, humanoid robot standing in a forested environment. The robot has a mechanical, armored appearan
+- artifact@108.5s: The image features a single animated character: a large, humanoid robot standing in a forest. The robot has a boxy, mech
+- artifact@110.5s: The animated character in the image is a large, mechanical robot standing in a forest. It has a blocky, armored design w
+- artifact@112.5s: The image features a large, humanoid robot standing in a forested environment. The robot has a blocky, mechanical design
+- artifact@113.5s: The image features a large, humanoid robot standing in a forested environment. The robot has a mechanical, armored appea
+- artifact@114.5s: The image shows a robot-like figure standing in a forested area, viewed from a low angle through tall, vertical tree tru
+- artifact@115.5s: The image shows a character in a forested, sun-drenched environment, partially obscured by light flares and foliage. The
+
+## Full log
+- [FAIL] lipsync@0.2s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@13.4s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@33.3s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@43.8s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@55.5s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@72.9s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@92.6s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [FAIL] lipsync@102.3s: narrator's mouth moving in 0/6 samples (0% of a 1.2s line; need 50%)
+- [PASS] silence@8.1s: no. the robot is a mechanical entity with no visible mouth, and there are no cha
+- [PASS] silence@24.6s: no. the robot is described as a giant old armoured robot with a round glowing ch
+- [PASS] silence@39.8s: no. the robot is a non-human character with no visible mouth, and there are no c
+- [PASS] silence@50.9s: no. the robot has no visible mouth, and there are no characters speaking or show
+- [PASS] silence@65.4s: no. the robot is depicted with no visible facial features or mouth, and there is
+- [PASS] silence@84.0s: no. the robot is a mechanical figure with no visible mouth, and there are no cha
+- [PASS] identity-across-scenes: CONSISTENT — Both robots share identical body proportions, head shape, ear structure, and chest markings, indicating the same design despite different lighting and camera distance.
+- [FAIL] artifact@0.5s: The image shows a dark, forested scene with a large, mechanical or robotic figure standing between tree trunks. The figu
+- [FAIL] artifact@1.5s: The image shows a dark, forested scene with a large, mechanical or armored figure standing between tree trunks. The figu
+- [FAIL] artifact@2.5s: The image shows a large, armored, humanoid figure standing in a dark, misty forest. The figure appears to be a robot or 
+- [FAIL] artifact@3.5s: The image shows a large, dark, mechanical figure standing in a forested, dimly lit environment. The figure appears to be
+- [FAIL] artifact@4.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- [FAIL] artifact@5.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- [FAIL] artifact@6.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- [FAIL] artifact@7.5s: The image shows a robot-like figure standing in a dark, misty forest. The figure appears to be a mechanical or armored e
+- [FAIL] artifact@8.5s: The image shows a robot-like figure standing in a forested environment. The figure appears to be a mechanical or armored
+- [FAIL] artifact@9.5s: The image shows a robot-like figure standing in a forested environment. The figure has a humanoid form with two arms and
+- [FAIL] artifact@10.5s: The image shows a large, mechanical robot-like figure standing in a forest. It has a humanoid form with two arms and two
+- [FAIL] artifact@11.5s: The image shows a robot-like figure standing in a forested environment. The figure has a mechanical, armored appearance 
+- [FAIL] artifact@12.5s: The image shows a large, mechanical robot-like figure standing in a forested environment. The figure has a bulky, armore
+- [PASS] artifact@13.5s: clean
+- [PASS] artifact@14.5s: clean
+- [PASS] artifact@15.5s: clean
+- [FAIL] artifact@16.5s: The image provided is a screenshot of Python code, specifically from a file named `robot_forest_bl.py`, containing 1,418
+- [FAIL] artifact@17.5s: The image provided is a screenshot of Python code from a file named `robot_forest_bl.py`, containing 1,418 lines. The vi
+- [FAIL] artifact@18.5s: The image provided is a screenshot of a Python script file named `robot_forest_bl.py`, containing 1,418 lines of code, w
+- [PASS] artifact@19.5s: clean
+- [PASS] artifact@20.5s: clean
+- [PASS] artifact@21.5s: clean
+- [PASS] artifact@22.5s: clean
+- [PASS] artifact@23.5s: clean
+- [PASS] artifact@24.5s: clean
+- [PASS] artifact@25.5s: clean
+- [FAIL] artifact@26.5s: The image provided is a screenshot of Python code from a file named `robot_forest_bl.py`, showing lines 323–359. The cod
+- [PASS] artifact@27.5s: clean
+- [PASS] artifact@28.5s: clean
+- [PASS] artifact@29.5s: clean
+- [PASS] artifact@30.5s: clean
+- [PASS] artifact@31.5s: clean
+- [PASS] artifact@32.5s: clean
+- [FAIL] artifact@33.5s: The image shows a robot-like figure standing in a dark, misty forest. The figure appears to be constructed from blocky, 
+- [PASS] artifact@34.5s: clean
+- [PASS] artifact@35.5s: clean
+- [FAIL] artifact@36.5s: The image shows a robot-like figure standing in a dark, forested environment. The figure appears to be a mechanical or a
+- [FAIL] artifact@37.5s: The image shows a robot-like figure standing in a dark, misty forest. The figure appears to be a humanoid robot with a b
+- [PASS] artifact@38.5s: clean
+- [FAIL] artifact@39.5s: The image shows a robot-like figure standing in a forested environment. The figure appears to be a 3D model, possibly re
+- [FAIL] artifact@40.5s: The animated character in the image is a robot-like figure standing in a forested environment. It has a boxy, mechanical
+- [PASS] artifact@41.5s: clean
+- [PASS] artifact@42.5s: clean
+- [FAIL] artifact@43.5s: The image shows a large, mechanical or armored figure standing in a forested environment. The figure appears to be a rob
+- [FAIL] artifact@44.5s: The image shows a large, mechanical or armored figure standing in a forested environment. The figure appears to be a rob
+- [PASS] artifact@45.5s: clean
+- [PASS] artifact@46.5s: clean
+- [PASS] artifact@47.5s: clean
+- [PASS] artifact@48.5s: clean
+- [FAIL] artifact@49.5s: The image shows a robot in a forest setting, viewed from behind, with trees and foliage in the background. The robot app
+- [FAIL] artifact@50.5s: The image shows a robot in a forest setting, viewed from behind. The robot has a mechanical, armored appearance with a c
+- [FAIL] artifact@51.5s: The image shows a robot standing in a forest environment. The robot has a mechanical, armored appearance with a bright c
+- [FAIL] artifact@52.5s: The image shows a robot standing in a forest environment. The robot has a mechanical, armored appearance with a bright c
+- [FAIL] artifact@53.5s: The image shows a large, mechanical robot standing in a forest. The robot has a bulky, armored design with a bright circ
+- [FAIL] artifact@54.5s: The image shows a large, mechanical or armored figure standing in a forested environment. The figure appears to be a rob
+- [PASS] artifact@55.5s: clean
+- [PASS] artifact@56.5s: Clean.
+- [PASS] artifact@57.5s: clean
+- [PASS] artifact@58.5s: Clean.
+- [PASS] artifact@59.5s: clean
+- [PASS] artifact@60.5s: Clean.
+- [PASS] artifact@61.5s: Clean.
+- [PASS] artifact@62.5s: Clean.
+- [PASS] artifact@63.5s: clean
+- [PASS] artifact@64.5s: clean
+- [PASS] artifact@65.5s: Clean.
+- [PASS] artifact@66.5s: Clean.
+- [PASS] artifact@67.5s: clean
+- [PASS] artifact@68.5s: clean
+- [PASS] artifact@69.5s: clean
+- [PASS] artifact@70.5s: clean
+- [PASS] artifact@71.5s: clean
+- [PASS] artifact@72.5s: clean
+- [FAIL] artifact@73.5s: The image shows a robot-like character standing in a forest, with a glowing circular light on its chest. The character a
+- [FAIL] artifact@74.5s: The image shows a robot-like character standing in a forest, with a glowing circular light on its chest. The character a
+- [FAIL] artifact@75.5s: The image shows a robot-like figure standing in a forest, with a glowing circular light on its chest. The figure appears
+- [FAIL] artifact@76.5s: The image shows a robot-like character standing in a forest, with a glowing circular light on its chest. The character a
+- [FAIL] artifact@77.5s: The image shows a robot character standing in a forest environment. The robot has a humanoid form with two arms, two leg
+- [FAIL] artifact@78.5s: The image shows a robot-like character standing in a forest setting, rendered in a 3D style. The robot has a humanoid fo
+- [FAIL] artifact@79.5s: The image shows a robot-like figure standing in a forest setting, with a bright circular light on its chest. The figure 
+- [FAIL] artifact@80.5s: The image shows a robot-like character standing in a forest setting. The character has a mechanical, armored appearance 
+- [FAIL] artifact@81.5s: The image shows a robot-like figure standing in a forest setting. The figure has a mechanical, armored appearance with a
+- [FAIL] artifact@82.5s: The image shows a robot-like character standing in a forest setting. The robot has a humanoid form with two arms, two le
+- [FAIL] artifact@83.5s: The image shows a robot-like character standing in a forest setting. The character has a mechanical, armored appearance 
+- [FAIL] artifact@84.5s: The animated character in the image is a robot standing in a forested environment. It has a humanoid form with a torso, 
+- [FAIL] artifact@85.5s: The animated character in the image is a robot standing in a forested environment. It has a humanoid form with a torso, 
+- [FAIL] artifact@86.5s: The image shows a robot-like character standing in a forest environment, viewed from a low angle. The character has a me
+- [FAIL] artifact@87.5s: The image shows a robot-like character standing in a forest environment, viewed from the front. The robot has a humanoid
+- [FAIL] artifact@88.5s: The image shows a robot-like figure standing in a forested environment, viewed from a low angle. The figure appears to b
+- [FAIL] artifact@89.5s: The image shows a single animated character, seemingly a robot or mechanical figure, standing in a forested environment 
+- [FAIL] artifact@90.5s: The image shows a time-lapse video of a digital painting process in Microsoft Paint, depicting a character in a forest s
+- [FAIL] artifact@91.5s: The image shows a time-lapse animation within Microsoft Paint, depicting 120 frames painted at 70x speed. The scene appe
+- [FAIL] artifact@92.5s: The image shows a robot standing in a dark forest. The robot appears to be a mechanical figure with a humanoid shape — i
+- [FAIL] artifact@93.5s: The image shows a robot standing in a forest, viewed from the front. The robot has a humanoid form with a torso, two arm
+- [FAIL] artifact@94.5s: The image shows a robot standing in a forest, rendered in a dark, moody style. The robot appears to have a humanoid form
+- [FAIL] artifact@95.5s: The image shows a robot standing in a forest, viewed from the front. The robot has a humanoid form with two arms, two le
+- [FAIL] artifact@96.5s: The image shows a robot-like figure standing in a forested environment. The figure has a mechanical, armored appearance 
+- [FAIL] artifact@97.5s: The image shows a robot standing in a forest environment. The robot has a humanoid form with a torso, two arms, and two 
+- [FAIL] artifact@98.5s: The image shows a robot standing in a forest environment, viewed from behind. The robot has a mechanical, armored appear
+- [FAIL] artifact@99.5s: The image shows a robot standing in a forest, rendered in a 3D style with a bright light on its chest. The robot has a h
+- [FAIL] artifact@100.5s: The image shows a robot-like figure standing in a forest environment, viewed from the front. The robot has a large, circ
+- [FAIL] artifact@101.5s: The image shows a large, armored robot-like figure standing in a forested environment. The figure has a mechanical, bulk
+- [FAIL] artifact@102.5s: The image shows a dark, forested scene with a large, mechanical or armored figure standing between tree trunks. The figu
+- [FAIL] artifact@103.5s: The image shows a large, mechanical or robotic figure standing in a dark, misty forest. The figure appears to be a human
+- [FAIL] artifact@104.5s: The image shows a large, mechanical or robotic figure standing in a forested environment. The figure appears to be a hum
+- [FAIL] artifact@105.5s: The image shows a large, humanoid robot standing in a forested environment. The robot has a mechanical, armored appearan
+- [PASS] artifact@106.5s: clean
+- [PASS] artifact@107.5s: clean
+- [FAIL] artifact@108.5s: The image features a single animated character: a large, humanoid robot standing in a forest. The robot has a boxy, mech
+- [PASS] artifact@109.5s: clean
+- [FAIL] artifact@110.5s: The animated character in the image is a large, mechanical robot standing in a forest. It has a blocky, armored design w
+- [PASS] artifact@111.5s: clean
+- [FAIL] artifact@112.5s: The image features a large, humanoid robot standing in a forested environment. The robot has a blocky, mechanical design
+- [FAIL] artifact@113.5s: The image features a large, humanoid robot standing in a forested environment. The robot has a mechanical, armored appea
+- [FAIL] artifact@114.5s: The image shows a robot-like figure standing in a forested area, viewed from a low angle through tall, vertical tree tru
+- [FAIL] artifact@115.5s: The image shows a character in a forested, sun-drenched environment, partially obscured by light flares and foliage. The
+- [PASS] artifact@116.5s: clean
+- [PASS] artifact@117.5s: clean
+- [PASS] artifact@118.5s: clean
+- [PASS] artifact@119.5s: clean
+- [PASS] audio@0.2s: 'This robot isn't from a video ' expected @0.2s, heard @0.0s (4/4 words)
+- [PASS] audio@13.4s: 'Here's how it works. I give Cl' expected @13.4s, heard @13.3s (4/4 words)
+- [PASS] audio@33.3s: 'Then Blender works out the lig' expected @33.3s, heard @33.3s (4/4 words)
+- [PASS] audio@43.8s: 'Then MattPaint paints it. Watc' expected @43.8s, heard @43.8s (3/4 words)
+- [PASS] audio@55.5s: 'It didn't start this good. The' expected @55.5s, heard @54.5s (4/4 words)
+- [PASS] audio@72.9s: 'So is anyone else doing this? ' expected @72.9s, heard @72.8s (4/4 words)
+- [PASS] audio@92.6s: 'Everything runs on my MacBook,' expected @92.6s, heard @92.6s (4/4 words)
+- [PASS] audio@102.3s: 'And this is just the start. Wa' expected @102.3s, heard @101.3s (3/4 words)
