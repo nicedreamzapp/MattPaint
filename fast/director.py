@@ -209,6 +209,20 @@ def run(py, args, timeout, env_extra=None):
         return -9, f"TIMEOUT after {timeout}s", round(time.time() - t, 1)
 
 
+# Matt 2026-11-02 (from the Fable "pure code" anime post, whose prompt spells out what the result
+# must NOT look like): name the failure looks up front, so the recipe avoids them and the look and
+# judge steps can call them out. Each line is a way MattPaint pictures have actually gone wrong.
+MUST_NOT = ("IT MUST NOT LOOK LIKE:\n"
+            "- Clip art or a flat vector graphic: simple geometric shapes, perfect circles, uniform outlines, "
+            "flat fills with no light side and shadow side.\n"
+            "- A dark silhouette or tiny blob where the subject should be, or the subject cut off by the edge.\n"
+            "- Scenery the prompt never asked for (ridges, meadows, fog, trees) crowding out the subject.\n"
+            "- An empty or unfinished background: one flat colour, or a few lonely shapes floating.\n"
+            "- Muddy colour: everything the same dull brown-grey, no clear lights and darks.\n"
+            "- Stiff and symmetric: a subject posed dead-on like an icon, with no weight or angle.\n"
+            "If a painting shows any of these, fixing it comes before adding new detail.\n\n")
+
+
 class Direction:
     def __init__(self, q, key, prompt, rundir, rounds, gray_rounds, holdout, ref=None):
         self.q, self.key, self.prompt, self.dir = q, key, prompt, rundir
@@ -226,7 +240,7 @@ class Direction:
                    "built for landscapes; that is history, not a style. Use mountains, meadows, trees, rocks, fog or "
                    "sunbeams ONLY when the prompt asks for that kind of place. For anything the toolbox has no "
                    "object for, draw it yourself with svg layers, several of them if it helps (body, head, "
-                   "features, a light side and a shadow side), as carefully as you can.\n\n")
+                   "features, a light side and a shadow side), as carefully as you can.\n\n" + MUST_NOT)
         self.prefix = ("You are the art director for a painting engine. You never draw strokes yourself: "
                        "you write a short recipe and the engine paints it from scratch.\n\n" + mandate
                        + "THE TOOLBOX:\n\n" + (HERE / "RECIPES.md").read_text() + OBJECTS_DOC + "\n\nTHE PAINTING RULES THE ENGINE FOLLOWS:\n"
@@ -320,7 +334,8 @@ class Direction:
                    "and fix the worst 3: add objects, svg drawings or shapes, move them nearer, light them, "
                    "colour them." if HAS_OBJECTS else
                    "Then name the 3 changes that would make it read most strongly as the prompt, with the "
-                   "believable light the rules ask for."))
+                   "believable light the rules ask for.")
+                + " Also say which of the IT MUST NOT LOOK LIKE failures it shows, if any, and fix those first.")
         tried = ""
         if self.lost:
             tried = ("\nALREADY TRIED THIS SUBJECT AND JUDGED WORSE (do not repeat these):\n"
@@ -339,7 +354,8 @@ class Direction:
                 f"Two paintings of: \"{self.prompt}\"\n" + ("Which one would a stranger say IS that, at a glance? "
                 "Scenery the prompt never asked for counts against a painting. Which one SHOWS more of the things the prompt names, "
                 "clearly and recognisably, in the colours it asks for? A dark silhouette against a sunset "
-                "loses to a picture where you can see what things are." if HAS_OBJECTS else
+                "loses to a picture where you can see what things are. A painting that looks like clip art, flat vector "
+                "shapes or muddy colour loses to one that looks painted." if HAS_OBJECTS else
                 "Which reads more convincingly as that scene, with believable light?") + " Ignore the title bars. First line exactly WINNER: 1 or WINNER: 2, then one "
                 "sentence why.", images=[str(first), str(second)], max_tokens=80, temperature=0.0)
             m = re.search(r"WINNER:\s*([12])", text)
