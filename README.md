@@ -43,6 +43,8 @@ The first try used a homemade path tracer ([`fast/pt.py`](https://github.com/nic
 
 **Sister project:** sound, voices, music and the finished cut come from [Story Forge](https://github.com/nicedreamzapp/story-forge), my local film studio. MattPaint paints the pictures, Story Forge makes them a film.
 
+**Related:** [Story Forge](https://github.com/nicedreamzapp/story-forge) · [The Last Signal v2](https://youtu.be/hbihC91Bgkc), its newest film
+
 <img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s01-rule.svg" width="100%" alt="">
 
 <picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s02-banner-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s02-banner-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s02-banner.svg" width="100%" alt="02. Features and shortcuts. Every classic tool, shape and brush"></picture>
