@@ -33,6 +33,16 @@ Everything here was built by **Matt Macosko**:
 
 ![Paintings made stroke by stroke in MattPaint](gallery/_collection.jpg)
 
+### 🎬 Painted films (new, November 2026)
+
+![A frame from Robot in the Forest, painted into MattPaint](gallery/robot-in-the-forest.jpg)
+
+MattPaint now paints film. Claude Opus writes a whole 3D world as code from a one-line idea: a giant mossy robot kneeling in a forest at dawn, its chest light flickering on. No image model, no video model, no stock art. Blender Cycles works out how the light falls on the Apple GPU, and then **every frame is painted into MattPaint on screen**, about 590,000 strokes each, top to bottom like a printer. The 10-second shot is 120 painted frames and about 67 million strokes, and it took 7 minutes.
+
+The first try used a homemade path tracer ([`fast/pt.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/pt.py)): 4.5 hours, and the robot came out as stacked blocks. Moving the light math to Blender made it about 25 times faster and far more real. The code is on the [`gen6-scene-engine`](https://github.com/nicedreamzapp/MattPaint/tree/gen6-scene-engine/fast) branch: [`photo_director.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/photo_director.py) (any prompt, painted to look like a photo), [`pt_film.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/pt_film.py) and [`paint_frames.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/paint_frames.py) (films), and [`blender/`](https://github.com/nicedreamzapp/MattPaint/tree/gen6-scene-engine/fast/blender) (the scenes).
+
+**Sister project:** sound, voices, music and the finished cut come from [Story Forge](https://github.com/nicedreamzapp/story-forge), my local film studio. MattPaint paints the pictures, Story Forge makes them a film.
+
 <img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s01-rule.svg" width="100%" alt="">
 
 <picture><source media="(max-width: 610px), (min-width: 768px) and (max-width: 895px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s02-banner-m.svg"><source media="(max-width: 1149px)" srcset="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s02-banner-mid.svg"><img src="https://raw.githubusercontent.com/nicedreamzapp/MattPaint/3e61509fec307b7a9bbef1147502e3a82b2fff52/assets/readme/s02-banner.svg" width="100%" alt="02. Features and shortcuts. Every classic tool, shape and brush"></picture>
