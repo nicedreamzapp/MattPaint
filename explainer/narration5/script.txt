@@ -1,0 +1,10 @@
+This robot isn't from a video AI. No camera, no stock footage. Every frame was painted into my Paint app, one stroke at a time. Let me show you the crew that made it.
+First, the writer. I type one sentence. A giant robot has knelt in a forest so long that moss grows over it. That's it.
+Next, the set builder. That's Claude Opus, an AI. It doesn't draw a picture. It builds the whole world out of shapes, like a model kit. The armor, the trees, the ground. Here's what that looks like before any color.
+Then it paints the props. Rust on the metal, moss on the shoulders, bark on the trees.
+Then the lighting crew. That's Blender, free software that works out how real sunlight bounces through mist and off metal. That's why it looks real. Nobody painted those shadows. The light made them.
+Then my painter, MattPaint. It takes each frame and paints it, line by line, like a printer. Almost six hundred thousand strokes for one picture. A hundred and twenty pictures for ten seconds.
+Then the composer. Song Forge, my music maker, wrote the score. And the voice you're hearing right now? That's a copy of my voice, made on my own computer.
+And the editor, Story Forge, puts it all together.
+The first try took four and a half hours and looked like a pile of blocks. Now it's seven minutes. I looked for anyone else painting movies this way. I couldn't find one.
+Everything runs on my laptop except the set builder. It's all free on GitHub. Now watch the robot wake up.

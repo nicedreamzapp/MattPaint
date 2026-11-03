@@ -1311,6 +1311,8 @@ kf(cam, "location", [(1, C0), (240, C1)], 'BEZIER')
 kf(target, "location", [(1, V((0.1, -0.3, 3.6))), (240, V((0.15, -0.4, 3.8)))], 'BEZIER')
 set_interp('BEZIER')
 
+exec(open('/Users/dtribe/Desktop/PROJECTS/MattPaint/fast/blender/look_inject.py').read())
+
 # ------------------------------------------------------------------ render settings
 log("render settings")
 scene.render.engine = 'CYCLES'

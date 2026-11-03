@@ -27,3 +27,11 @@ explainer/*.mp4
 explainer/music/*.wav
 explainer/sfx/
 explainer/narration/*.wav
+explainer/edit5/seg/
+explainer/edit5/f_*/
+explainer/edit5/*.wav
+explainer/edit5/*.mp4
+explainer/edit5/*.png
+explainer/narration5/*.wav
+explainer/buildup/
+explainer/*.log

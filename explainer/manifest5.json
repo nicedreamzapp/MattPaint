@@ -1,0 +1,69 @@
+{
+ "characters": {
+  "robot": "giant old armoured robot with rust, moss and a round chest light, in a forest"
+ },
+ "scenes": [
+  {
+   "name": "forest",
+   "start": 0.5,
+   "end": 9.5
+  },
+  {
+   "name": "rise",
+   "start": 87.06,
+   "end": 96.06
+  }
+ ],
+ "lines": [
+  {
+   "t": 0.25,
+   "speaker": "narrator",
+   "text": "This robot isn't from a video AI. No camera, no stock footage. Every frame was painted into my Paint app, one stroke at a time. Let me show you the crew that made it."
+  },
+  {
+   "t": 10.35,
+   "speaker": "narrator",
+   "text": "First, the writer. I type one sentence. A giant robot has knelt in a forest so long that moss grows over it. That's it."
+  },
+  {
+   "t": 18.49,
+   "speaker": "narrator",
+   "text": "Next, the set builder. That's Claude Opus, an AI. It doesn't draw a picture. It builds the whole world out of shapes, like a model kit. The armor, the trees, the ground. Here's what that looks like before any color."
+  },
+  {
+   "t": 30.27,
+   "speaker": "narrator",
+   "text": "Then it paints the props. Rust on the metal, moss on the shoulders, bark on the trees."
+  },
+  {
+   "t": 35.65,
+   "speaker": "narrator",
+   "text": "Then the lighting crew. That's Blender, free software that works out how real sunlight bounces through mist and off metal. That's why it looks real. Nobody painted those shadows. The light made them."
+  },
+  {
+   "t": 46.03,
+   "speaker": "narrator",
+   "text": "Then my painter, MattPaint. It takes each frame and paints it, line by line, like a printer. Almost six hundred thousand strokes for one picture. A hundred and twenty pictures for ten seconds."
+  },
+  {
+   "t": 57.45,
+   "speaker": "narrator",
+   "text": "Then the composer. Song Forge, my music maker, wrote the score. And the voice you're hearing right now? That's a copy of my voice, made on my own computer."
+  },
+  {
+   "t": 66.83,
+   "speaker": "narrator",
+   "text": "And the editor, Story Forge, puts it all together."
+  },
+  {
+   "t": 70.09,
+   "speaker": "narrator",
+   "text": "The first try took four and a half hours and looked like a pile of blocks. Now it's seven minutes. I looked for anyone else painting movies this way. I couldn't find one."
+  },
+  {
+   "t": 80.15,
+   "speaker": "narrator",
+   "text": "Everything runs on my laptop except the set builder. It's all free on GitHub. Now watch the robot wake up."
+  }
+ ]
+}
