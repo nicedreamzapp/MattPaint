@@ -81,14 +81,14 @@ for i, p in enumerate(nar):
     ins += ["-i", p]; flt.append(f"[{i}:a]aresample=48000,pan=stereo|c0=c0|c1=c0,adelay={int((starts[i]+0.25)*1000)}:all=1,volume=1.0[n{i}]")
 k = len(nar)
 ins += ["-i", f"{E}/music/bed.wav"]; flt.append(f"[{k}:a]aresample=48000,atrim=0:{t_rise+1:.2f},afade=t=in:d=2,afade=t=out:st={t_rise-1:.2f}:d=2,volume=0.22[bed]")
-ins += ["-i", f"{E}/sfx/forest.wav"]; flt.append(f"[{k+1}:a]aresample=48000,volume=0.35,asplit=2[fa][fc]"); 
+ins += ["-i", f"{E}/sfx/forest.wav"]; flt.append(f"[{k+1}:a]aresample=48000,highpass=f=70,alimiter=limit=0.9,volume=0.35,asplit=2[fa][fc]"); 
 flt.append(f"[fa]adelay=0:all=1[fa2]"); flt.append(f"[fc]adelay={int(starts[2]*1000)}:all=1[fc2]")
-ins += ["-i", f"{E}/music/rise.wav"]; flt.append(f"[{k+2}:a]aresample=48000,atrim=0:15,afade=t=out:st=12:d=3,adelay={int(t_rise*1000)}:all=1,volume=0.9[rm]")
-ins += ["-i", f"{E}/sfx/rise.wav"]; flt.append(f"[{k+3}:a]aresample=48000,adelay={int(t_rise*1000)}:all=1,volume=0.8[rs]")
+ins += ["-i", f"{E}/music/rise.wav"]; flt.append(f"[{k+2}:a]aresample=48000,atrim=0:15,highpass=f=32,equalizer=f=43:t=q:w=1.2:g=-10,afade=t=out:st=12:d=3,adelay={int(t_rise*1000)}:all=1,volume=0.9[rm]")
+ins += ["-i", f"{E}/sfx/rise.wav"]; flt.append(f"[{k+3}:a]aresample=48000,highpass=f=60,adelay={int(t_rise*1000)}:all=1,volume=0.8[rs]")
 mix = "".join(f"[n{i}]" for i in range(8)) + "[bed][fa2][fc2][rm][rs]"
 flt.append(f"{mix}amix=inputs=13:normalize=0:duration=longest,atrim=0:{total:.2f},alimiter=limit=0.95[out]")
 ff(*ins, "-filter_complex", ";".join(flt), "-map", "[out]", "-c:a", "pcm_s16le", f"{OUT}/audio.wav")
-final = f"{E}/MattPaint_explainer_v1.mp4"
+final = f"{E}/MattPaint_explainer_v2.mp4"
 ff("-i", f"{OUT}/video.mp4", "-i", f"{OUT}/audio.wav", "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "256k", "-shortest", final)
 json.dump({"segments": dict(zip(segs, [*D, dur(f"{SEG}/i.mp4"), 4])), "narration_starts": starts, "rise_at": t_rise, "total": total},
           open(f"{OUT}/timeline.json", "w"), indent=1)
