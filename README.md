@@ -35,9 +35,11 @@ Everything here was built by **Matt Macosko**:
 
 ### 🎬 Painted films (new, November 2026)
 
-![A frame from Robot in the Forest, painted into MattPaint](gallery/robot-in-the-forest.jpg)
+<a href="https://youtu.be/xV0TARs8QnQ"><img src="gallery/robot-explainer-thumb.jpg" width="100%" alt="I Painted a Movie in MS Paint: click to watch on YouTube"></a>
 
-MattPaint now paints film. Claude Opus writes a whole 3D world as code from a one-line idea: a giant mossy robot kneeling in a forest at dawn, its chest light flickering on. No image model, no video model, no stock art. Blender Cycles works out how the light falls on the Apple GPU, and then **every frame is painted into MattPaint on screen**, about 590,000 strokes each, top to bottom like a printer. The 10-second shot is 120 painted frames and about 67 million strokes, and it took 7 minutes.
+[▶ **Watch the explainer on YouTube**](https://youtu.be/xV0TARs8QnQ): how the robot was built, lit and painted, narrated in my own cloned voice.
+
+MattPaint now paints film. Claude Opus writes a whole 3D world as code from a one-line idea: a giant mossy robot kneeling in a forest at dawn, its chest light flickering on. No image model, no video model, no stock art. Blender Cycles works out how the light falls on the Apple GPU, and then **every frame is painted into MattPaint on screen**, about 590,000 strokes each, top to bottom like a printer. A 10-second shot is 120 painted frames and about 90 million strokes, and takes minutes.
 
 The first try used a homemade path tracer ([`fast/pt.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/pt.py)): 4.5 hours, and the robot came out as stacked blocks. Moving the light math to Blender made it about 25 times faster and far more real. The code is on the [`gen6-scene-engine`](https://github.com/nicedreamzapp/MattPaint/tree/gen6-scene-engine/fast) branch: [`photo_director.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/photo_director.py) (any prompt, painted to look like a photo), [`pt_film.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/pt_film.py) and [`paint_frames.py`](https://github.com/nicedreamzapp/MattPaint/blob/gen6-scene-engine/fast/paint_frames.py) (films), and [`blender/`](https://github.com/nicedreamzapp/MattPaint/tree/gen6-scene-engine/fast/blender) (the scenes).
 
